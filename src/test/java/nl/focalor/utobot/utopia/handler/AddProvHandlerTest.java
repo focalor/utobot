@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.model.Person;
-import nl.focalor.utobot.model.service.IPersonService;
+import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
@@ -32,8 +32,8 @@ public class AddProvHandlerTest {
 	@Test
 	public void test() {
 		// Test
-		IResult result = handler.handleCommand(CommandInput
-				.createFor("!addprov focalor - Foc [Elf/Mystic]"));
+		IResult result = handler.handleCommand(CommandInput.createFor("user",
+				"!addprov focalor - Foc [Elf/Mystic]"));
 
 		// Verify
 		ArgumentCaptor<Person> peopleCaptor = ArgumentCaptor

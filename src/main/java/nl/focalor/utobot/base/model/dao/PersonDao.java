@@ -1,4 +1,4 @@
-package nl.focalor.utobot.model.dao;
+package nl.focalor.utobot.base.model.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
-import nl.focalor.utobot.model.Person;
+import nl.focalor.utobot.base.model.Person;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

@@ -1,11 +1,9 @@
 package nl.focalor.utobot.utopia.model;
 
-import java.util.Date;
-
 public class SpellCast {
 	private Long id;
-	private Spell spell;
-	private Date endDate;
+	private String spellId;
+	private Integer lastHour;
 
 	public Long getId() {
 		return id;
@@ -15,20 +13,20 @@ public class SpellCast {
 		this.id = id;
 	}
 
-	public Spell getSpell() {
-		return spell;
+	public String getSpellId() {
+		return spellId;
 	}
 
-	public void setSpell(Spell spell) {
-		this.spell = spell;
+	public void setSpellId(String spellId) {
+		this.spellId = spellId;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public Integer getLastHour() {
+		return lastHour;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setLastHour(Integer lastHour) {
+		this.lastHour = lastHour;
 	}
 
 }

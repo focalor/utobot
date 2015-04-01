@@ -1,16 +1,17 @@
-package nl.focalor.utobot.model.service;
+package nl.focalor.utobot.base.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.focalor.utobot.model.Person;
-import nl.focalor.utobot.model.dao.IPersonDao;
+import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.dao.IPersonDao;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -27,6 +28,28 @@ public class PersonService implements IPersonService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public Person find(String name) {
+		List<Person> people = new ArrayList<>();
+		people.addAll(personDao.find(name));
+
+		// Check for common postfixes
+		int index = name.indexOf('|');
+		if (index > 0) {
+			people.addAll(personDao.find(name.substring(0, index)));
+		}
+
+		if (people.isEmpty()) {
+			return null;
+		} else if (people.size() == 1) {
+			return people.get(0);
+		} else {
+			throw new RuntimeException("Multiple people found for name " + name);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<Person> loadPeople(String namePart, String provinceNamePart) {
 		List<Person> people = new ArrayList<Person>();
 		if (!StringUtils.isEmpty(namePart)) {

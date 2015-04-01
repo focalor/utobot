@@ -1,14 +1,9 @@
 package nl.focalor.utobot.irc;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import nl.focalor.utobot.base.input.IInputListener;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.ICommandHandler;
-import nl.focalor.utobot.base.input.handler.IRegexHandler;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.PircBotX;
@@ -17,37 +12,17 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 public class IrcInputListener extends ListenerAdapter<PircBotX> implements
 		IIrcInputListener {
-	private final List<IRegexHandler> regexHandlers;
-	private final Map<String, ICommandHandler> handlers = new HashMap<>();
+	private final IInputListener listener;
 
-	public IrcInputListener(List<IRegexHandler> regexHandlers) {
+	public IrcInputListener(IInputListener listener) {
 		super();
-		this.regexHandlers = regexHandlers;
-	}
-
-	@Override
-	public List<IRegexHandler> getRegexHandlers() {
-		return regexHandlers;
-	}
-
-	@Override
-	public ICommandHandler getCommandHandler(String name) {
-		return handlers.get(name.toLowerCase());
-	}
-
-	@Override
-	public void put(String name, ICommandHandler handler) {
-		handlers.put(name.toLowerCase(), handler);
+		this.listener = listener;
 	}
 
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-		String message = event.getMessage();
-		if (message.length() == 0) {
-			return;
-		}
-
-		IResult result = onMessage(message);
+		IResult result = listener.onMessage(event.getUser().getNick(),
+				event.getMessage());
 
 		if (result == null) {
 			// Ignore unknown commands

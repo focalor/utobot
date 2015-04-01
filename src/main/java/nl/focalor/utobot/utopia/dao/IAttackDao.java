@@ -1,5 +1,15 @@
 package nl.focalor.utobot.utopia.dao;
 
-public interface IAttackDao {
+import java.util.List;
 
+import nl.focalor.utobot.utopia.model.Attack;
+
+public interface IAttackDao {
+	public Attack get(long id);
+
+	public List<Attack> find();
+
+	public void create(Attack attack);
+
+	public void delete(long id);
 }

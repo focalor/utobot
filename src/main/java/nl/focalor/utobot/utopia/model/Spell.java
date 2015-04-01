@@ -1,14 +1,15 @@
 package nl.focalor.utobot.utopia.model;
 
 public class Spell {
-	private Long id;
+	private String id;
 	private String name;
+	private String syntax;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -18,5 +19,13 @@ public class Spell {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getSyntax() {
+		return syntax;
+	}
+
+	public void setSyntax(String syntax) {
+		this.syntax = syntax;
 	}
 }

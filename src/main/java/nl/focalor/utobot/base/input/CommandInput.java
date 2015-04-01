@@ -8,16 +8,16 @@ public class CommandInput extends Input {
 	private String command;
 	private String argument;
 
-	private CommandInput(String input) {
-		super(input);
+	private CommandInput(String source, String input) {
+		super(source, input);
 	}
 
-	public static CommandInput createFor(String input) {
+	public static CommandInput createFor(String source, String input) {
 		if (input.charAt(0) != COMMAND_PREFIX) {
 			throw new IllegalStateException("Input must start with "
 					+ COMMAND_PREFIX);
 		}
-		CommandInput result = new CommandInput(input);
+		CommandInput result = new CommandInput(source, input);
 
 		for (int i = 1; i < input.length(); i++) {
 			if (Character.isWhitespace(input.charAt(i))) {

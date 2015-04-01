@@ -99,17 +99,24 @@ public class UtopiaDate {
 
 	@Override
 	public String toString() {
+		return toString(true);
+	}
+
+	public String toString(boolean includeCountdown) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getFormattedMonth());
 		builder.append(' ');
 		builder.append(getDay());
 		builder.append(", YR");
 		builder.append(getYear());
-		builder.append(" (next tick: ");
-		builder.append(getMinutesRemaining());
-		builder.append(" minutes and ");
-		builder.append(getSecondsRemaining());
-		builder.append(" seconds)");
+		if (includeCountdown) {
+			builder.append(" (next tick: ");
+			builder.append(getMinutesRemaining());
+			builder.append(" minutes and ");
+			builder.append(getSecondsRemaining());
+			builder.append(" seconds)");
+		}
 		return builder.toString();
+
 	}
 }

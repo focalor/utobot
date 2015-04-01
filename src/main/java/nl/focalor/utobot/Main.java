@@ -37,7 +37,7 @@ public class Main {
 
 	private static WebApplicationContext getContext() {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation("nl.focalor.utobot.config");
+		context.setConfigLocation("nl.focalor.utobot.base.config");
 		return context;
 	}
 }

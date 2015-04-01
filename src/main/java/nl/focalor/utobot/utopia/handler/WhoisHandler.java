@@ -8,8 +8,8 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
-import nl.focalor.utobot.model.Person;
-import nl.focalor.utobot.model.service.IPersonService;
+import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Province;
 
 import org.apache.commons.lang3.text.WordUtils;

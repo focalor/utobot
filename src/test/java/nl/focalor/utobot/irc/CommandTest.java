@@ -10,7 +10,7 @@ public class CommandTest {
 	@Test
 	public void parseNoArgs() {
 		// Test
-		CommandInput command = CommandInput.createFor("!alert");
+		CommandInput command = CommandInput.createFor("user", "!alert");
 
 		// Verify
 		assertEquals("alert", command.getCommand());
@@ -20,7 +20,7 @@ public class CommandTest {
 	@Test
 	public void parseBlankArgs() {
 		// Test
-		CommandInput command = CommandInput.createFor("!alert  \t");
+		CommandInput command = CommandInput.createFor("user", "!alert  \t");
 
 		// Verify
 		assertEquals("alert", command.getCommand());
@@ -30,7 +30,8 @@ public class CommandTest {
 	@Test
 	public void parseArgs() {
 		// Test
-		CommandInput command = CommandInput.createFor("!alert  test  test2 \t");
+		CommandInput command = CommandInput.createFor("user",
+				"!alert  test  test2 \t");
 
 		// Verify
 		assertEquals("alert", command.getCommand());

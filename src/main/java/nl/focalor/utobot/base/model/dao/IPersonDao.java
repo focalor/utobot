@@ -1,8 +1,8 @@
-package nl.focalor.utobot.model.dao;
+package nl.focalor.utobot.base.model.dao;
 
 import java.util.List;
 
-import nl.focalor.utobot.model.Person;
+import nl.focalor.utobot.base.model.Person;
 
 public interface IPersonDao {
 	public void create(Person person);

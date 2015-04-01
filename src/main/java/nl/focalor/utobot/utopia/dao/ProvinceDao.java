@@ -84,7 +84,7 @@ public class ProvinceDao implements IProvinceDao {
 				"SELECT * FROM provinces WHERE id=:id", params, mapper);
 	}
 
-	private class ProvinceRowMapper implements RowMapper<Province> {
+	private static class ProvinceRowMapper implements RowMapper<Province> {
 
 		@Override
 		public Province mapRow(ResultSet rs, int rowNum) throws SQLException {

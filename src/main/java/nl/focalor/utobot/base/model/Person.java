@@ -1,4 +1,4 @@
-package nl.focalor.utobot.model;
+package nl.focalor.utobot.base.model;
 
 import nl.focalor.utobot.utopia.model.Province;
 

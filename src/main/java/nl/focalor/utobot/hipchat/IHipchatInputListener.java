@@ -1,8 +1,7 @@
 package nl.focalor.utobot.hipchat;
 
-import nl.focalor.utobot.base.input.IInputListener;
 
-public interface IHipchatInputListener extends IInputListener {
+public interface IHipchatInputListener {
 
-	public void onRoomMessage(String room, String message);
+	public void onRoomMessage(String room, String user, String message);
 }

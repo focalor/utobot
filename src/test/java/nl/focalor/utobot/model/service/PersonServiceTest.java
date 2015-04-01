@@ -8,8 +8,9 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import nl.focalor.utobot.model.Person;
-import nl.focalor.utobot.model.dao.IPersonDao;
+import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.dao.IPersonDao;
+import nl.focalor.utobot.base.model.service.PersonService;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
 

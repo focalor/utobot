@@ -10,8 +10,8 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
-import nl.focalor.utobot.model.Person;
-import nl.focalor.utobot.model.service.IPersonService;
+import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
@@ -52,8 +52,8 @@ public class WhoisHandlerTest {
 		when(personService.loadPeople("jan", "jan")).thenReturn(people);
 
 		// Test
-		IResult res = handler.handleCommand(CommandInput
-				.createFor("!whois jan"));
+		IResult res = handler.handleCommand(CommandInput.createFor("user",
+				"!whois jan"));
 
 		// Verify
 		assertTrue(res instanceof MultiReplyResult);

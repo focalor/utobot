@@ -4,32 +4,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-
-import nl.focalor.utobot.base.input.Input;
-import nl.focalor.utobot.utopia.handler.AttackHandler;
+import nl.focalor.utobot.utopia.handler.AddAttackHandler;
 import nl.focalor.utobot.utopia.model.UtopiaDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UtopiaService implements IUtopiaService {
 	private final long ageStart;
 	@Autowired
-	private AttackHandler handler;
+	private AddAttackHandler handler;
 
-	public UtopiaService() throws ParseException {
-		// TODO put date start in properties
+	@Autowired
+	public UtopiaService(@Value("${utopia.age.start}") String ageStart)
+			throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		Date parsedDate = formatter.parse("26-1-2015 18:00:00");
+		Date parsedDate = formatter.parse(ageStart);
 		this.ageStart = parsedDate.getTime();
-	}
-
-	@PostConstruct
-	public void a() {
-		handler.handleInput(new Input(
-				"Your army has recaptured 35 acres from our enemy! Taking full control of our new land will take 0.01 days. The new land will be "));
 	}
 
 	@Override

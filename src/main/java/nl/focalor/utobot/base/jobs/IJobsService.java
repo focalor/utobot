@@ -4,6 +4,8 @@ import java.util.Date;
 
 public interface IJobsService {
 
+	public void scheduleAction(IScheduledJob job, int utopiaHour);
+
 	public void scheduleAction(IScheduledJob job, Date executionDate);
 
 	public void scheduleAction(IScheduledJob job, Date firstExecutionDate,

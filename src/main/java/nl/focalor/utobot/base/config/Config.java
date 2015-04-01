@@ -1,20 +1,29 @@
-package nl.focalor.utobot.config;
+package nl.focalor.utobot.base.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import nl.focalor.utobot.base.input.CommandLineInputListener;
+import nl.focalor.utobot.base.input.IInputListener;
+import nl.focalor.utobot.base.input.InputListener;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
+import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
+import nl.focalor.utobot.base.model.service.IMetadataService;
 import nl.focalor.utobot.hipchat.HipchatInputListener;
+import nl.focalor.utobot.hipchat.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.service.IHipchatService;
-import nl.focalor.utobot.model.service.IMetadataService;
 import nl.focalor.utobot.util.Version;
 
 import org.h2.Driver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,13 +40,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //@formatter:off
 @ComponentScan(basePackages = {
 		"nl.focalor.utobot.base.input.handler",
+		"nl.focalor.utobot.base.model.dao",
+		"nl.focalor.utobot.base.model.service",
 		"nl.focalor.utobot.base.service",
 		"nl.focalor.utobot.base.jobs",
 		"nl.focalor.utobot.hipchat.controller",
 		"nl.focalor.utobot.hipchat.service",
-		"nl.focalor.utobot.irc.service",
-		"nl.focalor.utobot.model.dao",
-		"nl.focalor.utobot.model.service",
+		//"nl.focalor.utobot.irc.service",
 		"nl.focalor.utobot.utopia.dao",
 		"nl.focalor.utobot.utopia.handler",
 		"nl.focalor.utobot.utopia.service"
@@ -45,7 +54,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //@formatter:on
 @EnableWebMvc
 @EnableTransactionManagement
+@PropertySource("classpath:utobot.properties")
 public class Config {
+	// Property resolving
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
+	}
+
 	// JSon mappers
 	@Bean
 	public ObjectMapper objectMapper() {
@@ -57,23 +73,45 @@ public class Config {
 		return new MappingJackson2HttpMessageConverter(objectMapper());
 	}
 
-	// Utopia stuff
+	// Input handling
+	@Bean
+	public IInputListener inputListener(
+			List<IInputHandlerFactory> inputHandlerFactories,
+			List<IRegexHandler> regexHandlers,
+			List<ICommandHandler> commandHandlers) {
+		List<IRegexHandler> combinedRegexHandlers = new ArrayList<>();
+		List<ICommandHandler> combinedCommandHandlers = new ArrayList<>();
+		combinedRegexHandlers.addAll(regexHandlers);
+		combinedCommandHandlers.addAll(commandHandlers);
+
+		for (IInputHandlerFactory factory : inputHandlerFactories) {
+			combinedRegexHandlers.addAll(factory.getRegexHandlers());
+			combinedCommandHandlers.addAll(factory.getCommandHandlers());
+		}
+
+		return new InputListener(combinedRegexHandlers, combinedCommandHandlers);
+	}
+
+	@Bean
+	public CommandLineInputListener reader(IInputListener listener,
+			@Value("${bot.name}") String botname) {
+		CommandLineInputListener result = new CommandLineInputListener(
+				listener, botname);
+		result.start();
+		return result;
+	}
 
 	// Hipchat integration
 	@Bean
-	public HipchatInputListener hipchatCommandListener(
-			List<ICommandHandler> commandHandlers,
-			List<IRegexHandler> regexHandlers, IHipchatService service) {
-		HipchatInputListener result = new HipchatInputListener(regexHandlers,
-				service);
-		result.setCommandHandlers(commandHandlers);
-		return result;
+	public IHipchatInputListener hipchatCommandListener(
+			IInputListener listener, IHipchatService service) {
+		return new HipchatInputListener(listener, service);
 	}
 
 	// Database
 	@Bean
 	public Version dbVersion(IMetadataService service) {
-		return service.upgradeToCurrentVersion();
+		return service.getSchemaVersion();
 	}
 
 	@Bean

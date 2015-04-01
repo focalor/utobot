@@ -1,7 +1,9 @@
 package nl.focalor.utobot.irc;
 
-import nl.focalor.utobot.base.input.IInputListener;
+import org.pircbotx.PircBotX;
+import org.pircbotx.hooks.events.MessageEvent;
 
-public interface IIrcInputListener extends IInputListener {
+public interface IIrcInputListener {
 
+	public void onMessage(MessageEvent<PircBotX> event) throws Exception;
 }

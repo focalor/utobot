@@ -1,8 +1,8 @@
 package nl.focalor.utobot.model.dao;
 
 import static org.junit.Assert.assertEquals;
+import nl.focalor.utobot.base.model.dao.MetadataDao;
 import nl.focalor.utobot.config.TestConfig;
-import nl.focalor.utobot.model.dao.MetadataDao;
 import nl.focalor.utobot.util.Version;
 
 import org.junit.Before;

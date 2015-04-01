@@ -1,4 +1,4 @@
-package nl.focalor.utobot.model.dao;
+package nl.focalor.utobot.base.model.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -13,8 +13,8 @@ public class NwHandlerTest {
 	@Test
 	public void event() {
 		// Test
-		IResult reply = handler.handleCommand(CommandInput
-				.createFor("!nw 15.73"));
+		IResult reply = handler.handleCommand(CommandInput.createFor("user",
+				"!nw 15.73"));
 
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);

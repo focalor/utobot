@@ -5,8 +5,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.dao.PersonDao;
 import nl.focalor.utobot.config.TestConfig;
-import nl.focalor.utobot.model.Person;
 
 import org.junit.Before;
 import org.junit.Test;

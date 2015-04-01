@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
+import nl.focalor.utobot.base.input.InputListener;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.util.TestBase;
 
@@ -47,16 +48,15 @@ public class CommandHandlerListenerTest extends TestBase {
 		private static CommandInput lastCall;
 
 		public SimpleCommandHandlerListener() {
-			super(null);
-			setCommandHandlers(Arrays
-					.asList(new AbstractCommandHandler("test") {
+			super(new InputListener(null,
+					Arrays.asList(new AbstractCommandHandler("test") {
 
 						@Override
 						public IResult handleCommand(CommandInput event) {
 							lastCall = event;
 							return null;
 						}
-					}));
+					})));
 		}
 
 		public CommandInput getLastCall() {
