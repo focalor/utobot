@@ -2,7 +2,6 @@ package nl.focalor.utobot.base.input.handler;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 

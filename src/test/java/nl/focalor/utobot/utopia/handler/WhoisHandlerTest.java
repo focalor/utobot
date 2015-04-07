@@ -3,10 +3,9 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
@@ -15,7 +14,6 @@ import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -46,21 +44,20 @@ public class WhoisHandlerTest {
 		prov.setPersonality(Personality.TACTICIAN);
 		person2.setProvince(prov);
 
-		ArrayList<Person> people = new ArrayList<Person>();
+		Set<Person> people = new HashSet<>();
 		people.add(person1);
 		people.add(person2);
-		when(personService.loadPeople("jan", "jan")).thenReturn(people);
+		when(personService.load("jan", "jan", true)).thenReturn(people);
 
 		// Test
-		IResult res = handler.handleCommand(CommandInput.createFor("user",
-				"!whois jan"));
+		IResult res = handler.handleCommand(CommandInput.createFor("user", "!whois jan"));
 
 		// Verify
 		assertTrue(res instanceof MultiReplyResult);
 
 		List<String> messages = ((MultiReplyResult) res).getMessages();
 		assertEquals(2, messages.size());
-		assertEquals("jan", messages.get(0));
-		assertEquals("jannie - Prov [Faery / Tactician]", messages.get(1));
+		assertEquals("jannie - Prov [Faery / Tactician]", messages.get(0));
+		assertEquals("jan", messages.get(1));
 	}
 }

@@ -3,15 +3,12 @@ package nl.focalor.utobot.irc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
 import java.util.Arrays;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
-import nl.focalor.utobot.base.input.InputListener;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.listener.InputListener;
 import nl.focalor.utobot.util.TestBase;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,15 +45,17 @@ public class CommandHandlerListenerTest extends TestBase {
 		private static CommandInput lastCall;
 
 		public SimpleCommandHandlerListener() {
-			super(new InputListener(null,
-					Arrays.asList(new AbstractCommandHandler("test") {
-
+			super(new InputListener() {
+				{
+					setCommandHandlers(Arrays.asList(new AbstractCommandHandler("test") {
 						@Override
 						public IResult handleCommand(CommandInput event) {
 							lastCall = event;
 							return null;
 						}
-					})));
+					}));
+				};
+			});
 		}
 
 		public CommandInput getLastCall() {

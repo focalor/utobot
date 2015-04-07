@@ -8,6 +8,5 @@ public interface IJobsService {
 
 	public void scheduleAction(IScheduledJob job, Date executionDate);
 
-	public void scheduleAction(IScheduledJob job, Date firstExecutionDate,
-			long interval);
+	public void scheduleAction(IScheduledJob job, Date firstExecutionDate, long interval);
 }

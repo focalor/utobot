@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,7 +31,7 @@ public class ProvinceDao implements IProvinceDao {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Province> find(Long personId, String namePart) {
+	public List<Province> find(Long personId, String namePart, Boolean fuzzy) {
 		Map<String, Object> params = new HashMap<>();
 		List<String> whereClauses = new ArrayList<>();
 		StringBuilder query = new StringBuilder();
@@ -44,8 +42,13 @@ public class ProvinceDao implements IProvinceDao {
 			params.put("personId", personId);
 		}
 		if (!StringUtils.isEmpty(namePart)) {
-			whereClauses.add("LOWER(name) LIKE LOWER(:name)");
-			params.put("name", '%' + namePart + '%');
+			if (fuzzy == null || fuzzy) {
+				whereClauses.add("LOWER(name) LIKE LOWER(:name)");
+				params.put("name", '%' + namePart + '%');
+			} else {
+				whereClauses.add("LOWER(name) = LOWER(:name)");
+				params.put("name", namePart);
+			}
 		}
 
 		if (!whereClauses.isEmpty()) {
@@ -80,8 +83,7 @@ public class ProvinceDao implements IProvinceDao {
 	public Province get(long id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
-		return jdbcTemplate.queryForObject(
-				"SELECT * FROM provinces WHERE id=:id", params, mapper);
+		return jdbcTemplate.queryForObject("SELECT * FROM provinces WHERE id=:id", params, mapper);
 	}
 
 	private static class ProvinceRowMapper implements RowMapper<Province> {

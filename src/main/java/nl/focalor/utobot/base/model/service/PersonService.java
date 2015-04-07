@@ -1,13 +1,13 @@
 package nl.focalor.utobot.base.model.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import nl.focalor.utobot.base.model.Person;
 import nl.focalor.utobot.base.model.dao.IPersonDao;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,65 +29,68 @@ public class PersonService implements IPersonService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Person find(String name) {
-		List<Person> people = new ArrayList<>();
-		people.addAll(personDao.find(name));
+	public Person get(long id) {
+		return personDao.get(id);
+	}
 
-		// Check for common postfixes
-		int index = name.indexOf('|');
-		if (index > 0) {
-			people.addAll(personDao.find(name.substring(0, index)));
-		}
+	@Override
+	@Transactional(readOnly = true)
+	public Person find(String name, Boolean fuzzy) {
+		Set<Person> people = findNameOrNick(name, fuzzy);
 
 		if (people.isEmpty()) {
 			return null;
 		} else if (people.size() == 1) {
-			return people.get(0);
+			return people.iterator().next();
 		} else {
 			throw new RuntimeException("Multiple people found for name " + name);
 		}
 	}
 
+	private Set<Person> findNameOrNick(String name, boolean fuzzy) {
+		// Check for common postfixes
+		int index = name.indexOf('|');
+		final String strippedName;
+		if (index > 0) {
+			strippedName = name.substring(0, index);
+		} else {
+			strippedName = name;
+		}
+
+		return personDao.find(strippedName, fuzzy);
+	}
+
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	public List<Person> loadPeople(String namePart, String provinceNamePart) {
-		List<Person> people = new ArrayList<Person>();
-		if (!StringUtils.isEmpty(namePart)) {
-			people.addAll(loadPeopleByName(namePart));
+	public Set<Person> load(String name, String province, Boolean fuzzy) {
+		Set<Person> people = new HashSet<Person>();
+		if (!StringUtils.isEmpty(name)) {
+			people.addAll(loadPeopleByName(name, fuzzy));
 		}
-		if (!StringUtils.isEmpty(provinceNamePart)) {
-			people.addAll(loadPeopleByProvinceName(provinceNamePart));
+		if (!StringUtils.isEmpty(province)) {
+			people.addAll(loadPeopleByProvinceName(province, fuzzy));
 		}
-
-		List<Person> result = new ArrayList<Person>();
-		for (Person person : people) {
-			if (!contains(result, person)) {
-				result.add(person);
-			}
-		}
-		return result;
+		return people;
 	}
 
-	private boolean contains(List<Person> people, Person person) {
-		for (Person p : people) {
-			if (p.getId() == person.getId()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private List<Person> loadPeopleByName(String namePart) {
-		List<Person> result = personDao.find(namePart);
+	private Set<Person> loadPeopleByName(String namePart, boolean fuzzy) {
+		Set<Person> result = findNameOrNick(namePart, fuzzy);
 		for (Person person : result) {
-			loadPerson(person);
+			loadPersonInfo(person);
 		}
 		return result;
 	}
 
-	private List<Person> loadPeopleByProvinceName(String provinceNamePart) {
+	private void loadPersonInfo(Person person) {
+		List<Province> provinces = provinceService.find(person.getId(), null, null);
+		if (provinces.size() == 1) {
+			person.setProvince(provinces.get(0));
+		}
+	}
+
+	private List<Person> loadPeopleByProvinceName(String provinceNamePart, boolean fuzzy) {
 		List<Person> result = new ArrayList<Person>();
-		List<Province> provinces = provinceService.find(null, provinceNamePart);
+		List<Province> provinces = provinceService.find(null, provinceNamePart, fuzzy);
 
 		for (Province prov : provinces) {
 			Person person = personDao.get(prov.getPersonId());
@@ -97,10 +100,9 @@ public class PersonService implements IPersonService {
 		return result;
 	}
 
-	private void loadPerson(Person person) {
-		List<Province> provinces = provinceService.find(person.getId(), null);
-		if (provinces.size() == 1) {
-			person.setProvince(provinces.get(0));
-		}
+	@Override
+	@Transactional
+	public void addNick(long personId, String nick) {
+		personDao.addNick(personId, nick);
 	}
 }

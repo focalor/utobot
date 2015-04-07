@@ -1,20 +1,18 @@
 package nl.focalor.utobot.hipchat;
 
-import nl.focalor.utobot.base.input.IInputListener;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
+import nl.focalor.utobot.base.input.listener.IInputListener;
 import nl.focalor.utobot.hipchat.model.Notification;
 import nl.focalor.utobot.hipchat.service.IHipchatService;
-
 import org.apache.commons.lang3.StringUtils;
 
 public class HipchatInputListener implements IHipchatInputListener {
 	private final IInputListener listener;
 	private final IHipchatService hipchatService;
 
-	public HipchatInputListener(IInputListener listener,
-			IHipchatService hipchatService) {
+	public HipchatInputListener(IInputListener listener, IHipchatService hipchatService) {
 		super();
 		this.listener = listener;
 		this.hipchatService = hipchatService;
@@ -39,9 +37,8 @@ public class HipchatInputListener implements IHipchatInputListener {
 
 			hipchatService.sendMessage(room, msg);
 		} else {
-			throw new UnsupportedOperationException(
-					"Don't know how to handle result of type "
-							+ result.getClass().getName());
+			throw new UnsupportedOperationException("Don't know how to handle result of type "
+					+ result.getClass().getName());
 		}
 	}
 }

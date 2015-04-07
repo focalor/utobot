@@ -10,8 +10,7 @@ public class AttackCompletedJob implements IScheduledJob {
 	private final IAttackService attackService;
 	private final Attack attack;
 
-	public AttackCompletedJob(IBotService botService,
-			IAttackService attackService, Attack attack) {
+	public AttackCompletedJob(IBotService botService, IAttackService attackService, Attack attack) {
 		super();
 		this.botService = botService;
 		this.attackService = attackService;

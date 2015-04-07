@@ -1,4 +1,4 @@
-package nl.focalor.utobot.base.input;
+package nl.focalor.utobot.base.input.listener;
 
 import nl.focalor.utobot.base.service.IMessagingService;
 

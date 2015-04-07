@@ -1,7 +1,6 @@
 package nl.focalor.utobot.base.input.handler;
 
 import java.util.List;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 

@@ -17,8 +17,8 @@ public abstract class TestBase {
 	private static Channel channel;
 
 	public static MessageEvent<PircBotX> buildMessageEvent(String message) {
-		Configuration<PircBotX> config = new Configuration.Builder<PircBotX>()
-				.setServerHostname("localhost").buildConfiguration();
+		Configuration<PircBotX> config = new Configuration.Builder<PircBotX>().setServerHostname("localhost")
+				.buildConfiguration();
 		PircBotX bot = new PircBotX(config);
 
 		return new MessageEvent<PircBotX>(bot, channel, user, message);

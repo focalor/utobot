@@ -1,13 +1,16 @@
 package nl.focalor.utobot.base.model.service;
 
-import java.util.List;
-
+import java.util.Set;
 import nl.focalor.utobot.base.model.Person;
 
 public interface IPersonService {
+	public Person get(long id);
+
 	public void create(Person person);
 
-	public Person find(String name);
+	public void addNick(long personId, String nick);
 
-	public List<Person> loadPeople(String namePart, String provinceNamePart);
+	public Person find(String name, Boolean fuzzy);
+
+	public Set<Person> load(String name, String provinceName, Boolean fuzzy);
 }

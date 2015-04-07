@@ -1,8 +1,15 @@
 package nl.focalor.utobot.utopia.model;
 
 public enum Personality {
-	UNKNOWN(0), MERCHANT(1), SAGE(2), ROGUE(3), MYSTIC(4), WARRIOR(5), TACTICIAN(
-			6), CLERIC(7), WAR_HERO(8);
+	UNKNOWN(0),
+	MERCHANT(1),
+	SAGE(2),
+	ROGUE(3),
+	MYSTIC(4),
+	WARRIOR(5),
+	TACTICIAN(6),
+	CLERIC(7),
+	WAR_HERO(8);
 
 	private final int id;
 

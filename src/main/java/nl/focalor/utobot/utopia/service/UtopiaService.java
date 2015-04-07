@@ -3,32 +3,28 @@ package nl.focalor.utobot.utopia.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import nl.focalor.utobot.utopia.handler.AddAttackHandler;
+import nl.focalor.utobot.utopia.handler.AddAttackHandlerFactory;
 import nl.focalor.utobot.utopia.model.UtopiaDate;
-
+import nl.focalor.utobot.utopia.model.UtopiaSettings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UtopiaService implements IUtopiaService {
 	private final long ageStart;
 	@Autowired
-	private AddAttackHandler handler;
+	private AddAttackHandlerFactory handler;
 
 	@Autowired
-	public UtopiaService(@Value("${utopia.age.start}") String ageStart)
-			throws ParseException {
+	public UtopiaService(UtopiaSettings settings) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		Date parsedDate = formatter.parse(ageStart);
+		Date parsedDate = formatter.parse(settings.getStartDate());
 		this.ageStart = parsedDate.getTime();
 	}
 
 	@Override
 	public Date getNextHourChange() {
-		return new Date(new Date().getTime() + getSecondsTillHourChange()
-				* 1000);
+		return new Date(new Date().getTime() + getSecondsTillHourChange() * 1000);
 	}
 
 	@Override

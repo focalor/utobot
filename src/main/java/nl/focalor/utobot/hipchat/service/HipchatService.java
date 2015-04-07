@@ -2,7 +2,6 @@ package nl.focalor.utobot.hipchat.service;
 
 import nl.focalor.utobot.hipchat.model.Notification;
 import nl.focalor.utobot.hipchat.model.Webhook;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

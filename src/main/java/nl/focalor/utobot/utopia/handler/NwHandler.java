@@ -5,7 +5,6 @@ import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.util.MathUtil;
-
 import org.springframework.stereotype.Component;
 
 @Component

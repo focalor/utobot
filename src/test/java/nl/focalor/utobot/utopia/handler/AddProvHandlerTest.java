@@ -12,7 +12,6 @@ import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
 import nl.focalor.utobot.utopia.service.IProvinceService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -32,14 +31,11 @@ public class AddProvHandlerTest {
 	@Test
 	public void test() {
 		// Test
-		IResult result = handler.handleCommand(CommandInput.createFor("user",
-				"!addprov focalor - Foc [Elf/Mystic]"));
+		IResult result = handler.handleCommand(CommandInput.createFor("user", "!addprov focalor - Foc [Elf/Mystic]"));
 
 		// Verify
-		ArgumentCaptor<Person> peopleCaptor = ArgumentCaptor
-				.forClass(Person.class);
-		ArgumentCaptor<Province> provCaptor = ArgumentCaptor
-				.forClass(Province.class);
+		ArgumentCaptor<Person> peopleCaptor = ArgumentCaptor.forClass(Person.class);
+		ArgumentCaptor<Province> provCaptor = ArgumentCaptor.forClass(Province.class);
 
 		String msg = ((ReplyResult) result).getMessage();
 		assertEquals("Province added", msg);

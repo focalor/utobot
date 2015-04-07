@@ -3,7 +3,7 @@ package nl.focalor.utobot.utopia.handler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Set;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
@@ -11,15 +11,13 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Province;
-
 import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WhoisHandler extends AbstractCommandHandler {
-	public static final List<String> COMMAND_NAMES = Arrays.asList("whois",
-			"prov");
+	public static final List<String> COMMAND_NAMES = Arrays.asList("whois", "prov");
 
 	@Autowired
 	private IPersonService personService;
@@ -31,11 +29,11 @@ public class WhoisHandler extends AbstractCommandHandler {
 	@Override
 	public IResult handleCommand(CommandInput event) {
 		String search = event.getArgument();
-		List<Person> people = personService.loadPeople(search, search);
+		Set<Person> people = personService.load(search, search, true);
 		return mapToReply(people);
 	}
 
-	private MultiReplyResult mapToReply(List<Person> people) {
+	private MultiReplyResult mapToReply(Set<Person> people) {
 		List<String> messages = new ArrayList<String>();
 		for (Person person : people) {
 			StringBuilder msg = new StringBuilder();
@@ -48,8 +46,7 @@ public class WhoisHandler extends AbstractCommandHandler {
 				msg.append(" [");
 				msg.append(WordUtils.capitalizeFully(prov.getRace().name()));
 				msg.append(" / ");
-				msg.append(WordUtils.capitalizeFully(prov.getPersonality()
-						.name()));
+				msg.append(WordUtils.capitalizeFully(prov.getPersonality().name()));
 				msg.append(']');
 			}
 			messages.add(msg.toString());

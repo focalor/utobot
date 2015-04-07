@@ -1,5 +1,8 @@
-package nl.focalor.utobot.base.input;
+package nl.focalor.utobot.base.input.listener;
 
+import nl.focalor.utobot.base.input.CommandInput;
+import nl.focalor.utobot.base.input.IInput;
+import nl.focalor.utobot.base.input.IResult;
 
 public interface IInputListener {
 

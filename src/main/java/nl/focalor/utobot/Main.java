@@ -1,7 +1,6 @@
 package nl.focalor.utobot;
 
 import java.io.IOException;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -22,14 +21,12 @@ public class Main {
 		server.join();
 	}
 
-	private static ServletContextHandler getServletContextHandler()
-			throws IOException {
+	private static ServletContextHandler getServletContextHandler() throws IOException {
 		WebApplicationContext context = getContext();
 
 		ServletContextHandler contextHandler = new ServletContextHandler();
 		contextHandler.setContextPath("/");
-		contextHandler.addServlet(new ServletHolder(new DispatcherServlet(
-				context)), "/*");
+		contextHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/*");
 		contextHandler.addEventListener(new ContextLoaderListener(context));
 
 		return contextHandler;

@@ -3,14 +3,11 @@ package nl.focalor.utobot.base.jobs;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.annotation.PostConstruct;
-
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.service.IAttackService;
-import nl.focalor.utobot.utopia.service.ISpellCastService;
+import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +20,7 @@ public class JobsService implements IJobsService {
 	@Autowired
 	private IAttackService attackService;
 	@Autowired
-	private ISpellCastService spellCastService;
+	private ISpellService spellService;
 
 	private final Timer timer;
 	private HourlyJob hourlyJob;
@@ -36,10 +33,8 @@ public class JobsService implements IJobsService {
 	public void init() {
 		this.hourlyJob = new HourlyJob(utopiaService);
 
-		this.scheduleAction(new StartupJob(utopiaService, attackService,
-				spellCastService), new Date());
-		this.scheduleAction(hourlyJob, utopiaService.getNextHourChange(),
-				60 * 60 * 1000);
+		this.scheduleAction(new StartupJob(utopiaService, attackService, spellService), new Date());
+		this.scheduleAction(hourlyJob, utopiaService.getNextHourChange(), 60 * 60 * 1000);
 	}
 
 	@Override
@@ -60,8 +55,7 @@ public class JobsService implements IJobsService {
 	}
 
 	@Override
-	public void scheduleAction(IScheduledJob job, Date firstExecutionDate,
-			long interval) {
+	public void scheduleAction(IScheduledJob job, Date firstExecutionDate, long interval) {
 		timer.schedule(new TimerTask() {
 
 			@Override

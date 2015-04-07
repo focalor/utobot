@@ -5,7 +5,6 @@ import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

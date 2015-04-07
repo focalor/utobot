@@ -2,15 +2,12 @@ package nl.focalor.utobot.model.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import java.util.List;
-
 import nl.focalor.utobot.config.TestConfig;
 import nl.focalor.utobot.utopia.dao.ProvinceDao;
 import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,7 +91,7 @@ public class ProvinceDaoTest {
 	@Test
 	public void find() {
 		// Test
-		List<Province> results = dao.find(-1l, null);
+		List<Province> results = dao.find(-1l, null, true);
 
 		// Verify
 		assertEquals(1, results.size());

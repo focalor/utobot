@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
 import nl.focalor.utobot.utopia.service.IUtopiaService;
 
 public class HourlyJob implements IScheduledJob {
@@ -34,10 +33,8 @@ public class HourlyJob implements IScheduledJob {
 	public void run() {
 		System.out.println(utopiaService.getUtopiaDate().toString(false));
 
-		SortedMap<Integer, List<IScheduledJob>> completedJobs = hourlyJobs
-				.headMap(utopiaService.getHourOfAge());
-		for (Entry<Integer, List<IScheduledJob>> entry : completedJobs
-				.entrySet()) {
+		SortedMap<Integer, List<IScheduledJob>> completedJobs = hourlyJobs.headMap(utopiaService.getHourOfAge());
+		for (Entry<Integer, List<IScheduledJob>> entry : completedJobs.entrySet()) {
 			hourlyJobs.remove(entry.getKey());
 			for (IScheduledJob job : entry.getValue()) {
 				job.run();

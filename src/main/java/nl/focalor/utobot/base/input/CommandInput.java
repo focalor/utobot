@@ -14,16 +14,14 @@ public class CommandInput extends Input {
 
 	public static CommandInput createFor(String source, String input) {
 		if (input.charAt(0) != COMMAND_PREFIX) {
-			throw new IllegalStateException("Input must start with "
-					+ COMMAND_PREFIX);
+			throw new IllegalStateException("Input must start with " + COMMAND_PREFIX);
 		}
 		CommandInput result = new CommandInput(source, input);
 
 		for (int i = 1; i < input.length(); i++) {
 			if (Character.isWhitespace(input.charAt(i))) {
 				result.setCommand(input.substring(1, i));
-				result.setArgument(StringUtils.stripStart(input.substring(i),
-						null));
+				result.setArgument(StringUtils.stripStart(input.substring(i), null));
 				return result;
 			}
 		}

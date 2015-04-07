@@ -4,8 +4,7 @@ import java.lang.reflect.Field;
 
 public class ReflectionUtil {
 	@SuppressWarnings("unchecked")
-	public static <T> T getField(Object input, String fieldName,
-			Class<T> expectedClass) {
+	public static <T> T getField(Object input, String fieldName, Class<T> expectedClass) {
 		try {
 			Field field = input.getClass().getDeclaredField(fieldName);
 			field.setAccessible(true);

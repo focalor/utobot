@@ -2,19 +2,16 @@ package nl.focalor.utobot.model.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
+import java.util.Set;
 import nl.focalor.utobot.base.model.Person;
 import nl.focalor.utobot.base.model.dao.PersonDao;
 import nl.focalor.utobot.config.TestConfig;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersonDaoTest {
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private PersonDao dao;
 
@@ -65,23 +62,40 @@ public class PersonDaoTest {
 	@Test
 	public void find() {
 		// Test
-		List<Person> result = dao.find("jan");
+		Set<Person> result = dao.find("jan", true);
 
 		// Verify
 		assertEquals(1, result.size());
-		assertNotNull(result.get(0).getId());
-		assertEquals("jan", result.get(0).getName());
+
+		Person person = result.iterator().next();
+		assertNotNull(person.getId());
+		assertEquals("jan", person.getName());
 	}
 
 	@Test
 	public void findPartial() {
 		// Test
-		List<Person> result = dao.find("an");
+		Set<Person> result = dao.find("an", true);
 
 		// Verify
 		assertEquals(1, result.size());
-		assertNotNull(result.get(0).getId());
-		assertEquals("jan", result.get(0).getName());
+
+		Person person = result.iterator().next();
+		assertNotNull(person.getId());
+		assertEquals("jan", person.getName());
+	}
+
+	@Test
+	public void findNick() {
+		// Test
+		Set<Person> result = dao.find("klaassie", true);
+
+		// Verify
+		assertEquals(1, result.size());
+
+		Person person = result.iterator().next();
+		assertNotNull(person.getId());
+		assertEquals("klaas", person.getName());
 	}
 
 	@Test(expected = DuplicateKeyException.class)

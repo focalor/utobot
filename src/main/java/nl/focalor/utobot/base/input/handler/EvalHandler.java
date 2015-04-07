@@ -5,7 +5,6 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,8 +18,7 @@ public class EvalHandler extends AbstractCommandHandler {
 	@Override
 	public IResult handleCommand(CommandInput command) {
 		ExpressionBuilder builder = new ExpressionBuilder(command.getArgument());
-		Expression exp = builder.variables("pi", "e").build()
-				.setVariable("pi", Math.PI).setVariable("e", Math.E);
+		Expression exp = builder.variables("pi", "e").build().setVariable("pi", Math.PI).setVariable("e", Math.E);
 		double result = exp.evaluate();
 
 		return new ReplyResult(Double.toString(result));

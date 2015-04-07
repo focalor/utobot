@@ -3,18 +3,15 @@ package nl.focalor.utobot.utopia.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
 import java.util.Date;
 import java.util.List;
-
 import nl.focalor.utobot.config.TestConfig;
 import nl.focalor.utobot.utopia.model.Attack;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AttackDaoTest {
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	private AttackDao dao;
 
@@ -80,7 +77,7 @@ public class AttackDaoTest {
 	@Test
 	public void find() {
 		// Test
-		List<Attack> findAttacks = dao.find();
+		List<Attack> findAttacks = dao.find(null, null);
 
 		// Verify
 		assertEquals(1, findAttacks.size());

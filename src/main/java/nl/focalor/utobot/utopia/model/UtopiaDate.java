@@ -22,22 +22,22 @@ public class UtopiaDate {
 
 	public String getFormattedMonth() {
 		switch (month) {
-		case 0:
-			return "January";
-		case 1:
-			return "February";
-		case 2:
-			return "March";
-		case 3:
-			return "April";
-		case 4:
-			return "May";
-		case 5:
-			return "June";
-		case 6:
-			return "July";
-		default:
-			throw new IllegalStateException("Month " + month + " is invalid");
+			case 0:
+				return "January";
+			case 1:
+				return "February";
+			case 2:
+				return "March";
+			case 3:
+				return "April";
+			case 4:
+				return "May";
+			case 5:
+				return "June";
+			case 6:
+				return "July";
+			default:
+				throw new IllegalStateException("Month " + month + " is invalid");
 		}
 	}
 

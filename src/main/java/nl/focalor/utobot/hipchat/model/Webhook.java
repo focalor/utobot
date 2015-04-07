@@ -1,6 +1,5 @@
 package nl.focalor.utobot.hipchat.model;
 
-
 public class Webhook {
 	private String url;
 	private String pattern;

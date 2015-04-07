@@ -1,0 +1,37 @@
+{
+	"startDate":"26-1-2015 18:00:00",
+	"attacks":[
+		{
+			"id":"TM",
+			"name":"Traditional March",
+			"syntax":"Taking full control of your new land will take (\\d{1,2})\\.(\\d{1,2}) days"
+		}
+	],
+	"spells":[
+		{
+			"id":"BB",
+			"name":"Builders Boon",
+			"syntax":"Our builders have been blessed with unnatural speed for (\\d{1,2}) days!"
+		},
+		{
+			"id":"IA",
+			"name":"Inspire Army",
+			"syntax":"We expect maintenance costs to be reduced for (\\d{1,2}) days!"
+		},
+		{
+			"id":"FL",
+			"name":"Fertile Lands",
+			"syntax":"We have made our lands extraordinarily fertile for (\\d{1,2}) days!"
+		},
+		{
+			"id":"L&P",
+			"name":"Love and Peace",
+			"syntax":"We expect birth rates to be higher for (\\d{1,2}) days!"
+		},
+		{
+			"id":"MP",
+			"name":"Minor Protection",
+			"syntax":"Our realm is now under a sphere of minor protection for (\\d{1,2}) days!"
+		}
+	]
+}

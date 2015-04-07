@@ -3,7 +3,6 @@ package nl.focalor.utobot.hipchat.controller;
 import nl.focalor.utobot.hipchat.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.model.RoomMessage;
 import nl.focalor.utobot.hipchat.model.RoomMessageItem;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;

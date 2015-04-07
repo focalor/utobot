@@ -4,16 +4,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-
 import java.util.Arrays;
-import java.util.List;
-
+import java.util.HashSet;
+import java.util.Set;
 import nl.focalor.utobot.base.model.Person;
 import nl.focalor.utobot.base.model.dao.IPersonDao;
 import nl.focalor.utobot.base.model.service.PersonService;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -36,21 +34,52 @@ public class PersonServiceTest {
 		Person pers = new Person();
 		pers.setName("naam");
 		pers.setId(1l);
-		List<Person> people = Arrays.asList(pers);
-		when(personDao.find("naam")).thenReturn(people);
+
+		Set<Person> people = new HashSet<>();
+		people.add(pers);
+		when(personDao.find("naam", true)).thenReturn(people);
 
 		Province prov = new Province();
-		when(provService.find(1l, null)).thenReturn(Arrays.asList(prov));
+		when(provService.find(1l, null, null)).thenReturn(Arrays.asList(prov));
 
 		// Test
-		List<Person> result = service.loadPeople("naam", null);
+		Set<Person> result = service.load("naam", null, true);
 
 		// Verify
 		assertNotNull(result);
 		assertTrue(1 == result.size());
-		assertSame(people.get(0), result.get(0));
-		assertNotNull(result.get(0).getProvince());
-		assertSame(prov, result.get(0).getProvince());
+
+		Person resultPerson = result.iterator().next();
+		assertSame(pers, resultPerson);
+		assertNotNull(resultPerson.getProvince());
+		assertSame(prov, resultPerson.getProvince());
+	}
+
+	@Test
+	public void loadPersonPostfix() {
+		// Setup
+		Person pers = new Person();
+		pers.setName("naam");
+		pers.setId(1l);
+
+		Set<Person> people = new HashSet<>();
+		people.add(pers);
+		when(personDao.find("naam", true)).thenReturn(people);
+
+		Province prov = new Province();
+		when(provService.find(1l, null, null)).thenReturn(Arrays.asList(prov));
+
+		// Test
+		Set<Person> result = service.load("naam|zzz", null, true);
+
+		// Verify
+		assertNotNull(result);
+		assertTrue(1 == result.size());
+
+		Person resultPerson = result.iterator().next();
+		assertSame(pers, resultPerson);
+		assertNotNull(resultPerson.getProvince());
+		assertSame(prov, resultPerson.getProvince());
 	}
 
 	@Test
@@ -63,15 +92,17 @@ public class PersonServiceTest {
 
 		Province prov = new Province();
 		prov.setPersonId(12l);
-		when(provService.find(null, "test")).thenReturn(Arrays.asList(prov));
+		when(provService.find(null, "test", true)).thenReturn(Arrays.asList(prov));
 
 		// Test
-		List<Person> result = service.loadPeople("naam", "test");
+		Set<Person> result = service.load("naam", "test", true);
 
 		// Verify
 		assertTrue(1 == result.size());
-		assertSame(pers, result.get(0));
-		assertNotNull(result.get(0).getProvince());
-		assertSame(prov, result.get(0).getProvince());
+
+		Person resultPerson = result.iterator().next();
+		assertSame(pers, resultPerson);
+		assertNotNull(resultPerson.getProvince());
+		assertSame(prov, resultPerson.getProvince());
 	}
 }

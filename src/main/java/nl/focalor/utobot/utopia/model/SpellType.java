@@ -1,6 +1,6 @@
 package nl.focalor.utobot.utopia.model;
 
-public class Spell {
+public class SpellType {
 	private String id;
 	private String name;
 	private String syntax;

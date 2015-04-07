@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.util.ReflectionUtil;
-
 import org.junit.Test;
 
 public class NwHandlerTest {
@@ -13,8 +12,7 @@ public class NwHandlerTest {
 	@Test
 	public void event() {
 		// Test
-		IResult reply = handler.handleCommand(CommandInput.createFor("user",
-				"!nw 15.73"));
+		IResult reply = handler.handleCommand(CommandInput.createFor("user", "!nw 15.73"));
 
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);

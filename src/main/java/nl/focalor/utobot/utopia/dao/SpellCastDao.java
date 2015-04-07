@@ -3,14 +3,12 @@ package nl.focalor.utobot.utopia.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import nl.focalor.utobot.utopia.model.Attack;
+import nl.focalor.utobot.utopia.model.SpellCast;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,52 +17,44 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class AttackDao implements IAttackDao {
+public class SpellCastDao implements ISpellCastDao {
 	private final NamedParameterJdbcTemplate jdbcTemplate;
-	private final AttackRowMapper mapper = new AttackRowMapper();
+	private final SpellCastRowMapper mapper = new SpellCastRowMapper();
 
 	@Autowired
-	public AttackDao(NamedParameterJdbcTemplate jdbcTemplate) {
+	public SpellCastDao(NamedParameterJdbcTemplate jdbcTemplate) {
 		super();
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public Attack get(long id) {
-		try {
-			Map<String, Long> params = Collections.singletonMap("id", id);
-			return jdbcTemplate.queryForObject("SELECT * FROM attacks WHERE id=:id", params, mapper);
-		} catch (EmptyResultDataAccessException ex) {
-			return null;
-		}
-	}
-
-	@Override
 	@Transactional
-	public void create(Attack attack) {
+	public void create(SpellCast spellCast) {
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("person", attack.getPerson());
-		params.addValue("personId", attack.getPersonId());
-		params.addValue("returnDate", attack.getReturnDate());
+		params.addValue("spellId", spellCast.getSpellId());
+		params.addValue("lastHour", spellCast.getLastHour());
+		params.addValue("personId", spellCast.getPersonId());
+		params.addValue("person", spellCast.getPerson());
 
-		jdbcTemplate.update(
-				"INSERT INTO attacks(person, personId, returnDate) VALUES (:person, :personId, :returnDate)", params,
-				keyHolder);
-		attack.setId(keyHolder.getKey().longValue());
+		jdbcTemplate
+				.update("INSERT INTO spellCasts(spellId, lastHour, personId, person) VALUES (:spellId, :lastHour, :personId, :person)",
+						params, keyHolder);
+
+		spellCast.setId(keyHolder.getKey().longValue());
 	}
 
 	@Override
 	@Transactional
 	public void delete(long id) {
-		Map<String, Long> params = Collections.singletonMap("id", id);
-		jdbcTemplate.update("DELETE FROM attacks WHERE id = :id", params);
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", id);
+		jdbcTemplate.update("DELETE FROM spellCasts WHERE id = ? :id", params);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Attack> find(Long personId, String person) {
+	public List<SpellCast> find(Long personId, String person) {
 		List<String> whereClause = new ArrayList<>();
 		Map<String, Object> params = new HashMap<>();
 
@@ -78,7 +68,7 @@ public class AttackDao implements IAttackDao {
 		}
 
 		StringBuilder query = new StringBuilder();
-		query.append("SELECT * FROM attacks ");
+		query.append("SELECT * FROM spellCasts");
 		if (!whereClause.isEmpty()) {
 			query.append(" WHERE ");
 			query.append(StringUtils.join(whereClause, " AND "));
@@ -86,20 +76,20 @@ public class AttackDao implements IAttackDao {
 		return jdbcTemplate.query(query.toString(), params, mapper);
 	}
 
-	private static class AttackRowMapper implements RowMapper<Attack> {
+	private class SpellCastRowMapper implements RowMapper<SpellCast> {
 
 		@Override
-		public Attack mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Attack result = new Attack();
+		public SpellCast mapRow(ResultSet rs, int rowNum) throws SQLException {
+			SpellCast result = new SpellCast();
 			result.setId(rs.getLong("id"));
 			result.setPerson(rs.getString("person"));
 			result.setPersonId(rs.getLong("personId"));
 			if (rs.wasNull()) {
 				result.setPersonId(null);
 			}
-			result.setReturnDate(rs.getTimestamp("returnDate"));
+			result.setLastHour(rs.getInt("lastHour"));
+			result.setSpellId(rs.getString("spellId"));
 			return result;
 		}
 	}
-
 }

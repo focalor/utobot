@@ -1,4 +1,7 @@
 INSERT INTO people(id, name) VALUES (-1, 'jan');
+INSERT INTO people(id, name) VALUES (-2, 'klaas');
+
+INSERT INTO nicks(id, personId, nick) VALUES(-1, -2, 'klaassie');
 
 INSERT INTO provinces(id, personId, name, island, kingdom, race, personality) VALUES (-2, -1, 'prov', 15, 2, 2, 3);
 
