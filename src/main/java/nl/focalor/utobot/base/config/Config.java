@@ -39,6 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		"nl.focalor.utobot.base.jobs",
 		"nl.focalor.utobot.hipchat.controller",
 		"nl.focalor.utobot.hipchat.service",
+		//"nl.focalor.utobot.irc.input",
 		//"nl.focalor.utobot.irc.service",
 		"nl.focalor.utobot.utopia.dao",
 		"nl.focalor.utobot.utopia.handler",

@@ -8,6 +8,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.input.listener.InputListener;
+import nl.focalor.utobot.irc.input.IrcInputListener;
 import nl.focalor.utobot.util.TestBase;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package nl.focalor.utobot.irc;
+package nl.focalor.utobot.irc.input;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
