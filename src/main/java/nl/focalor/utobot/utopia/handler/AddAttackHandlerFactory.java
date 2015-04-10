@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
+
 import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -16,6 +18,7 @@ import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Attack;
 import nl.focalor.utobot.utopia.model.AttackType;
 import nl.focalor.utobot.utopia.service.IAttackService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -73,7 +76,11 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 			// Create response
 			StringBuilder builder = new StringBuilder();
 			builder.append("Attack added for ");
-			builder.append(input.getSource());
+			if (person == null) {
+				builder.append(input.getSource());
+			} else {
+				builder.append(person.getName());
+			}
 			builder.append(" for ");
 			builder.append(hours);
 			builder.append('.');

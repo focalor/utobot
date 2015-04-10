@@ -22,7 +22,6 @@ public class StartupJob implements IScheduledJob {
 
 	@Override
 	public void run() {
-		botService.startBot();
 		botService.broadcast(utopiaService.getUtopiaDate().toString());
 
 		// Load attacks and spells

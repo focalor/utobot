@@ -37,8 +37,17 @@ public class JobsService implements IJobsService {
 
 	@PostConstruct
 	public void init() {
-		this.hourlyJob = new HourlyJob(utopiaService);
+		// start bot in other thread to avoid blocking
+		Thread botThread = new Thread() {
+			@Override
+			public void run() {
+				botService.startBot();
+			}
+		};
+		botThread.start();
 
+		// Setup regular jobs
+		this.hourlyJob = new HourlyJob(utopiaService);
 		this.scheduleAction(new StartupJob(botService, utopiaService, attackService, spellService), new Date());
 		this.scheduleAction(hourlyJob, utopiaService.getNextHourChange(), 60 * 60 * 1000);
 	}
