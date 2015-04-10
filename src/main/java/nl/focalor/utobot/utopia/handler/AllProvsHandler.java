@@ -13,20 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WhoisHandler extends AbstractProvHandler {
-	public static final List<String> COMMAND_NAMES = Arrays.asList("whois", "prov");
+public class AllProvsHandler extends AbstractProvHandler {
+
+	public static final List<String> COMMAND_NAMES = Arrays.asList("provall", "provs", "allprovs");
 
 	@Autowired
 	private IPersonService personService;
 
-	public WhoisHandler() {
+	public AllProvsHandler() {
 		super(COMMAND_NAMES);
 	}
 
 	@Override
 	protected Collection<Person> loadPeople(CommandInput event) {
-		String search = event.getArgument();
-		return personService.load(search, search, true);
+		return personService.load();
 	}
-
 }

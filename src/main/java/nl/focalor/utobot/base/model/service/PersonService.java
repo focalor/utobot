@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import nl.focalor.utobot.base.model.Person;
 import nl.focalor.utobot.base.model.dao.IPersonDao;
 import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,12 @@ public class PersonService implements IPersonService {
 	@Transactional(readOnly = true)
 	public Person get(long id) {
 		return personDao.get(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Person> find() {
+		return personDao.find();
 	}
 
 	@Override
@@ -61,6 +69,14 @@ public class PersonService implements IPersonService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public List<Person> load() {
+		List<Person> people = find();
+		people.stream().forEach(person -> loadPersonInfo(person));
+		return people;
+	}
+
+	@Override
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public Set<Person> load(String name, String province, Boolean fuzzy) {
 		Set<Person> people = new HashSet<Person>();
@@ -75,9 +91,7 @@ public class PersonService implements IPersonService {
 
 	private Set<Person> loadPeopleByName(String namePart, boolean fuzzy) {
 		Set<Person> result = findNameOrNick(namePart, fuzzy);
-		for (Person person : result) {
-			loadPersonInfo(person);
-		}
+		result.stream().forEach(person -> loadPersonInfo(person));
 		return result;
 	}
 

@@ -3,9 +3,11 @@ package nl.focalor.utobot.utopia.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import nl.focalor.utobot.utopia.handler.AddAttackHandlerFactory;
 import nl.focalor.utobot.utopia.model.UtopiaDate;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,8 @@ public class UtopiaService implements IUtopiaService {
 
 	@Override
 	public Date getNextHourChange() {
-		return new Date(new Date().getTime() + getSecondsTillHourChange() * 1000);
+		return new Date(new Date().getTime() + getSecondsTillHourChange()
+				* 1000);
 	}
 
 	@Override

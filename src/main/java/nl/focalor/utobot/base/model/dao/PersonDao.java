@@ -8,7 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import nl.focalor.utobot.base.model.Person;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -63,6 +65,12 @@ public class PersonDao implements IPersonDao {
 
 	@Override
 	@Transactional(readOnly = true)
+	public List<Person> find() {
+		return jdbcTemplate.query("SELECT * FROM people", mapper);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public Set<Person> find(String name, boolean fuzzy) {
 
 		Set<Person> result = new HashSet<>();
@@ -100,8 +108,9 @@ public class PersonDao implements IPersonDao {
 							params, mapper);
 		} else {
 			Map<String, Object> params = Collections.singletonMap("nick", nick);
-			return jdbcTemplate.query("SELECT people.* FROM people INNER JOIN nicks WHERE LOWER(nick) = LOWER(:nick)",
-					params, mapper);
+			return jdbcTemplate
+					.query("SELECT people.* FROM people INNER JOIN nicks ON people.id = nicks.personId WHERE LOWER(nick) = LOWER(:nick)",
+							params, mapper);
 		}
 	}
 
