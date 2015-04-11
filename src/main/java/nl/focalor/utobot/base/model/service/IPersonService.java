@@ -3,12 +3,12 @@ package nl.focalor.utobot.base.model.service;
 import java.util.List;
 import java.util.Set;
 
-import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.entity.Person;
 
 public interface IPersonService {
 	public Person get(long id);
 
-	public void create(Person person);
+	public void save(Person person);
 
 	public void addNick(long personId, String nick);
 
@@ -19,4 +19,6 @@ public interface IPersonService {
 	public List<Person> load();
 
 	public Set<Person> load(String name, String provinceName, Boolean fuzzy);
+
+	public List<Person> findAll();
 }

@@ -3,7 +3,7 @@ package nl.focalor.utobot.utopia.job;
 import nl.focalor.utobot.base.jobs.IScheduledJob;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.base.service.IBotService;
-import nl.focalor.utobot.utopia.model.SpellCast;
+import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.ISpellService;
 
 public class SpellCastCompletedJob implements IScheduledJob {
@@ -24,17 +24,13 @@ public class SpellCastCompletedJob implements IScheduledJob {
 	@Override
 	public void run() {
 		StringBuilder builder = new StringBuilder();
-		if (cast.getPersonId() == null) {
-			builder.append(cast.getPerson());
-		} else {
-			builder.append(personService.get(cast.getPersonId()).getName());
-		}
+		builder.append(cast.getPerson().getName());
 		builder.append("'s ");
 		builder.append(cast.getId());
 		builder.append(" has ended");
 
 		botService.broadcast(builder.toString());
-		spellService.delete(cast.getId());
+		spellService.delete(cast);
 	}
 
 }

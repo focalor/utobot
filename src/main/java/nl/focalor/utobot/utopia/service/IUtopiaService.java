@@ -1,7 +1,8 @@
 package nl.focalor.utobot.utopia.service;
 
-import java.util.Date;
 import nl.focalor.utobot.utopia.model.UtopiaDate;
+
+import java.util.Date;
 
 public interface IUtopiaService {
 	public Date getNextHourChange();

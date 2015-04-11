@@ -1,50 +1,55 @@
 package nl.focalor.utobot.base.model.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import nl.focalor.utobot.base.model.Person;
-import nl.focalor.utobot.base.model.dao.IPersonDao;
-import nl.focalor.utobot.utopia.model.Province;
+import nl.focalor.utobot.base.model.entity.Nick;
+import nl.focalor.utobot.base.model.entity.Person;
+import nl.focalor.utobot.base.model.repository.NickRepository;
+import nl.focalor.utobot.base.model.repository.PersonRepository;
+import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class PersonService implements IPersonService {
 	@Autowired
-	private IPersonDao personDao;
+	private PersonRepository personDao;
+
+	@Autowired
+	private NickRepository nickDao;
+
 	@Autowired
 	private IProvinceService provinceService;
 
 	@Override
 	@Transactional
-	public void create(Person person) {
-		personDao.create(person);
+	public void save(Person person) {
+		personDao.save(person);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Person get(long id) {
-		return personDao.get(id);
+		return personDao.findOne(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Person> find() {
-		return personDao.find();
+		return (List<Person>) personDao.findAll();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Person find(String name, Boolean fuzzy) {
-		Set<Person> people = findNameOrNick(name, fuzzy);
+		List<Person> people = findNameOrNick(name, fuzzy);
 
 		if (people.isEmpty()) {
 			return null;
@@ -55,7 +60,7 @@ public class PersonService implements IPersonService {
 		}
 	}
 
-	private Set<Person> findNameOrNick(String name, boolean fuzzy) {
+	private List<Person> findNameOrNick(String name, boolean fuzzy) {
 		// Check for common postfixes
 		int index = name.indexOf('|');
 		final String strippedName;
@@ -65,7 +70,7 @@ public class PersonService implements IPersonService {
 			strippedName = name;
 		}
 
-		return personDao.find(strippedName, fuzzy);
+		return personDao.findByNameOrNick(strippedName);
 	}
 
 	@Override
@@ -89,14 +94,19 @@ public class PersonService implements IPersonService {
 		return people;
 	}
 
-	private Set<Person> loadPeopleByName(String namePart, boolean fuzzy) {
-		Set<Person> result = findNameOrNick(namePart, fuzzy);
+	@Override
+	public List<Person> findAll() {
+		return (List<Person>) personDao.findAll();
+	}
+
+	private List<Person> loadPeopleByName(String namePart, boolean fuzzy) {
+		List<Person> result = findNameOrNick(namePart, fuzzy);
 		result.stream().forEach(person -> loadPersonInfo(person));
 		return result;
 	}
 
 	private void loadPersonInfo(Person person) {
-		List<Province> provinces = provinceService.find(person.getId(), null, null);
+		List<Province> provinces = provinceService.find(person.getId(), null);
 		if (provinces.size() == 1) {
 			person.setProvince(provinces.get(0));
 		}
@@ -104,10 +114,10 @@ public class PersonService implements IPersonService {
 
 	private List<Person> loadPeopleByProvinceName(String provinceNamePart, boolean fuzzy) {
 		List<Person> result = new ArrayList<Person>();
-		List<Province> provinces = provinceService.find(null, provinceNamePart, fuzzy);
+		List<Province> provinces = provinceService.find(null, provinceNamePart);
 
 		for (Province prov : provinces) {
-			Person person = personDao.get(prov.getPersonId());
+			Person person = prov.getOwner();
 			person.setProvince(prov);
 			result.add(person);
 		}
@@ -117,6 +127,10 @@ public class PersonService implements IPersonService {
 	@Override
 	@Transactional
 	public void addNick(long personId, String nick) {
-		personDao.addNick(personId, nick);
+		Person person = personDao.findOne(personId);
+		Nick newNick = new Nick();
+		newNick.setNick(nick);
+		newNick.setPerson(person);
+		nickDao.save(newNick);
 	}
 }
