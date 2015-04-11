@@ -1,11 +1,21 @@
-package nl.focalor.utobot.base.model;
+package nl.focalor.utobot.base.model.entity;
 
-import nl.focalor.utobot.utopia.model.Province;
+import nl.focalor.utobot.utopia.model.entity.Province;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
 public class Person {
+
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String name;
+	@OneToOne
 	private Province province;
+	@OneToMany(mappedBy="person")
+	private List<Nick> nicks;
 
 	public Long getId() {
 		return id;
@@ -69,4 +79,11 @@ public class Person {
 		return true;
 	}
 
+	public List<Nick> getNicks() {
+		return nicks;
+	}
+
+	public void setNicks(List<Nick> nicks) {
+		this.nicks = nicks;
+	}
 }

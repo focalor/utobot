@@ -1,13 +1,24 @@
-package nl.focalor.utobot.utopia.model;
+package nl.focalor.utobot.utopia.model.entity;
 
+import nl.focalor.utobot.base.model.entity.Person;
+import nl.focalor.utobot.utopia.model.Personality;
+import nl.focalor.utobot.utopia.model.Race;
+
+import javax.persistence.*;
+
+@Entity
 public class Province {
+
+	@Id
+	@GeneratedValue
 	private Long id;
-	private Long personId;
 	private String name;
 	private Integer island;
 	private Integer kingdom;
 	private Race race;
 	private Personality personality;
+	@OneToOne(mappedBy="province")
+	private Person owner;
 
 	public Long getId() {
 		return id;
@@ -15,14 +26,6 @@ public class Province {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Long personId) {
-		this.personId = personId;
 	}
 
 	public String getName() {
@@ -65,4 +68,11 @@ public class Province {
 		this.personality = personality;
 	}
 
+	public Person getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Person owner) {
+		this.owner = owner;
+	}
 }

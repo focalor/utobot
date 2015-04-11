@@ -25,8 +25,8 @@ public class StartupJob implements IScheduledJob {
 		botService.broadcast(utopiaService.getUtopiaDate().toString());
 
 		// Load attacks and spells
-		attackService.find(null, null).stream().forEach(attack -> attackService.create(attack, false));
-		spellService.find(null, null).stream().forEach(spellCast -> spellService.create(spellCast, false));
+		attackService.findAll().stream().forEach(attack -> attackService.create(attack, false));
+		spellService.findAll().stream().forEach(spellCast -> spellService.create(spellCast, false));
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import nl.focalor.utobot.base.input.CommandInput;
-import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AbstractProvHandler;
 
@@ -26,6 +26,6 @@ public class AllProvsHandler extends AbstractProvHandler {
 
 	@Override
 	protected Collection<Person> loadPeople(CommandInput event) {
-		return personService.load();
+		return personService.findAll();
 	}
 }
