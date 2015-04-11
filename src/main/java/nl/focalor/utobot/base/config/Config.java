@@ -121,24 +121,41 @@ public class Config {
 		return new IrcInputListener(listener);
 	}
 
-	private static final String NAME = "WarNub2";
-	private static final String SERVER = "irc.utonet.org";
-	private static final int PORT = 6667;
-	private static final String CHANNEL = "#avians";
-	private static final String CHANNEL_PASS = "masterpassword";
-
+	//@formatter:off
 	@Bean
-	public PircBotX bot(IIrcInputListener listener) throws IOException, IrcException {
-		Builder<PircBotX> configBuilder = new org.pircbotx.Configuration.Builder<>().setName(NAME).setServer(SERVER,
-				PORT);
-		if (StringUtils.isEmpty(CHANNEL_PASS)) {
-			configBuilder.addAutoJoinChannel(CHANNEL);
+	public PircBotX bot(
+			@Value("${bot.name}") String name,
+			@Value("${irc.channel.name}") String channel,
+			@Value("${irc.channel.password}") String channelPassword,
+			@Value("${irc.server}") String server,
+			@Value("${irc.port}") int port,
+			IIrcInputListener listener) {
+	//@formatter:on
+		// Configure bot
+		Builder<PircBotX> configBuilder = new org.pircbotx.Configuration.Builder<>().setName(name).setServer(server,
+				port);
+		if (StringUtils.isEmpty(channelPassword)) {
+			configBuilder.addAutoJoinChannel(channel);
 		} else {
-			configBuilder.addAutoJoinChannel(CHANNEL, CHANNEL_PASS);
+			configBuilder.addAutoJoinChannel(channel, channelPassword);
 		}
 		configBuilder.addListener(listener);
 		configBuilder.setAutoReconnect(true);
 
-		return new PircBotX(configBuilder.buildConfiguration());
+		PircBotX bot = new PircBotX(configBuilder.buildConfiguration());
+
+		// Start bot in other thread to avoid blocking
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					bot.startBot();
+				} catch (IOException | IrcException ex) {
+					throw new RuntimeException("Failed connecting to IRC", ex);
+				}
+			}
+		}.start();
+
+		return bot;
 	}
 }

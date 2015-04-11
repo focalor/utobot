@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import nl.focalor.utobot.utopia.model.SpellCast;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -49,7 +51,7 @@ public class SpellCastDao implements ISpellCastDao {
 	public void delete(long id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
-		jdbcTemplate.update("DELETE FROM spellCasts WHERE id = ? :id", params);
+		jdbcTemplate.update("DELETE FROM spellCasts WHERE id = :id", params);
 	}
 
 	@Override

@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import nl.focalor.utobot.base.jobs.IJobsService;
+import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.dao.ISpellCastDao;
 import nl.focalor.utobot.utopia.job.SpellCastCompletedJob;
 import nl.focalor.utobot.utopia.model.SpellCast;
 import nl.focalor.utobot.utopia.model.SpellType;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,8 @@ public class SpellService implements ISpellService {
 	private IJobsService jobsService;
 	@Autowired
 	private IBotService botService;
+	@Autowired
+	private IPersonService personService;
 
 	private final Map<String, SpellType> knownSpells;
 
@@ -47,7 +52,8 @@ public class SpellService implements ISpellService {
 		if (persist) {
 			spellCastDao.create(cast);
 		}
-		jobsService.scheduleAction(new SpellCastCompletedJob(botService, this, cast), cast.getLastHour());
+		jobsService
+				.scheduleAction(new SpellCastCompletedJob(botService, this, personService, cast), cast.getLastHour());
 	}
 
 	@Override

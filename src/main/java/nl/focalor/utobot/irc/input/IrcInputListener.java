@@ -76,12 +76,12 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 	}
 
 	private void handleReply(MessageEvent<PircBotX> event, ReplyResult reply) {
-		event.getUser().send().message(reply.getMessage());
+		event.getUser().send().notice(reply.getMessage());
 	}
 
 	private void handleReply(MessageEvent<PircBotX> event, MultiReplyResult reply) {
 		for (String msg : reply.getMessages()) {
-			event.getUser().send().message(msg);
+			event.getUser().send().notice(msg);
 		}
 	}
 }
