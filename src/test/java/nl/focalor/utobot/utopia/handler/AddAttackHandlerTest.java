@@ -43,20 +43,20 @@ public class AddAttackHandlerTest {
 		handlerFactory.init();
 	}
 
-//	@Test
-//	public void matches() {
-//		// Setup
-//		Input input = new Input("user",
-//				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
-//		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
-//
-//		// Test
-//		Matcher result = handler.getMatcher(input);
-//
-//		// Verify
-//		assertNotNull(result);
-//	}
-//
+	@Test
+	public void matches() {
+		// Setup
+		Input input = new Input("user",
+				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
+		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
+
+		// Test
+		Matcher result = handler.getMatcher(input);
+
+		// Verify
+		assertNotNull(result);
+	}
+
 //	@Test
 //	public void handle() {
 //		// Setup
@@ -74,29 +74,29 @@ public class AddAttackHandlerTest {
 //		ArgumentCaptor<Attack> captor1 = ArgumentCaptor.forClass(Attack.class);
 //		ArgumentCaptor<Boolean> captor2 = ArgumentCaptor.forClass(Boolean.class);
 //		verify(attackService).create(captor1.capture(), captor2.capture());
-//		assertEquals("piet", captor1.getValue().getPerson());
+//		assertEquals("piet", captor1.getValue().getPerson().getName());
 //		assertEquals(true, captor2.getValue());
 //	}
-//
-//	@Test
-//	public void handleKnownUser() {
-//		// Setup
-//		Input input = new Input("jan",
-//				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
-//		Person p = new Person();
-//		p.setId(234l);
-//		when(personService.find("jan", true)).thenReturn(p);
-//
-//		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
-//
-//		// Test
-//		handler.handleInput(input);
-//
-//		// Verify
-//		ArgumentCaptor<Attack> captor1 = ArgumentCaptor.forClass(Attack.class);
-//		ArgumentCaptor<Boolean> captor2 = ArgumentCaptor.forClass(Boolean.class);
-//		verify(attackService).create(captor1.capture(), captor2.capture());
-//		assertEquals(Long.valueOf(234), captor1.getValue().getPersonId());
-//		assertEquals(true, captor2.getValue());
-//	}
+
+	@Test
+	public void handleKnownUser() {
+		// Setup
+		Input input = new Input("jan",
+				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
+		Person p = new Person();
+		p.setId(234l);
+		when(personService.find("jan", true)).thenReturn(p);
+
+		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
+
+		// Test
+		handler.handleInput(input);
+
+		// Verify
+		ArgumentCaptor<Attack> captor1 = ArgumentCaptor.forClass(Attack.class);
+		ArgumentCaptor<Boolean> captor2 = ArgumentCaptor.forClass(Boolean.class);
+		verify(attackService).create(captor1.capture(), captor2.capture());
+		assertEquals(Long.valueOf(234), captor1.getValue().getPerson().getId());
+		assertEquals(true, captor2.getValue());
+	}
 }

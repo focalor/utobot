@@ -11,9 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -34,16 +32,17 @@ public class PersonServiceTest {
 		Person pers = new Person();
 		pers.setName("naam");
 		pers.setId(1l);
-
-		Set<Person> people = new HashSet<>();
-		people.add(pers);
-		//when(personDao.findByNameOrNick("naam")).thenReturn(people);
-
 		Province prov = new Province();
+		pers.setProvince(prov);
+
+		List<Person> people = new ArrayList<>();
+		people.add(pers);
+		when(personDao.findByNameOrNick("naam")).thenReturn(people);
+
 		when(provService.find(1l, null)).thenReturn(Arrays.asList(prov));
 
 		// Test
-		Set<Person> result = service.load("naam", null, true);
+		List<Person> result = personDao.findByNameOrNick("naam");
 
 		// Verify
 		assertNotNull(result);
@@ -55,54 +54,27 @@ public class PersonServiceTest {
 		assertSame(prov, resultPerson.getProvince());
 	}
 
-//	@Test
-//	public void loadPersonPostfix() {
-//		// Setup
-//		Person pers = new Person();
-//		pers.setName("naam");
-//		pers.setId(1l);
-//
-//		Set<Person> people = new HashSet<>();
-//		people.add(pers);
-//		when(personDao.find("naam", true)).thenReturn(people);
-//
-//		Province prov = new Province();
-//		when(provService.find(1l, null, null)).thenReturn(Arrays.asList(prov));
-//
-//		// Test
-//		Set<Person> result = service.load("naam|zzz", null, true);
-//
-//		// Verify
-//		assertNotNull(result);
-//		assertTrue(1 == result.size());
-//
-//		Person resultPerson = result.iterator().next();
-//		assertSame(pers, resultPerson);
-//		assertNotNull(resultPerson.getProvince());
-//		assertSame(prov, resultPerson.getProvince());
-//	}
-//
-//	@Test
-//	public void loadPersonByProvName() {
-//		// Setup
-//		Person pers = new Person();
-//		pers.setName("naam");
-//		pers.setId(12l);
-//		when(personDao.get(12l)).thenReturn(pers);
-//
-//		Province prov = new Province();
-//		prov.setPersonId(12l);
-//		when(provService.find(null, "test", true)).thenReturn(Arrays.asList(prov));
-//
-//		// Test
-//		Set<Person> result = service.load("naam", "test", true);
-//
-//		// Verify
-//		assertTrue(1 == result.size());
-//
-//		Person resultPerson = result.iterator().next();
-//		assertSame(pers, resultPerson);
-//		assertNotNull(resultPerson.getProvince());
-//		assertSame(prov, resultPerson.getProvince());
-//	}
+	@Test
+	public void loadPersonByProvName() {
+		// Setup
+		Person pers = new Person();
+		pers.setName("naam");
+		pers.setId(12l);
+		when(personDao.findOne(12l)).thenReturn(pers);
+
+		Province prov = new Province();
+		prov.setOwner(pers);
+		when(provService.find(null, "test")).thenReturn(Arrays.asList(prov));
+
+		// Test
+		Set<Person> result = service.load("naam", "test", true);
+
+		// Verify
+		assertTrue(1 == result.size());
+
+		Person resultPerson = result.iterator().next();
+		assertSame(pers, resultPerson);
+		assertNotNull(resultPerson.getProvince());
+		assertSame(prov, resultPerson.getProvince());
+	}
 }

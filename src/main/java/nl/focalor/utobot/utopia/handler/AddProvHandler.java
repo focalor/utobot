@@ -57,7 +57,6 @@ public class AddProvHandler extends AbstractCommandHandler {
 
 		Person person = new Person();
 		person.setName(player);
-		personService.save(person);
 
 		Province province = new Province();
 		province.setName(prov);

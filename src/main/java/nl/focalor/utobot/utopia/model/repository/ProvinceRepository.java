@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface ProvinceRepository extends CrudRepository<Province, Long> {
 
-    @Query("SELECT p FROM Province p JOIN p.owner o WHERE o.id = ?1 OR p.name LIKE %?2%")
+    @Query("SELECT p FROM Province p JOIN p.owner o WHERE o.id = ?1 OR LOWER(p.name) LIKE LOWER(%?2%)")
     List<Province> findByPersonOrNamePart(Long personId, String namePart);
 }
