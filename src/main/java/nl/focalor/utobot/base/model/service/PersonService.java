@@ -1,21 +1,22 @@
 package nl.focalor.utobot.base.model.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import nl.focalor.utobot.base.model.entity.Nick;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.repository.NickRepository;
 import nl.focalor.utobot.base.model.repository.PersonRepository;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class PersonService implements IPersonService {
@@ -70,7 +71,7 @@ public class PersonService implements IPersonService {
 			strippedName = name;
 		}
 
-		return personDao.findByNameOrNick(strippedName);
+		return personDao.findByNameOrNick(strippedName.toLowerCase());
 	}
 
 	@Override
