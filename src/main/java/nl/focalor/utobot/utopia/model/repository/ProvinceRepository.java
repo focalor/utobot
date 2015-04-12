@@ -18,6 +18,6 @@ public interface ProvinceRepository extends CrudRepository<Province, Long> {
 	 * @param namePart
 	 *            the namePart to look for, must be in all lowercase
 	 */
-	@Query("SELECT p FROM Province p LOWER(p.name) LIKE %?1%")
+	@Query("SELECT p FROM Province p WHERE LOWER(p.name) LIKE %?1%")
 	List<Province> findByNamePart(String namePart);
 }
