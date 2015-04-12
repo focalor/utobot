@@ -11,6 +11,12 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+	/**
+	 * Finds all people with the specified (nick)name
+	 *
+	 * @param nameOrNick
+	 *            the (nick)name to look for, must be in all lowercase
+	 */
 	@Query("SELECT p FROM Person p LEFT OUTER JOIN p.nicks n WHERE lower(p.name) LIKE %?1% OR lower(n.nick) LIKE %?1%")
 	List<Person> findByNameOrNick(String nameOrNick);
 }

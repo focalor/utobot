@@ -1,16 +1,23 @@
 package nl.focalor.utobot.utopia.model.repository;
 
+import java.util.List;
+
 import nl.focalor.utobot.base.model.repository.CrudRepository;
 import nl.focalor.utobot.utopia.model.entity.Province;
-import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * Created by luigibanzato on 11/04/2015.
  */
 public interface ProvinceRepository extends CrudRepository<Province, Long> {
 
-    @Query("SELECT p FROM Province p JOIN p.owner o WHERE o.id = ?1 OR LOWER(p.name) LIKE LOWER(%?2%)")
-    List<Province> findByPersonOrNamePart(Long personId, String namePart);
+	/**
+	 * Finds all provinces with the specified namePart
+	 *
+	 * @param namePart
+	 *            the namePart to look for, must be in all lowercase
+	 */
+	@Query("SELECT p FROM Province p LOWER(p.name) LIKE %?2%")
+	List<Province> findByNamePart(String namePart);
 }

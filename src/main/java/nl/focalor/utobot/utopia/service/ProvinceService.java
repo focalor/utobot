@@ -1,11 +1,12 @@
 package nl.focalor.utobot.utopia.service;
 
+import java.util.List;
+
 import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.model.repository.ProvinceRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProvinceService implements IProvinceService {
@@ -14,8 +15,13 @@ public class ProvinceService implements IProvinceService {
 	private ProvinceRepository provinceDao;
 
 	@Override
-	public List<Province> find(Long personId, String namePart) {
-		return provinceDao.findByPersonOrNamePart(personId, namePart);
+	public Province find(Long personId) {
+		return provinceDao.findOne(personId);
+	}
+
+	@Override
+	public List<Province> find(String namePart) {
+		return provinceDao.findByNamePart(namePart);
 	}
 
 	@Override

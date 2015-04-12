@@ -1,12 +1,14 @@
 package nl.focalor.utobot.utopia.service;
 
-import nl.focalor.utobot.utopia.model.entity.Province;
-
 import java.util.List;
+
+import nl.focalor.utobot.utopia.model.entity.Province;
 
 public interface IProvinceService {
 
 	public void create(Province province);
 
-	public List<Province> find(Long personId, String namePart);
+	public Province find(Long personId);
+
+	public List<Province> find(String namePart);
 }

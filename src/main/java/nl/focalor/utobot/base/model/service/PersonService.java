@@ -107,15 +107,12 @@ public class PersonService implements IPersonService {
 	}
 
 	private void loadPersonInfo(Person person) {
-		List<Province> provinces = provinceService.find(person.getId(), null);
-		if (provinces.size() == 1) {
-			person.setProvince(provinces.get(0));
-		}
+		person.setProvince(provinceService.find(person.getId()));
 	}
 
 	private List<Person> loadPeopleByProvinceName(String provinceNamePart, boolean fuzzy) {
 		List<Person> result = new ArrayList<Person>();
-		List<Province> provinces = provinceService.find(null, provinceNamePart);
+		List<Province> provinces = provinceService.find(provinceNamePart);
 
 		for (Province prov : provinces) {
 			Person person = prov.getOwner();
