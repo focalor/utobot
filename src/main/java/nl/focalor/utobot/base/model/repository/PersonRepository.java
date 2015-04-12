@@ -17,6 +17,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 	 * @param nameOrNick
 	 *            the (nick)name to look for, must be in all lowercase
 	 */
-	@Query("SELECT p FROM Person p LEFT OUTER JOIN p.nicks n WHERE LOWER(p.name) LIKE %?1% OR LOWER(n.nick) LIKE %?1%")
+	@Query("SELECT DISTINCT(p) FROM Person p LEFT OUTER JOIN p.nicks n WHERE LOWER(p.name) LIKE %?1% OR LOWER(n.nick) LIKE %?1%")
 	List<Person> findByNameOrNick(String nameOrNick);
 }

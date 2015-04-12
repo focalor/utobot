@@ -1,5 +1,11 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+
+import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -12,13 +18,9 @@ import nl.focalor.utobot.utopia.model.SpellType;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
 
 @Component
 public class AddSpellHandlerFactory implements IInputHandlerFactory {
@@ -71,8 +73,13 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 
 			// Create response
 			StringBuilder builder = new StringBuilder();
-			builder.append("Spell added for ");
-			builder.append(input.getSource());
+			builder.append(spell.getName());
+			builder.append(" added for ");
+			if (person == null) {
+				builder.append(input.getSource());
+			} else {
+				builder.append(person.getName());
+			}
 			builder.append(" for ");
 			builder.append(duration);
 			builder.append(" hours");
