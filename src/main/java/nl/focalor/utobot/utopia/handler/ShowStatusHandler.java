@@ -44,7 +44,7 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 		List<SpellCast> spellCasts;
 		Person person = personService.find(name, false);
 		attacks = attackService.findByPerson(person);
-		spellCasts = spellService.findByPerson(person);
+		spellCasts = spellService.findByCaster(person.getProvince());
 
 		List<String> messages = new ArrayList<>();
 		messages.add("Status for " + ((person == null) ? name : person.getName()));

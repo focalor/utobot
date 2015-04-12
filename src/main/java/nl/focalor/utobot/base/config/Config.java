@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.focalor.utobot.base.input.listener.IInputListener;
-import nl.focalor.utobot.base.model.service.IMetadataService;
 import nl.focalor.utobot.hipchat.HipchatInputListener;
 import nl.focalor.utobot.hipchat.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.service.IHipchatService;
 import nl.focalor.utobot.irc.input.IIrcInputListener;
 import nl.focalor.utobot.irc.input.IrcInputListener;
-import nl.focalor.utobot.util.Version;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
 import org.apache.commons.lang3.StringUtils;
 import org.h2.Driver;
@@ -27,14 +25,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -84,17 +80,10 @@ public class Config {
 	}
 
 	// Utopia integration
-
 	@Bean
 	public UtopiaSettings utopiaSettings(ObjectMapper mapper, @Value("${settings.utopia.file}") String spellsFile)
 			throws JsonParseException, JsonMappingException, IOException {
 		return mapper.readValue(this.getClass().getClassLoader().getResource(spellsFile), UtopiaSettings.class);
-	}
-
-	// Database
-	@Bean
-	public Version dbVersion(IMetadataService service) {
-		return service.getSchemaVersion();
 	}
 
 	@Bean
