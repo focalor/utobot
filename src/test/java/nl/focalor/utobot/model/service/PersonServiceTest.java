@@ -1,26 +1,22 @@
 package nl.focalor.utobot.model.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.repository.PersonRepository;
 import nl.focalor.utobot.base.model.service.PersonService;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceTest {
@@ -66,14 +62,19 @@ public class PersonServiceTest {
 		Person pers = new Person();
 		pers.setName("naam");
 		pers.setId(12l);
-		when(personDao.findOne(12l)).thenReturn(pers);
 
 		Province prov = new Province();
 		prov.setOwner(pers);
-		when(provService.find("test")).thenReturn(Arrays.asList(prov));
+		pers.setProvince(prov);
+
+		List<Person> people = new ArrayList<Person>();
+		people.add(pers);
+
+		when(personDao.findOne(12l)).thenReturn(pers);
+		when(service.findByNickNameOrProvince("test")).thenReturn(people);
 
 		// Test
-		Set<Person> result = service.load("naam", "test", true);
+		List<Person> result = service.findByNickNameOrProvince("test");
 
 		// Verify
 		assertTrue(1 == result.size());

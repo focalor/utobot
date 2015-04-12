@@ -26,7 +26,7 @@ public class WhoisHandler extends AbstractProvHandler {
 	@Override
 	protected Collection<Person> loadPeople(CommandInput event) {
 		String search = event.getArgument();
-		return personService.load(search, search, true);
+		return personService.findByNickNameOrProvince(search);
 	}
 
 }

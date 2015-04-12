@@ -43,12 +43,6 @@ public class PersonService implements IPersonService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Person> find() {
-		return (List<Person>) personDao.findAll();
-	}
-
-	@Override
-	@Transactional(readOnly = true)
 	public Person find(String name, Boolean fuzzy) {
 		List<Person> people = findNameOrNick(name, fuzzy);
 
@@ -77,21 +71,20 @@ public class PersonService implements IPersonService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Person> load() {
-		List<Person> people = find();
+		List<Person> people = findAll();
 		people.stream().forEach(person -> loadPersonInfo(person));
 		return people;
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-	public Set<Person> load(String name, String province, Boolean fuzzy) {
-		Set<Person> people = new HashSet<Person>();
-		if (!StringUtils.isEmpty(name)) {
-			people.addAll(loadPeopleByName(name, fuzzy));
+	public List<Person> findByNickNameOrProvince(String searchString) {
+		List<Person> people = new ArrayList<Person>();
+
+		if (!StringUtils.isEmpty(searchString)) {
+			people = personDao.findByNickNameOrProvince(searchString.toLowerCase());
 		}
-		if (!StringUtils.isEmpty(province)) {
-			people.addAll(loadPeopleByProvinceName(province, fuzzy));
-		}
+
 		return people;
 	}
 
@@ -100,26 +93,8 @@ public class PersonService implements IPersonService {
 		return (List<Person>) personDao.findAll();
 	}
 
-	private List<Person> loadPeopleByName(String namePart, boolean fuzzy) {
-		List<Person> result = findNameOrNick(namePart, fuzzy);
-		result.stream().forEach(person -> loadPersonInfo(person));
-		return result;
-	}
-
 	private void loadPersonInfo(Person person) {
 		person.setProvince(provinceService.find(person.getId()));
-	}
-
-	private List<Person> loadPeopleByProvinceName(String provinceNamePart, boolean fuzzy) {
-		List<Person> result = new ArrayList<Person>();
-		List<Province> provinces = provinceService.find(provinceNamePart);
-
-		for (Province prov : provinces) {
-			Person person = prov.getOwner();
-			person.setProvince(prov);
-			result.add(person);
-		}
-		return result;
 	}
 
 	@Override
