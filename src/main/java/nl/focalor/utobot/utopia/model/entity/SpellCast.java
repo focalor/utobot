@@ -12,7 +12,9 @@ public class SpellCast {
 	private Long id;
 	private String spellId;
 	@ManyToOne
-	private Person person;
+	private Province caster;
+	@ManyToOne
+	private Province target;
 	private Integer lastHour;
 
 	public Long getId() {
@@ -39,11 +41,19 @@ public class SpellCast {
 		this.lastHour = lastHour;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Province getCaster() {
+		return caster;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setCaster(Province caster) {
+		this.caster = caster;
+	}
+
+	public Province getTarget() {
+		return target;
+	}
+
+	public void setTarget(Province target) {
+		this.target = target;
 	}
 }

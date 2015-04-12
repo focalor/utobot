@@ -68,7 +68,9 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 			SpellCast cast = new SpellCast();
 			cast.setSpellId(spell.getId());
 			cast.setLastHour(lastHour);
-			cast.setPerson(person);
+			if(person != null) {
+				cast.setCaster(person.getProvince());
+			}
 			spellService.create(cast, true);
 
 			// Create response

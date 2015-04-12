@@ -12,13 +12,11 @@ public interface IPersonService {
 
 	public void addNick(long personId, String nick);
 
-	public List<Person> find();
-
 	public Person find(String name, Boolean fuzzy);
 
 	public List<Person> load();
 
-	public Set<Person> load(String name, String provinceName, Boolean fuzzy);
+	public List<Person> findByNickNameOrProvince(String searchString);
 
 	public List<Person> findAll();
 }

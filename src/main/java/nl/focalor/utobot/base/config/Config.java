@@ -83,7 +83,6 @@ public class Config {
 	}
 
 	// Utopia integration
-
 	@Bean
 	public UtopiaSettings utopiaSettings(ObjectMapper mapper, @Value("${settings.utopia.file}") String spellsFile)
 			throws JsonParseException, JsonMappingException, IOException {
@@ -91,6 +90,7 @@ public class Config {
 	}
 
 	// Database
+
 	@Bean
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
 		return new NamedParameterJdbcTemplate(datasource());
