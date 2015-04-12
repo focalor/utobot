@@ -1,7 +1,6 @@
 package nl.focalor.utobot.utopia.job;
 
 import nl.focalor.utobot.base.jobs.IScheduledJob;
-import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
@@ -9,15 +8,12 @@ import nl.focalor.utobot.utopia.service.IAttackService;
 public class AttackCompletedJob implements IScheduledJob {
 	private final IBotService botService;
 	private final IAttackService attackService;
-	private final IPersonService personService;
 	private final Attack attack;
 
-	public AttackCompletedJob(IBotService botService, IAttackService attackService, IPersonService personService,
-			Attack attack) {
+	public AttackCompletedJob(IBotService botService, IAttackService attackService, Attack attack) {
 		super();
 		this.botService = botService;
 		this.attackService = attackService;
-		this.personService = personService;
 		this.attack = attack;
 	}
 

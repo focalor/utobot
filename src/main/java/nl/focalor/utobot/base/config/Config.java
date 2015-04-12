@@ -1,17 +1,19 @@
 package nl.focalor.utobot.base.config;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Properties;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
 import nl.focalor.utobot.base.input.listener.IInputListener;
-import nl.focalor.utobot.base.model.service.IMetadataService;
 import nl.focalor.utobot.hipchat.HipchatInputListener;
 import nl.focalor.utobot.hipchat.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.service.IHipchatService;
 import nl.focalor.utobot.irc.input.IIrcInputListener;
 import nl.focalor.utobot.irc.input.IrcInputListener;
-import nl.focalor.utobot.util.Version;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
+
 import org.apache.commons.lang3.StringUtils;
 import org.h2.Driver;
 import org.pircbotx.Configuration.Builder;
@@ -27,21 +29,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.util.Properties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 // @formatter:off
@@ -92,11 +91,6 @@ public class Config {
 	}
 
 	// Database
-	@Bean
-	public Version dbVersion(IMetadataService service) {
-		return service.getSchemaVersion();
-	}
-
 	@Bean
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
 		return new NamedParameterJdbcTemplate(datasource());
@@ -178,8 +172,7 @@ public class Config {
 			@Value("${hibernate.dialect}") String hiernateDialect,
 			@Value("${hibernate.hbm2ddl.auto}") String hibernateHbm2ddlAuto,
 			@Value("${hibernate.show_sql}") String hibernateShowSql,
-			@Value("${hibernate.format_sql}") String hibernateFormatSql
-	) {
+			@Value("${hibernate.format_sql}") String hibernateFormatSql) {
 		LocalContainerEntityManagerFactoryBean lemfb = new LocalContainerEntityManagerFactoryBean();
 
 		lemfb.setDataSource(datasource());

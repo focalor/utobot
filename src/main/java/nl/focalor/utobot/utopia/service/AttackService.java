@@ -1,5 +1,8 @@
 package nl.focalor.utobot.utopia.service;
 
+import java.util.Collection;
+import java.util.List;
+
 import nl.focalor.utobot.base.jobs.IJobsService;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
@@ -9,12 +12,10 @@ import nl.focalor.utobot.utopia.model.AttackType;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
 import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.model.repository.AttackRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.List;
 
 @Service
 public class AttackService implements IAttackService {
@@ -40,8 +41,7 @@ public class AttackService implements IAttackService {
 		if (persist) {
 			attackDao.save(attack);
 		}
-		jobsService.scheduleAction(new AttackCompletedJob(botService, this, personService, attack),
-				attack.getReturnDate());
+		jobsService.scheduleAction(new AttackCompletedJob(botService, this, attack), attack.getReturnDate());
 	}
 
 	@Override
@@ -63,7 +63,5 @@ public class AttackService implements IAttackService {
 	public Collection<AttackType> getKnownAttackTypes() {
 		return knownAttacks;
 	}
-
-
 
 }

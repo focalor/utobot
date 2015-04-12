@@ -1,5 +1,10 @@
 package nl.focalor.utobot.utopia.service;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import nl.focalor.utobot.base.jobs.IJobsService;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
@@ -9,14 +14,10 @@ import nl.focalor.utobot.utopia.model.SpellType;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.model.repository.SpellCastRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class SpellService implements ISpellService {
@@ -52,8 +53,7 @@ public class SpellService implements ISpellService {
 		if (persist) {
 			spellCastDao.save(cast);
 		}
-		jobsService
-				.scheduleAction(new SpellCastCompletedJob(botService, this, personService, cast), cast.getLastHour());
+		jobsService.scheduleAction(new SpellCastCompletedJob(botService, this, cast), cast.getLastHour());
 	}
 
 	@Override
