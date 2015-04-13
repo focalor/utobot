@@ -1,6 +1,7 @@
 package nl.focalor.utobot.base.input.handler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,4 +90,15 @@ public class HelpHandler extends AbstractCommandHandler {
 				.collect(Collectors.toList());
 	}
 	//@formatter:on
+
+	@Override
+	public List<String> getHelpBody() {
+		return Arrays.asList("!help | shows general help information",
+				"!help COMMAND | shows information for the specified command");
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Shows this help information";
+	}
 }

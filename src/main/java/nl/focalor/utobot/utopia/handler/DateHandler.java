@@ -23,4 +23,9 @@ public class DateHandler extends AbstractCommandHandler {
 	public IResult handleCommand(CommandInput event) {
 		return new ReplyResult(utopiaService.getUtopiaDate().toString());
 	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Shows the current utopia date";
+	}
 }
