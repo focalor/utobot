@@ -20,7 +20,7 @@
 		},
 		{
 			"id":"FL",
-			"name":"Clear Sight",
+			"name":"Fertile Lands",
 			"syntax":"We have made our lands extraordinarily fertile for (\\d{1,2}) days!"
 		},
 		{
