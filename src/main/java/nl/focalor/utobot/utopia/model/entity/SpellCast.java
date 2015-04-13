@@ -1,8 +1,9 @@
 package nl.focalor.utobot.utopia.model.entity;
 
-import nl.focalor.utobot.base.model.entity.Person;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class SpellCast {

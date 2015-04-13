@@ -8,10 +8,12 @@ import java.util.Calendar;
 import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.util.ReflectionUtil;
-import nl.focalor.utobot.utopia.model.Attack;
-import nl.focalor.utobot.utopia.model.SpellCast;
+import nl.focalor.utobot.utopia.model.entity.Attack;
+import nl.focalor.utobot.utopia.model.entity.Province;
+import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
@@ -46,21 +48,27 @@ public class ShowStatusHandlerTest {
 		Calendar cal = Calendar.getInstance();
 		cal.clear();
 
+		Person person = new Person();
+		person.setName("joop");
+		Province prov = new Province();
+		person.setProvince(prov);
+		when(personService.find("joop", false)).thenReturn(person);
+
 		Attack attack1 = new Attack();
 		cal.set(2010, 1, 1);
 		attack1.setReturnDate(cal.getTime());
-		attack1.setPerson("joop");
+		attack1.setPerson(person);
 
 		Attack attack2 = new Attack();
 		cal.set(2009, 1, 1);
 		attack2.setReturnDate(cal.getTime());
-		attack2.setPerson("joop");
-		when(attackService.find(null, "joop")).thenReturn(Arrays.asList(attack1, attack2));
+		attack2.setPerson(person);
+		when(attackService.findByPerson(person)).thenReturn(Arrays.asList(attack1, attack2));
 
 		SpellCast cast = new SpellCast();
 		cast.setLastHour(100);
 		cast.setSpellId("L&P");
-		when(spellService.find(null, "joop")).thenReturn(Arrays.asList(cast));
+		when(spellService.findByCaster(prov)).thenReturn(Arrays.asList(cast));
 
 		when(utopiaService.getHourOfAge()).thenReturn(100);
 

@@ -1,5 +1,11 @@
 package nl.focalor.utobot.model.service;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import java.util.ArrayList;
+import java.util.List;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.repository.PersonRepository;
 import nl.focalor.utobot.base.model.service.PersonService;
@@ -10,13 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceTest {

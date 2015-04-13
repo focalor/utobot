@@ -1,8 +1,6 @@
 package nl.focalor.utobot.base.model.service;
 
 import java.util.List;
-import java.util.Set;
-
 import nl.focalor.utobot.base.model.entity.Person;
 
 public interface IPersonService {
