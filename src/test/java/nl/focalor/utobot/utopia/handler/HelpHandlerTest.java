@@ -3,6 +3,7 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
@@ -38,8 +39,8 @@ public class HelpHandlerTest {
 		RegexHandler regexHandler1 = new RegexHandler("regexA", "regex1");
 		RegexHandler regexHandler2 = new RegexHandler("regexB", "regex2");
 
-		when(listener.getCommandHandlers()).thenReturn(Arrays.asList(commandHandler1, commandHandler2));
-		when(listener.getRegexHandlers()).thenReturn(Arrays.asList(regexHandler1, regexHandler2));
+		when(listener.getCommandHandlers()).thenReturn(new HashSet<>(Arrays.asList(commandHandler1, commandHandler2)));
+		when(listener.getRegexHandlers()).thenReturn(new HashSet<>(Arrays.asList(regexHandler1, regexHandler2)));
 	}
 
 	@Test

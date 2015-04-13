@@ -1,10 +1,11 @@
 package nl.focalor.utobot.base.input.listener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -20,7 +21,8 @@ import org.springframework.stereotype.Component;
 public class InputListener implements IInputListener {
 	private final List<IInputHandlerFactory> factories = new ArrayList<>();
 	private final List<IRegexHandler> regexHandlers = new ArrayList<>();
-	private final Map<String, ICommandHandler> commandHandlers = new HashMap<>();
+	private final List<ICommandHandler> commandHandlers = new ArrayList<>();
+	private final Map<String, ICommandHandler> commandToCommandHandler = new HashMap<>();
 
 	@Autowired(required = false)
 	public void setRegexHandlers(List<IRegexHandler> regexHandlers) {
@@ -29,9 +31,10 @@ public class InputListener implements IInputListener {
 
 	@Autowired(required = false)
 	public void setCommandHandlers(List<ICommandHandler> commandHandlers) {
+		this.commandHandlers.addAll(commandHandlers);
 		for (ICommandHandler handler : commandHandlers) {
 			for (String commandName : handler.getCommandNames()) {
-				this.commandHandlers.put(commandName.toLowerCase(), handler);
+				this.commandToCommandHandler.put(commandName.toLowerCase(), handler);
 			}
 		}
 	}
@@ -68,7 +71,7 @@ public class InputListener implements IInputListener {
 
 	@Override
 	public IResult onCommand(CommandInput command) {
-		ICommandHandler handler = commandHandlers.get(command.getCommand().toLowerCase());
+		ICommandHandler handler = commandToCommandHandler.get(command.getCommand().toLowerCase());
 		if (handler != null) { // ignore unknown commands
 			return handler.handleCommand(command);
 		}
@@ -76,18 +79,18 @@ public class InputListener implements IInputListener {
 	}
 
 	@Override
-	public Collection<IRegexHandler> getRegexHandlers() {
-		return regexHandlers;
+	public Set<IRegexHandler> getRegexHandlers() {
+		return new HashSet<>(regexHandlers);
 	}
 
 	@Override
-	public Collection<ICommandHandler> getCommandHandlers() {
-		return commandHandlers.values();
+	public Set<ICommandHandler> getCommandHandlers() {
+		return new HashSet<>(commandHandlers);
 	}
 
 	@Override
-	public Collection<IInputHandlerFactory> getFactories() {
-		return factories;
+	public Set<IInputHandlerFactory> getFactories() {
+		return new HashSet<>(factories);
 	}
 
 }

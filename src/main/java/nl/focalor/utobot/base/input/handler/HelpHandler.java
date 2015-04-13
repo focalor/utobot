@@ -76,8 +76,9 @@ public class HelpHandler extends AbstractCommandHandler {
 	}
 
 	private Stream<String> mapCommandHandler(ICommandHandler handler) {
-		return handler.getCommandNames().stream()
+		Stream<String> test = handler.getCommandNames().stream()
 				.map(name -> name + " - " + handler.getSimpleHelp());
+		return test;
 	}
 
 	private List<String> map(Collection<? extends IInputHandler> handlers) {

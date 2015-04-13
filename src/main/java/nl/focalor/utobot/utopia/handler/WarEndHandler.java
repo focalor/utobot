@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WarEndHandler extends AbstractCommandHandler {
 	public static final String COMMAND_NAME = "endwar";
-	public static final String[] ALTERNATE_NAMES = {"endwar"};
+	public static final String[] ALTERNATE_NAMES = {"warend"};
 
 	@Autowired
 	private IWarService warService;

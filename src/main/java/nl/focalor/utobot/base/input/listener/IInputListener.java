@@ -1,6 +1,6 @@
 package nl.focalor.utobot.base.input.listener;
 
-import java.util.Collection;
+import java.util.Set;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -16,10 +16,10 @@ public interface IInputListener {
 
 	public IResult onCommand(CommandInput command);
 
-	public Collection<IInputHandlerFactory> getFactories();
+	public Set<IInputHandlerFactory> getFactories();
 
-	public Collection<IRegexHandler> getRegexHandlers();
+	public Set<IRegexHandler> getRegexHandlers();
 
-	public Collection<ICommandHandler> getCommandHandlers();
+	public Set<ICommandHandler> getCommandHandlers();
 
 }
