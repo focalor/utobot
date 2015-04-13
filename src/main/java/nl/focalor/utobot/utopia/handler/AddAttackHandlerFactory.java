@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddAttackHandlerFactory implements IInputHandlerFactory {
+	private static final String NAME = "attack";
 	private final List<IRegexHandler> handlers = new ArrayList<>();
 
 	@Autowired
@@ -42,8 +43,6 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 	}
 
 	private class AttackHandler extends AbstractRegexHandler {
-		private static final String NAME = "attack";
-
 		public AttackHandler(AttackType attackType) {
 			super(NAME, attackType.getSyntax());
 		}
@@ -95,5 +94,15 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 
 			return cal;
 		}
+
+		@Override
+		public boolean hasHelp() {
+			return false;
+		}
+	}
+
+	@Override
+	public String getName() {
+		return NAME;
 	}
 }

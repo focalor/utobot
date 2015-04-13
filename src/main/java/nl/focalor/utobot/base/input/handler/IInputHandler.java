@@ -7,6 +7,10 @@ import java.util.List;
 public interface IInputHandler {
 	public String getName();
 
+	public default boolean hasHelp() {
+		return true;
+	}
+
 	public default List<String> getHelp() {
 		ArrayList<String> result = new ArrayList<>();
 		result.add(getHelpHeader());

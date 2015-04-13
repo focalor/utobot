@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddSpellHandlerFactory implements IInputHandlerFactory {
+	private static final String NAME = "spell";
 	private final List<IRegexHandler> handlers = new ArrayList<>();
+
 	@Autowired
 	private IPersonService personService;
 	@Autowired
@@ -43,8 +45,6 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 	}
 
 	private class SpellHandler extends AbstractRegexHandler {
-		private static final String NAME = "spell";
-
 		private final SpellType spell;
 
 		public SpellHandler(SpellType spell) {
@@ -87,5 +87,15 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 			builder.append(" hours");
 			return new ReplyResult(builder.toString());
 		}
+
+		@Override
+		public boolean hasHelp() {
+			return false;
+		}
+	}
+
+	@Override
+	public String getName() {
+		return NAME;
 	}
 }

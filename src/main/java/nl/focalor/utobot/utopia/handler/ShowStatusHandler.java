@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import nl.focalor.utobot.base.input.CommandInput;
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
@@ -43,11 +44,14 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 		List<Attack> attacks;
 		List<SpellCast> spellCasts;
 		Person person = personService.find(name, false);
+		if (person == null) {
+			return new ErrorResult("Person " + name + " not found");
+		}
 		attacks = attackService.findByPerson(person);
 		spellCasts = spellService.findByCaster(person.getProvince());
 
 		List<String> messages = new ArrayList<>();
-		messages.add("Status for " + ((person == null) ? name : person.getName()));
+		messages.add("Status for " + person.getName());
 		messages.add("Armies out:");
 		//@formatter:off
 		messages.addAll(attacks.stream()

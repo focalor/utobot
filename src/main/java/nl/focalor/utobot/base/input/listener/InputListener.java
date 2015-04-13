@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InputListener implements IInputListener {
+	private final List<IInputHandlerFactory> factories = new ArrayList<>();
 	private final List<IRegexHandler> regexHandlers = new ArrayList<>();
 	private final Map<String, ICommandHandler> commandHandlers = new HashMap<>();
 
@@ -37,7 +38,8 @@ public class InputListener implements IInputListener {
 
 	@Autowired(required = false)
 	public void setInputHandlerFactories(List<IInputHandlerFactory> inputHandlerFactories) {
-		for (IInputHandlerFactory factory : inputHandlerFactories) {
+		this.factories.addAll(inputHandlerFactories);
+		for (IInputHandlerFactory factory : factories) {
 			setRegexHandlers(factory.getRegexHandlers());
 			setCommandHandlers(factory.getCommandHandlers());
 		}
@@ -81,6 +83,11 @@ public class InputListener implements IInputListener {
 	@Override
 	public Collection<ICommandHandler> getCommandHandlers() {
 		return commandHandlers.values();
+	}
+
+	@Override
+	public Collection<IInputHandlerFactory> getFactories() {
+		return factories;
 	}
 
 }

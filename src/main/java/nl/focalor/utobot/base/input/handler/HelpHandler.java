@@ -1,6 +1,7 @@
 package nl.focalor.utobot.base.input.handler;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,23 +59,33 @@ public class HelpHandler extends AbstractCommandHandler {
 	private IResult buildGeneralHelp() {
 		List<String> messages = new ArrayList<>();
 		messages.add("Known commands:");
-		messages.addAll(getHelpAllCommandHandlers().sorted().collect(Collectors.toList()));
+		messages.addAll(getHelpCommandHandlers());
 		messages.add("Other supported input:");
-		messages.addAll(getHelpAllRegexHandlers().sorted().collect(Collectors.toList()));
+		messages.addAll(map(inputListener.getFactories()));
+		messages.addAll(map(inputListener.getRegexHandlers()));
 		return new MultiReplyResult(messages);
 	}
 
-	private Stream<String> getHelpAllCommandHandlers() {
-		return inputListener.getCommandHandlers().stream().flatMap(this::mapCommandHandler);
+	//@formatter:off
+	private List<String> getHelpCommandHandlers() {
+		return inputListener.getCommandHandlers().stream()
+				.filter(handler -> handler.hasHelp())
+				.flatMap(this::mapCommandHandler)
+				.sorted()
+				.collect(Collectors.toList());
 	}
 
 	private Stream<String> mapCommandHandler(ICommandHandler handler) {
-		return handler.getCommandNames().stream().map(name -> name + " - " + handler.getSimpleHelp());
+		return handler.getCommandNames().stream()
+				.map(name -> name + " - " + handler.getSimpleHelp());
 	}
 
-	private Stream<String> getHelpAllRegexHandlers() {
-		return inputListener.getRegexHandlers().stream()
-				.map(handler -> handler.getName() + " - " + handler.getSimpleHelp());
+	private List<String> map(Collection<? extends IInputHandler> handlers) {
+		return handlers.stream()
+				.filter(handler -> handler.hasHelp())
+				.map(handler -> handler.getName() + " - " + handler.getSimpleHelp())
+				.sorted()
+				.collect(Collectors.toList());
 	}
-
+	//@formatter:on
 }
