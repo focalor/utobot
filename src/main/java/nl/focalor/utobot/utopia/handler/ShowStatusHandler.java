@@ -72,7 +72,10 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 
 		int hoursLeft = cast.getLastHour() - utopiaService.getHourOfAge() + 1;
 		builder.append(hoursLeft);
-		builder.append(" days");
+		builder.append(" day");
+		if (hoursLeft != 1) {
+			builder.append('s');
+		}
 		return builder.toString();
 	}
 }

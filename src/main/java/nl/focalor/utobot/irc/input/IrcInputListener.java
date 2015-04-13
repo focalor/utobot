@@ -1,5 +1,6 @@
 package nl.focalor.utobot.irc.input;
 
+import java.util.ArrayList;
 import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcInputListener {
 	private final IInputListener listener;
-	private List<IIrcInputHandler> ircHandlers;
+	private List<IIrcInputHandler> ircHandlers = new ArrayList<>(0);
 
 	@Autowired
 	public IrcInputListener(IInputListener listener) {

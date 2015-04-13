@@ -13,12 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class DateHandler extends AbstractCommandHandler {
 	public static final List<String> COMMAND_NAMES = Arrays.asList("date", "time");
-	private final IUtopiaService utopiaService;
-
 	@Autowired
-	public DateHandler(IUtopiaService utopiaService) {
+	private IUtopiaService utopiaService;
+
+	public DateHandler() {
 		super(COMMAND_NAMES);
-		this.utopiaService = utopiaService;
 	}
 
 	@Override
