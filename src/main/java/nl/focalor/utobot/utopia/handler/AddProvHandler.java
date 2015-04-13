@@ -1,21 +1,22 @@
 package nl.focalor.utobot.utopia.handler;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
-import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
-import nl.focalor.utobot.utopia.model.Province;
 import nl.focalor.utobot.utopia.model.Race;
+import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class AddProvHandler extends AbstractCommandHandler {
@@ -56,14 +57,16 @@ public class AddProvHandler extends AbstractCommandHandler {
 
 		Person person = new Person();
 		person.setName(player);
-		personService.create(person);
 
 		Province province = new Province();
 		province.setName(prov);
-		province.setPersonId(person.getId());
+		province.setOwner(person);
 		province.setRace(race);
 		province.setPersonality(personality);
 		provinceService.create(province);
+
+		person.setProvince(province);
+		personService.save(person);
 	}
 
 	private Race parseRace(String name) {

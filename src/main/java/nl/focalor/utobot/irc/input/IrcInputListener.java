@@ -2,12 +2,14 @@ package nl.focalor.utobot.irc.input;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
+
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
@@ -33,17 +35,22 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-		IResult result = handle(event);
+		try {
+			IResult result = handle(event);
 
-		if (result == null) {
-			// Ignore unknown commands
-		} else if (result instanceof ReplyResult) {
-			handleReply(event, (ReplyResult) result);
-		} else if (result instanceof MultiReplyResult) {
-			handleReply(event, (MultiReplyResult) result);
-		} else {
-			throw new UnsupportedOperationException("Don't know how to handle result of type "
-					+ result.getClass().getName());
+			if (result == null) {
+				// Ignore unknown commands
+			} else if (result instanceof ReplyResult) {
+				handleReply(event, (ReplyResult) result);
+			} else if (result instanceof MultiReplyResult) {
+				handleReply(event, (MultiReplyResult) result);
+			} else {
+				throw new UnsupportedOperationException("Don't know how to handle result of type "
+						+ result.getClass().getName());
+			}
+		} catch (Exception ex) {
+			// TODO seperate exception classes
+			handleReply(event, new ReplyResult(ex.getMessage()));
 		}
 	}
 
@@ -69,11 +76,12 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 	}
 
 	private void handleReply(MessageEvent<PircBotX> event, ReplyResult reply) {
-		event.getChannel().send().message(reply.getMessage());
+		event.getUser().send().notice(reply.getMessage());
 	}
 
 	private void handleReply(MessageEvent<PircBotX> event, MultiReplyResult reply) {
-		String msg = StringUtils.join(reply.getMessages(), "\r\n");
-		event.getChannel().send().message(msg);
+		for (String msg : reply.getMessages()) {
+			event.getUser().send().notice(msg);
+		}
 	}
 }

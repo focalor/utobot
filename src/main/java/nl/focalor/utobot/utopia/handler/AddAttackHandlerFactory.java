@@ -1,23 +1,24 @@
 package nl.focalor.utobot.utopia.handler;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.regex.Matcher;
-import javax.annotation.PostConstruct;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractRegexHandler;
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
-import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
-import nl.focalor.utobot.utopia.model.Attack;
 import nl.focalor.utobot.utopia.model.AttackType;
+import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.regex.Matcher;
 
 @Component
 public class AddAttackHandlerFactory implements IInputHandlerFactory {
@@ -63,17 +64,17 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 			// Create attack model
 			Attack attack = new Attack();
 			attack.setReturnDate(returnDate.getTime());
-			if (person == null) {
-				attack.setPerson(input.getSource());
-			} else {
-				attack.setPersonId(person.getId());
-			}
+			attack.setPerson(person);
 			attackService.create(attack, true);
 
 			// Create response
 			StringBuilder builder = new StringBuilder();
 			builder.append("Attack added for ");
-			builder.append(input.getSource());
+			if (person == null) {
+				builder.append(input.getSource());
+			} else {
+				builder.append(person.getName());
+			}
 			builder.append(" for ");
 			builder.append(hours);
 			builder.append('.');

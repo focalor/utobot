@@ -8,7 +8,7 @@ import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
-import nl.focalor.utobot.utopia.model.Attack;
+import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class ArmiesHandler extends AbstractCommandHandler {
 
 	@Override
 	public IResult handleCommand(CommandInput event) {
-		List<Attack> attacks = attackService.find(null, null);
+		List<Attack> attacks = attackService.findAll();
 		//@formatter:off
 		List<String> msgs = attacks.stream()
 				.sorted((left, right) -> left.getReturnDate().compareTo(right.getReturnDate()))
@@ -44,11 +44,7 @@ public class ArmiesHandler extends AbstractCommandHandler {
 
 	private String toMessage(Attack attack) {
 		String attacker;
-		if (attack.getPersonId() == null) {
-			attacker = attack.getPerson();
-		} else {
-			attacker = personService.get(attack.getPersonId()).getName();
-		}
+		attacker = attack.getPerson().getName();
 
 		long deltaSeconds = (attack.getReturnDate().getTime() - new Date().getTime()) / 1000;
 		int deltaMinutes = (int) (deltaSeconds / 60);

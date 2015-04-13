@@ -3,19 +3,22 @@ package nl.focalor.utobot.utopia.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+
 import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractRegexHandler;
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
-import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
-import nl.focalor.utobot.utopia.model.SpellCast;
 import nl.focalor.utobot.utopia.model.SpellType;
+import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -65,17 +68,20 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 			SpellCast cast = new SpellCast();
 			cast.setSpellId(spell.getId());
 			cast.setLastHour(lastHour);
-			if (person == null) {
-				cast.setPerson(input.getSource());
-			} else {
-				cast.setPersonId(person.getId());
+			if(person != null) {
+				cast.setCaster(person.getProvince());
 			}
 			spellService.create(cast, true);
 
 			// Create response
 			StringBuilder builder = new StringBuilder();
-			builder.append("Spell added for ");
-			builder.append(input.getSource());
+			builder.append(spell.getName());
+			builder.append(" added for ");
+			if (person == null) {
+				builder.append(input.getSource());
+			} else {
+				builder.append(person.getName());
+			}
 			builder.append(" for ");
 			builder.append(duration);
 			builder.append(" hours");

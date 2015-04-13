@@ -7,10 +7,10 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
-import nl.focalor.utobot.base.model.Person;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
-import nl.focalor.utobot.utopia.model.Attack;
-import nl.focalor.utobot.utopia.model.SpellCast;
+import nl.focalor.utobot.utopia.model.entity.Attack;
+import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
@@ -43,13 +43,8 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 		List<Attack> attacks;
 		List<SpellCast> spellCasts;
 		Person person = personService.find(name, false);
-		if (person == null) {
-			attacks = attackService.find(null, name);
-			spellCasts = spellService.find(null, name);
-		} else {
-			attacks = attackService.find(person.getId(), null);
-			spellCasts = spellService.find(person.getId(), null);
-		}
+		attacks = attackService.findByPerson(person);
+		spellCasts = spellService.findByCaster(person.getProvince());
 
 		List<String> messages = new ArrayList<>();
 		messages.add("Status for " + ((person == null) ? name : person.getName()));

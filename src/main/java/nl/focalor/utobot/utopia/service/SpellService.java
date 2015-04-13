@@ -4,13 +4,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import nl.focalor.utobot.base.jobs.IJobsService;
+import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.base.service.IBotService;
-import nl.focalor.utobot.utopia.dao.ISpellCastDao;
 import nl.focalor.utobot.utopia.job.SpellCastCompletedJob;
-import nl.focalor.utobot.utopia.model.SpellCast;
 import nl.focalor.utobot.utopia.model.SpellType;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
+import nl.focalor.utobot.utopia.model.entity.Province;
+import nl.focalor.utobot.utopia.model.entity.SpellCast;
+import nl.focalor.utobot.utopia.model.repository.SpellCastRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SpellService implements ISpellService {
 	@Autowired
-	private ISpellCastDao spellCastDao;
+	private SpellCastRepository spellCastDao;
 	@Autowired
 	private IJobsService jobsService;
 	@Autowired
 	private IBotService botService;
+	@Autowired
+	private IPersonService personService;
 
 	private final Map<String, SpellType> knownSpells;
 
@@ -45,18 +51,23 @@ public class SpellService implements ISpellService {
 	@Transactional
 	public void create(SpellCast cast, boolean persist) {
 		if (persist) {
-			spellCastDao.create(cast);
+			spellCastDao.save(cast);
 		}
 		jobsService.scheduleAction(new SpellCastCompletedJob(botService, this, cast), cast.getLastHour());
 	}
 
 	@Override
-	public void delete(long id) {
-		spellCastDao.delete(id);
+	public void delete(SpellCast spellCast) {
+		spellCastDao.delete(spellCast);
 	}
 
 	@Override
-	public List<SpellCast> find(Long personId, String person) {
-		return spellCastDao.find(personId, person);
+	public List<SpellCast> findAll() {
+		return (List<SpellCast>) spellCastDao.findAll();
+	}
+
+	@Override
+	public List<SpellCast> findByCaster(Province caster) {
+		return spellCastDao.findByCaster(caster);
 	}
 }

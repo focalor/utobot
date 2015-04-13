@@ -1,11 +1,18 @@
-package nl.focalor.utobot.utopia.model;
+package nl.focalor.utobot.utopia.model.entity;
 
+import nl.focalor.utobot.base.model.entity.Person;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Attack {
+
+	@Id
+	@GeneratedValue
 	private Long id;
-	private Long personId;
-	private String person;
+	@ManyToOne
+	private Person person;
 	private Date returnDate;
 
 	public Long getId() {
@@ -16,28 +23,20 @@ public class Attack {
 		this.id = id;
 	}
 
-	public Long getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Long personId) {
-		this.personId = personId;
-	}
-
-	public String getPerson() {
-		return person;
-	}
-
-	public void setPerson(String person) {
-		this.person = person;
-	}
-
 	public Date getReturnDate() {
 		return returnDate;
 	}
 
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
 	@Override

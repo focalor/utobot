@@ -1,6 +1,7 @@
 package nl.focalor.utobot;
 
 import java.io.IOException;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class Main {
 	public static void main(String[] args) throws Exception {
-		Server server = new Server(8091);
+		Server server = new Server(8090);// TODO port to properties?
 		server.setHandler(getServletContextHandler());
 		server.start();
 		server.join();

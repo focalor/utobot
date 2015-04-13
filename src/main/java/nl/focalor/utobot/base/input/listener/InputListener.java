@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -11,6 +12,7 @@ import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,10 @@ import org.springframework.stereotype.Component;
 public class InputListener implements IInputListener {
 	private final List<IRegexHandler> regexHandlers = new ArrayList<>();
 	private final Map<String, ICommandHandler> commandHandlers = new HashMap<>();
+
+	public InputListener() {
+
+	}
 
 	@Autowired(required = false)
 	public void setRegexHandlers(List<IRegexHandler> regexHandlers) {
@@ -35,7 +41,8 @@ public class InputListener implements IInputListener {
 	}
 
 	@Autowired(required = false)
-	public void setInputHandlerFactories(List<IInputHandlerFactory> inputHandlerFactories) {
+	public void setInputHandlerFactories(
+			List<IInputHandlerFactory> inputHandlerFactories) {
 		for (IInputHandlerFactory factory : inputHandlerFactories) {
 			setRegexHandlers(factory.getRegexHandlers());
 			setCommandHandlers(factory.getCommandHandlers());
@@ -65,7 +72,8 @@ public class InputListener implements IInputListener {
 
 	@Override
 	public IResult onCommand(CommandInput command) {
-		ICommandHandler handler = commandHandlers.get(command.getCommand().toLowerCase());
+		ICommandHandler handler = commandHandlers.get(command.getCommand()
+				.toLowerCase());
 		if (handler != null) { // ignore unknown commands
 			return handler.handleCommand(command);
 		}
