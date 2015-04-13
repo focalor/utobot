@@ -1,7 +1,5 @@
 package nl.focalor.utobot.utopia.handler;
 
-import java.util.Arrays;
-import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -12,12 +10,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DateHandler extends AbstractCommandHandler {
-	public static final List<String> COMMAND_NAMES = Arrays.asList("date", "time");
+	public static final String COMMAND_NAME = "date";
+	public static final String[] ALTERNATE_NAMES = {"time"};
 	@Autowired
 	private IUtopiaService utopiaService;
 
 	public DateHandler() {
-		super(COMMAND_NAMES);
+		super(COMMAND_NAME, ALTERNATE_NAMES);
 	}
 
 	@Override

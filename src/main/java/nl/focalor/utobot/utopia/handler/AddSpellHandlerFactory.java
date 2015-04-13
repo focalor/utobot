@@ -43,10 +43,12 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 	}
 
 	private class SpellHandler extends AbstractRegexHandler {
+		private static final String NAME = "spell";
+
 		private final SpellType spell;
 
 		public SpellHandler(SpellType spell) {
-			super(spell.getSyntax());
+			super(NAME, spell.getSyntax());
 			this.spell = spell;
 		}
 

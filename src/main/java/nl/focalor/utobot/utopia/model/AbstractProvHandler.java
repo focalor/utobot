@@ -3,20 +3,26 @@ package nl.focalor.utobot.utopia.model;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
-
 import nl.focalor.utobot.utopia.model.entity.Province;
 import org.apache.commons.lang3.text.WordUtils;
 
 public abstract class AbstractProvHandler extends AbstractCommandHandler {
 
-	public AbstractProvHandler(List<String> commandNames) {
-		super(commandNames);
+	public AbstractProvHandler(String commandName) {
+		super(commandName);
+	}
+
+	public AbstractProvHandler(String commandName, String... alternateCommandNames) {
+		super(commandName, alternateCommandNames);
+	}
+
+	public AbstractProvHandler(String commandName, List<String> alternateCommandNames) {
+		super(commandName, alternateCommandNames);
 	}
 
 	@Override

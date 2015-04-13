@@ -42,9 +42,10 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 	}
 
 	private class AttackHandler extends AbstractRegexHandler {
+		private static final String NAME = "attack";
 
 		public AttackHandler(AttackType attackType) {
-			super(attackType.getSyntax());
+			super(NAME, attackType.getSyntax());
 		}
 
 		@Override

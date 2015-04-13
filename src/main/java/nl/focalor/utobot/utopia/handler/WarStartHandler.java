@@ -9,35 +9,32 @@ import nl.focalor.utobot.utopia.service.IWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by luigibanzato on 12/04/2015.
  */
 @Component
 public class WarStartHandler extends AbstractCommandHandler {
+	public static final String COMMAND_NAME = "startwar";
+	public static final String[] ALTERNATE_NAMES = {"warstart"};
 
-    public static final List<String> COMMAND_NAMES = Arrays.asList("warstart", "startwar");
+	@Autowired
+	private IWarService warService;
 
-    @Autowired
-    private IWarService warService;
+	public WarStartHandler() {
+		super(COMMAND_NAME, ALTERNATE_NAMES);
+	}
 
-    public WarStartHandler(){
-        super(COMMAND_NAMES);
-    }
+	@Override
+	public IResult handleCommand(CommandInput event) {
+		War newWar = warService.startWar();
 
-    @Override
-    public IResult handleCommand(CommandInput event) {
-        War newWar = warService.startWar();
+		StringBuilder reply = new StringBuilder();
+		reply.append("New War started. War Id: ");
+		reply.append(newWar.getId());
+		reply.append(". Start Date: ");
+		reply.append(newWar.getStartDate());
+		reply.append(".");
 
-        StringBuilder reply = new StringBuilder();
-        reply.append("New War started. War Id: ");
-        reply.append(newWar.getId());
-        reply.append(". Start Date: ");
-        reply.append(newWar.getStartDate());
-        reply.append(".");
-
-        return new ReplyResult(reply.toString());
-    }
+		return new ReplyResult(reply.toString());
+	}
 }

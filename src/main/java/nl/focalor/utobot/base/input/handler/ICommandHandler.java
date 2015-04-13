@@ -9,4 +9,5 @@ public interface ICommandHandler extends IInputHandler {
 	public List<String> getCommandNames();
 
 	public IResult handleCommand(CommandInput event);
+
 }

@@ -1,7 +1,28 @@
 package nl.focalor.utobot.base.input.handler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public interface IInputHandler {
-	public default String getHelp() {
-		return null;
+	public String getName();
+
+	public default List<String> getHelp() {
+		ArrayList<String> result = new ArrayList<>();
+		result.add(getHelpHeader());
+		result.addAll(getHelpBody());
+		return result;
+	}
+
+	public default String getHelpHeader() {
+		return "Help for " + getName();
+	}
+
+	public default List<String> getHelpBody() {
+		return Arrays.asList(getSimpleHelp());
+	}
+
+	public default String getSimpleHelp() {
+		return "No help available";
 	}
 }
