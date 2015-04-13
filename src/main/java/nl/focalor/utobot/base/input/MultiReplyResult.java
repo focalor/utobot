@@ -13,4 +13,5 @@ public class MultiReplyResult implements IResult {
 	public List<String> getMessages() {
 		return messages;
 	}
+
 }

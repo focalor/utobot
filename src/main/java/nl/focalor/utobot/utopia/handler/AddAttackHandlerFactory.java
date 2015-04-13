@@ -1,5 +1,11 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.regex.Matcher;
+import javax.annotation.PostConstruct;
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -13,12 +19,6 @@ import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.regex.Matcher;
 
 @Component
 public class AddAttackHandlerFactory implements IInputHandlerFactory {
@@ -52,7 +52,7 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 			// Handle input
 			Matcher matcher = getMatcher(input);
 			if (!matcher.find()) {
-				throw new IllegalStateException("Input does not match expected input");
+				return new ErrorResult("Input does not match expected input");
 			}
 			int hours = Integer.valueOf(matcher.group(1));
 			double minutes = 60 * Double.valueOf("0." + matcher.group(2));

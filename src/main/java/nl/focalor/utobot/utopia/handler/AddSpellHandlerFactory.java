@@ -3,9 +3,8 @@ package nl.focalor.utobot.utopia.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-
 import javax.annotation.PostConstruct;
-
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -18,7 +17,6 @@ import nl.focalor.utobot.utopia.model.SpellType;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +54,7 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 		public IResult handleInput(IInput input) {
 			Matcher matcher = getMatcher(input);
 			if (!matcher.find()) {
-				throw new IllegalStateException("Input does not match expected input");
+				return new ErrorResult("Input does not match expected input");
 			}
 
 			// Gather data
@@ -68,7 +66,7 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 			SpellCast cast = new SpellCast();
 			cast.setSpellId(spell.getId());
 			cast.setLastHour(lastHour);
-			if(person != null) {
+			if (person != null) {
 				cast.setCaster(person.getProvince());
 			}
 			spellService.create(cast, true);

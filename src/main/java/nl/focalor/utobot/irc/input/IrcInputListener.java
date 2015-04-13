@@ -2,23 +2,27 @@ package nl.focalor.utobot.irc.input;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.focalor.utobot.base.input.CommandInput;
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
-
 import org.apache.commons.lang3.StringUtils;
+import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcInputListener {
+	private static final Logger LOG = LoggerFactory.getLogger(IrcInputListener.class);
+
 	private final IInputListener listener;
 	private List<IIrcInputHandler> ircHandlers = new ArrayList<>(0);
 
@@ -40,6 +44,8 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 
 			if (result == null) {
 				// Ignore unknown commands
+			} else if (result instanceof ErrorResult) {
+				handleReply(event, (ErrorResult) result);
 			} else if (result instanceof ReplyResult) {
 				handleReply(event, (ReplyResult) result);
 			} else if (result instanceof MultiReplyResult) {
@@ -49,8 +55,8 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 						+ result.getClass().getName());
 			}
 		} catch (Exception ex) {
-			// TODO seperate exception classes
-			handleReply(event, new ReplyResult(ex.getMessage()));
+			LOG.error("Unexpected exception", ex);
+			handleError(event, ex);
 		}
 	}
 
@@ -75,13 +81,26 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 		}
 	}
 
-	private void handleReply(MessageEvent<PircBotX> event, ReplyResult reply) {
-		event.getUser().send().notice(reply.getMessage());
-	}
-
 	private void handleReply(MessageEvent<PircBotX> event, MultiReplyResult reply) {
 		for (String msg : reply.getMessages()) {
-			event.getUser().send().notice(msg);
+			handleReply(event, msg);
 		}
 	}
+
+	private void handleError(MessageEvent<PircBotX> event, Exception ex) {
+		handleReply(event, Colors.RED + ex.getMessage());
+	}
+
+	private void handleReply(MessageEvent<PircBotX> event, ErrorResult reply) {
+		handleReply(event, Colors.RED + reply.getMessage());
+	}
+
+	private void handleReply(MessageEvent<PircBotX> event, ReplyResult reply) {
+		handleReply(event, reply.getMessage());
+	}
+
+	private void handleReply(MessageEvent<PircBotX> event, String reply) {
+		event.getUser().send().notice(reply);
+	}
+
 }

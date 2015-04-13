@@ -1,6 +1,9 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import nl.focalor.utobot.base.input.CommandInput;
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
@@ -14,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class AddProvHandler extends AbstractCommandHandler {
@@ -37,22 +37,20 @@ public class AddProvHandler extends AbstractCommandHandler {
 	public IResult handleCommand(CommandInput event) {
 		Matcher matcher = pattern.matcher(event.getArgument());
 		if (matcher.find()) {
-			createProvince(matcher);
-			return new ReplyResult("Province added");
+			return createProvince(matcher);
 		} else {
-			return new ReplyResult("Province could not added, check syntax: PLAYER - PROVINCE [RACE/PERSONALITY]");
+			return new ErrorResult("Province could not added, check syntax: PLAYER - PROVINCE [RACE/PERSONALITY]");
 		}
 	}
 
-	private void createProvince(Matcher matches) {
+	private IResult createProvince(Matcher matches) {
 		String player = matches.group(1);
 		String prov = matches.group(2);
 		Race race = parseRace(matches.group(3));
 		Personality personality = parsePersonality(matches.group(4));
 
 		if (race == null || personality == null) {
-			throw new IllegalStateException("race (" + matches.group(3) + ") or personality (" + matches.group(4)
-					+ ") invalid");
+			return new ErrorResult("race (" + matches.group(3) + ") or personality (" + matches.group(4) + ") invalid");
 		}
 
 		Person person = new Person();
@@ -67,6 +65,8 @@ public class AddProvHandler extends AbstractCommandHandler {
 
 		person.setProvince(province);
 		personService.save(person);
+
+		return new ReplyResult("Province added");
 	}
 
 	private Race parseRace(String name) {
