@@ -35,7 +35,7 @@ public class Main {
 		contextHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/*");
 		contextHandler.addEventListener(new ContextLoaderListener(context));
 		contextHandler.setInitParameter("contextInitializerClasses",
-				"nl.focalor.utobot.spring.UtobotContextInitializer");
+				"nl.focalor.utobot.spring.UtobotPropertiesContextInitializer");
 		return contextHandler;
 	}
 

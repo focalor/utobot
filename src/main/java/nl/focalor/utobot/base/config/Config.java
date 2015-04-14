@@ -62,7 +62,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // @formatter:on
 @EnableWebMvc
 @EnableTransactionManagement
-// @PropertySource("classpath:utobot.properties")
 @EnableJpaRepositories("nl.focalor.utobot")
 public class Config {
 	// Property resolving
