@@ -8,7 +8,7 @@ import java.util.List;
 public class UtopiaSettings {
 	private String startDate;
 	private List<AttackType> attacks;
-	private List<SpellType> spells;
+	private List<Spell> spells;
 
 	public String getStartDate() {
 		return startDate;
@@ -26,11 +26,11 @@ public class UtopiaSettings {
 		this.attacks = attacks;
 	}
 
-	public List<SpellType> getSpells() {
+	public List<Spell> getSpells() {
 		return spells;
 	}
 
-	public void setSpells(List<SpellType> spells) {
+	public void setSpells(List<Spell> spells) {
 		this.spells = spells;
 	}
 

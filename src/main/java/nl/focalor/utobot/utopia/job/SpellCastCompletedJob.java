@@ -20,7 +20,11 @@ public class SpellCastCompletedJob implements IScheduledJob {
 	@Override
 	public void run() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(cast.getCaster().getOwner().getName());
+		if (cast.getTarget() == null) {
+			builder.append(cast.getCaster().getOwner().getName());
+		} else {
+			builder.append(cast.getTarget().getName());
+		}
 		builder.append("'s ");
 		builder.append(cast.getSpellId());
 		builder.append(" has ended");

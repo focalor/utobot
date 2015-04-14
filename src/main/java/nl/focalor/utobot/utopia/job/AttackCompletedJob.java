@@ -20,7 +20,10 @@ public class AttackCompletedJob implements IScheduledJob {
 	@Override
 	public void run() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(attack.getPerson().getName());
+		if (attack.getPerson() != null) {
+			// TODO fix nullpointer
+			builder.append(attack.getPerson().getName());
+		}
 		builder.append("'s army has returned");
 		botService.broadcast(builder.toString());
 

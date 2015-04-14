@@ -2,21 +2,19 @@ package nl.focalor.utobot.utopia.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
+
 import javax.annotation.PostConstruct;
-import nl.focalor.utobot.base.input.ErrorResult;
-import nl.focalor.utobot.base.input.IInput;
-import nl.focalor.utobot.base.input.IResult;
-import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractRegexHandler;
+
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
-import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
-import nl.focalor.utobot.utopia.model.SpellType;
-import nl.focalor.utobot.utopia.model.entity.SpellCast;
+import nl.focalor.utobot.utopia.handler.spells.SelfSpellHandler;
+import nl.focalor.utobot.utopia.handler.spells.TargetedSpellHandler;
+import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,64 +32,20 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 
 	@PostConstruct
 	public void init() {
-		for (SpellType spellType : spellService.getKnownSpellTypes()) {
-			handlers.add(new SpellHandler(spellType));
+		for (Spell spell : spellService.getKnownSpells()) {
+			if (!StringUtils.isEmpty(spell.getSelfSyntax())) {
+				handlers.add(new SelfSpellHandler(utopiaService, personService, spellService, spell));
+			}
+
+			if (!StringUtils.isEmpty(spell.getTargetSyntax())) {
+				handlers.add(new TargetedSpellHandler(utopiaService, personService, spellService, spell));
+			}
 		}
 	}
 
 	@Override
 	public List<IRegexHandler> getRegexHandlers() {
 		return handlers;
-	}
-
-	private class SpellHandler extends AbstractRegexHandler {
-		private final SpellType spell;
-
-		public SpellHandler(SpellType spell) {
-			super(NAME, spell.getSyntax());
-			this.spell = spell;
-		}
-
-		@Override
-		public IResult handleInput(IInput input) {
-			Matcher matcher = getMatcher(input);
-			if (!matcher.find()) {
-				return new ErrorResult("Input does not match expected input");
-			}
-
-			// Gather data
-			Integer duration = Integer.valueOf(matcher.group(1));
-			int lastHour = utopiaService.getHourOfAge() + duration;
-			Person person = personService.find(input.getSource(), true);
-
-			// Create model
-			SpellCast cast = new SpellCast();
-			cast.setSpellId(spell.getId());
-			cast.setLastHour(lastHour);
-			if (person != null) {
-				cast.setCaster(person.getProvince());
-			}
-			spellService.create(cast, true);
-
-			// Create response
-			StringBuilder builder = new StringBuilder();
-			builder.append(spell.getName());
-			builder.append(" added for ");
-			if (person == null) {
-				builder.append(input.getSource());
-			} else {
-				builder.append(person.getName());
-			}
-			builder.append(" for ");
-			builder.append(duration);
-			builder.append(" hours");
-			return new ReplyResult(builder.toString());
-		}
-
-		@Override
-		public boolean hasHelp() {
-			return false;
-		}
 	}
 
 	@Override

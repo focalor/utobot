@@ -9,7 +9,7 @@ import nl.focalor.utobot.base.jobs.IJobsService;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.job.SpellCastCompletedJob;
-import nl.focalor.utobot.utopia.model.SpellType;
+import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
@@ -30,20 +30,20 @@ public class SpellService implements ISpellService {
 	@Autowired
 	private IPersonService personService;
 
-	private final Map<String, SpellType> knownSpells;
+	private final Map<String, Spell> knownSpells;
 
 	@Autowired
 	public SpellService(UtopiaSettings settings) {
 		super();
 
 		knownSpells = new HashMap<>();
-		for (SpellType spell : settings.getSpells()) {
+		for (Spell spell : settings.getSpells()) {
 			knownSpells.put(spell.getId(), spell);
 		}
 	}
 
 	@Override
-	public Collection<SpellType> getKnownSpellTypes() {
+	public Collection<Spell> getKnownSpells() {
 		return knownSpells.values();
 	}
 

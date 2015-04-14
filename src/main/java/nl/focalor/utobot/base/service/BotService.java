@@ -2,6 +2,8 @@ package nl.focalor.utobot.base.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
@@ -31,4 +33,13 @@ public class BotService implements IBotService {
 		}
 	}
 
+	public static void main(String[] args) {
+		String regex = "(?<test>.*)";
+		String input = "input";
+
+		Matcher matcher = Pattern.compile(regex).matcher(input);
+		matcher.find();
+		System.out.println(matcher.group("test"));
+
+	}
 }
