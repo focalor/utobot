@@ -90,21 +90,6 @@ public class Config {
 		return mapper.readValue(this.getClass().getClassLoader().getResource(spellsFile), UtopiaSettings.class);
 	}
 
-	// Database
-
-	@Bean
-	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		return new NamedParameterJdbcTemplate(datasource());
-	}
-
-	@Bean
-	public DataSource datasource() {
-		SimpleDriverDataSource ds = new SimpleDriverDataSource(new Driver(), "jdbc:h2:~/utopia");
-		ds.setUsername("sa");
-
-		return ds;
-	}
-
 	// Hipchat integration
 	@Bean
 	public IHipchatInputListener hipchatCommandListener(IInputListener listener, IHipchatService service) {
@@ -155,6 +140,21 @@ public class Config {
 		return bot;
 	}
 
+	// Database
+
+	@Bean
+	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(dataSource());
+	}
+
+	@Bean
+	public DataSource dataSource() {
+		SimpleDriverDataSource ds = new SimpleDriverDataSource(new Driver(), "jdbc:h2:~/utopia");
+		ds.setUsername("sa");
+
+		return ds;
+	}
+
 	@Bean
 	public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
@@ -176,7 +176,7 @@ public class Config {
 			@Value("${hibernate.format_sql}") String hibernateFormatSql) {
 		LocalContainerEntityManagerFactoryBean lemfb = new LocalContainerEntityManagerFactoryBean();
 
-		lemfb.setDataSource(datasource());
+		lemfb.setDataSource(dataSource());
 		lemfb.setJpaVendorAdapter(jpaVendorAdapter());
 		lemfb.setPackagesToScan("nl.focalor.utobot");
 
