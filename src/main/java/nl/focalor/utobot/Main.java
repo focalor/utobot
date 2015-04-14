@@ -1,7 +1,10 @@
 package nl.focalor.utobot;
 
 import java.io.IOException;
-import java.util.Properties;
+
+import nl.focalor.utobot.base.config.Config;
+import nl.focalor.utobot.spring.UtobotPropertiesContextInitializer;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -16,10 +19,9 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class Main {
 	public static void main(String[] args) throws Exception {
-		Properties properties = new Properties();
-		properties.load(Main.class.getClassLoader().getResourceAsStream("utobot.properties"));
+		String port = UtobotPropertiesContextInitializer.properties.getProperty("http.port");
 
-		Server server = new Server(Integer.valueOf(properties.getProperty("http.port")));
+		Server server = new Server(Integer.valueOf(port));
 		server.setHandler(getServletContextHandler());
 		server.start();
 		server.join();
@@ -32,13 +34,14 @@ public class Main {
 		contextHandler.setContextPath("/");
 		contextHandler.addServlet(new ServletHolder(new DispatcherServlet(context)), "/*");
 		contextHandler.addEventListener(new ContextLoaderListener(context));
-
+		contextHandler.setInitParameter("contextInitializerClasses",
+				"nl.focalor.utobot.spring.UtobotContextInitializer");
 		return contextHandler;
 	}
 
 	private static WebApplicationContext getContext() {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation("nl.focalor.utobot.base.config");
+		context.register(Config.class);
 		return context;
 	}
 }

@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -38,6 +37,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +62,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // @formatter:on
 @EnableWebMvc
 @EnableTransactionManagement
-@PropertySource("classpath:utobot.properties")
+// @PropertySource("classpath:utobot.properties")
 @EnableJpaRepositories("nl.focalor.utobot")
 public class Config {
 	// Property resolving
@@ -74,7 +74,9 @@ public class Config {
 	// JSon mappers
 	@Bean
 	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		return mapper;
 	}
 
 	@Bean
@@ -149,7 +151,7 @@ public class Config {
 					throw new RuntimeException("Failed connecting to IRC", ex);
 				}
 			}
-		}.start();
+		};// .start();
 
 		return bot;
 	}

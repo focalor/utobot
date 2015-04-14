@@ -1,8 +1,11 @@
 package nl.focalor.utobot.hipchat.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 	private Integer id;
 	private String name;
+	@JsonProperty("mention_name")
 	private String mentionName;
 
 	public Integer getId() {

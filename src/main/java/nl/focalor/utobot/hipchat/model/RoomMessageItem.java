@@ -1,5 +1,6 @@
 package nl.focalor.utobot.hipchat.model;
 
+
 public class RoomMessageItem {
 	private Message message;
 	private Room room;
