@@ -39,4 +39,24 @@ public class WarService implements IWarService {
     public War getCurrentWar() {
         return warDao.findOpenWar();
     }
+
+    @Override
+    public void addWar(War war) {
+        warDao.save(war);
+    }
+
+    @Override
+    public void removeWar(War war) {
+        warDao.delete(war);
+    }
+
+    @Override
+    public void findWar(Long id) {
+        warDao.findOne(id);
+    }
+
+    @Override
+    public void updateDate(War war) {
+        warDao.save(war);
+    }
 }

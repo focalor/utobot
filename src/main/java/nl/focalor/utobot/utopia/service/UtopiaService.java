@@ -9,10 +9,15 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UtopiaService implements IUtopiaService {
+
+	private static final Pattern pattern = Pattern.compile("(.*) (\\d{1,2}), YR(\\d{1,2})");
 	private final long ageStart;
+
 	@Autowired
 	private AddAttackHandlerFactory handler;
 
@@ -43,7 +48,69 @@ public class UtopiaService implements IUtopiaService {
 
 	@Override
 	public UtopiaDate getUtopiaDate() {
-		long delta = getTimeOfAge();
+		return getUtopianDateFromReal(new Date());
+	}
+
+	private long getTimeOfAge() {
+		long delta = new Date().getTime() - ageStart;
+		return delta;
+	}
+
+	public Date getRealDateFromUtopian(UtopiaDate utopianDate){
+		long weeks = utopianDate.getYear();
+		long days = 7 * weeks + utopianDate.getMonth();
+		long hours = 24 * days + utopianDate.getDay();
+		long minutes = 60 * hours + utopianDate.getMinute();
+		long seconds = 60 * minutes + utopianDate.getSecond();
+		long miliseconds = 1000 * seconds + utopianDate.getMillisecond();
+		long date = miliseconds + ageStart;
+
+		return new Date(date);
+	}
+
+	public UtopiaDate getUtopiaDateFromString(String utopianDate){
+		Matcher matcher = pattern.matcher(utopianDate);
+		UtopiaDate utopiaDate = new UtopiaDate();
+
+		if (matcher.find()) {
+			String month = matcher.group(1);
+			String day = matcher.group(2);
+			String year = matcher.group(3);
+
+			utopiaDate.setDay(Integer.parseInt(day));
+			utopiaDate.setMonth(monthFromString(month));
+			utopiaDate.setYear(Integer.parseInt(year));
+		}
+		return utopiaDate;
+	}
+
+	private int monthFromString(String month){
+		switch (month) {
+			case "January":
+				return 0;
+			case "February":
+				return 1;
+			case "March":
+				return 2;
+			case "April":
+				return 3;
+			case "May":
+				return 4;
+			case "June":
+				return 5;
+			case "July":
+				return 6;
+			default:
+				throw new IllegalStateException("Month " + month + " is invalid");
+		}
+	}
+
+	public Date getRealDateFromUtopianDateString(String utopianDate){
+		return getRealDateFromUtopian(getUtopiaDateFromString(utopianDate));
+	}
+
+	public UtopiaDate getUtopianDateFromReal(Date realDate){
+		long delta = realDate.getTime() - ageStart;
 		long seconds = delta / 1000;
 		long millisecondsSpare = delta % 1000;
 
@@ -67,10 +134,5 @@ public class UtopiaService implements IUtopiaService {
 		result.setSecond((int) secondsSpare);
 		result.setMillisecond((int) millisecondsSpare);
 		return result;
-	}
-
-	private long getTimeOfAge() {
-		long delta = new Date().getTime() - ageStart;
-		return delta;
 	}
 }
