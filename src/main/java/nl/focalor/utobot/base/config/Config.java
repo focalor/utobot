@@ -150,7 +150,7 @@ public class Config {
 					throw new RuntimeException("Failed connecting to IRC", ex);
 				}
 			}
-		};// .start();
+		}.start();
 
 		return bot;
 	}
