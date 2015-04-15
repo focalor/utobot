@@ -1,5 +1,6 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,5 +64,25 @@ public class ArmiesHandler extends AbstractCommandHandler {
 		builder.append(seconds);
 		builder.append("s");
 		return builder.toString();
+	}
+
+
+	@Override
+	public boolean hasHelp() {
+		return true;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Displays all armies out in the KD. Use '!help armies' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Displays all armies out in the KD.");
+		helpBody.add("USAGE:");
+		helpBody.add("!armies");
+		return helpBody;
 	}
 }

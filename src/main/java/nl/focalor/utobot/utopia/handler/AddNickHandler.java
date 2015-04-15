@@ -9,6 +9,9 @@ import nl.focalor.utobot.base.model.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author focalor
  */
@@ -45,5 +48,26 @@ public class AddNickHandler extends AbstractCommandHandler {
 		}
 
 		return new ReplyResult("Nickname(s) added");
+	}
+
+	@Override
+	public boolean hasHelp() {
+		return true;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Adds a nick to a User. Use '!help addnick' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Adds a nick to a User.");
+		helpBody.add("USAGE:");
+		helpBody.add("!addnick <User> <Nick>");
+		helpBody.add("e.g.:");
+		helpBody.add("!addnick Sephi DarkSephi");
+		return helpBody;
 	}
 }

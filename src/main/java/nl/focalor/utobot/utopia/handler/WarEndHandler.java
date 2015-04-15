@@ -10,6 +10,9 @@ import nl.focalor.utobot.utopia.service.IWarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by luigibanzato on 12/04/2015.
  */
@@ -48,5 +51,26 @@ public class WarEndHandler extends AbstractCommandHandler {
 		reply.append(".");
 
 		return new ReplyResult(reply.toString());
+	}
+
+	@Override
+	public boolean hasHelp() {
+		return true;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Ends the current war. Use '!help endwar' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Ends the current war.");
+		helpBody.add("USAGE:");
+		helpBody.add("!endwar [<date>]");
+		helpBody.add("e.g.:");
+		helpBody.add("!endwar March 3, YR2");
+		return helpBody;
 	}
 }
