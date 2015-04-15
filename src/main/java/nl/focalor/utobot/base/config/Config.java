@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -30,6 +29,7 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +53,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // @formatter:on
 @EnableWebMvc
 @EnableTransactionManagement
-@PropertySource("classpath:utobot.properties")
 @EnableJpaRepositories("nl.focalor.utobot")
 public class Config {
 	// Property resolving
@@ -65,7 +64,9 @@ public class Config {
 	// JSon mappers
 	@Bean
 	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		return mapper;
 	}
 
 	@Bean
@@ -78,21 +79,6 @@ public class Config {
 	public UtopiaSettings utopiaSettings(ObjectMapper mapper, @Value("${settings.utopia.file}") String spellsFile)
 			throws JsonParseException, JsonMappingException, IOException {
 		return mapper.readValue(this.getClass().getClassLoader().getResource(spellsFile), UtopiaSettings.class);
-	}
-
-	// Database
-
-	@Bean
-	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		return new NamedParameterJdbcTemplate(datasource());
-	}
-
-	@Bean
-	public DataSource datasource() {
-		SimpleDriverDataSource ds = new SimpleDriverDataSource(new Driver(), "jdbc:h2:~/utopia");
-		ds.setUsername("sa");
-
-		return ds;
 	}
 
 	// Hipchat integration
@@ -108,6 +94,21 @@ public class Config {
 	}
 
 	// Databsae
+
+	// Database
+
+	@Bean
+	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(dataSource());
+	}
+
+	@Bean
+	public DataSource dataSource() {
+		SimpleDriverDataSource ds = new SimpleDriverDataSource(new Driver(), "jdbc:h2:~/utopia");
+		ds.setUsername("sa");
+
+		return ds;
+	}
 
 	@Bean
 	public JpaTransactionManager transactionManager(EntityManagerFactory emf) {
@@ -130,7 +131,7 @@ public class Config {
 			@Value("${hibernate.format_sql}") String hibernateFormatSql) {
 		LocalContainerEntityManagerFactoryBean lemfb = new LocalContainerEntityManagerFactoryBean();
 
-		lemfb.setDataSource(datasource());
+		lemfb.setDataSource(dataSource());
 		lemfb.setJpaVendorAdapter(jpaVendorAdapter());
 		lemfb.setPackagesToScan("nl.focalor.utobot");
 

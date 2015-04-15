@@ -12,7 +12,7 @@ import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
-import nl.focalor.utobot.utopia.model.SpellType;
+import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
 import org.junit.Before;
@@ -39,12 +39,12 @@ public class AddSpellHandlerFactoryTest {
 
 	@Before
 	public void init() {
-		SpellType spell = new SpellType();
+		Spell spell = new Spell();
 		spell.setId("L&P");
 		spell.setName("Love and Peace");
-		spell.setSyntax("cast (\\d{1,2}) days");
+		spell.setSelfSyntax("cast (\\d{1,2}) days");
 
-		when(spellService.getKnownSpellTypes()).thenReturn(Arrays.asList(spell));
+		when(spellService.getKnownSpells()).thenReturn(Arrays.asList(spell));
 
 		factory.init();
 	}

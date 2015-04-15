@@ -10,4 +10,8 @@ public interface IWarService {
     public War startWar();
     public void endWar();
     public War getCurrentWar();
+    public void addWar(War war);
+    public void removeWar(War war);
+    public void findWar(Long id);
+    public void updateDate(War war);
 }

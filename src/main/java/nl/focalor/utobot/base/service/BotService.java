@@ -33,5 +33,4 @@ public class BotService implements IBotService {
 			service.broadcastMessage(message);
 		}
 	}
-
 }

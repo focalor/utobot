@@ -3,6 +3,8 @@ package nl.focalor.utobot.hipchat.controller;
 import nl.focalor.utobot.hipchat.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.model.RoomMessage;
 import nl.focalor.utobot.hipchat.model.RoomMessageItem;
+import nl.focalor.utobot.hipchat.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,7 @@ public class HipchatController {
 		RoomMessageItem item = roomMessage.getItem();
 
 		String roomId = item.getRoom().getId();
-		String user = item.getMessage().getFrom().getName();
+		User user = item.getMessage().getFrom();
 		String message = item.getMessage().getMessage();
 		listener.onRoomMessage(roomId, user, message);
 	}

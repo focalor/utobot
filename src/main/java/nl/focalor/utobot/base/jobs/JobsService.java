@@ -1,34 +1,22 @@
 package nl.focalor.utobot.base.jobs;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.annotation.PostConstruct;
 import nl.focalor.utobot.base.service.IBotService;
-import nl.focalor.utobot.base.service.ILongInitialization;
-import nl.focalor.utobot.utopia.service.IAttackService;
-import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-import org.pircbotx.PircBotX;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JobsService implements IJobsService {
-	// TODO base classes should not have utopia dependencies
-	@Autowired
+	// TODO move to utopia package
 	private IBotService botService;
 	@Autowired
 	private IUtopiaService utopiaService;
 	@Autowired
-	private IAttackService attackService;
-	@Autowired
-	private ISpellService spellService;
-	@Autowired
-	private PircBotX bot;
-	@Autowired
-	private List<ILongInitialization> initializingBeans;
+	private IStartupJob startupJob;
 
 	private final Timer timer;
 	private HourlyJob hourlyJob;
@@ -39,6 +27,9 @@ public class JobsService implements IJobsService {
 
 	@PostConstruct
 	public void init() {
+		startupJob.init();
+		new Thread(startupJob).start();
+
 		this.hourlyJob = new HourlyJob(utopiaService, botService);
 		this.scheduleAction(hourlyJob, utopiaService.getNextHourChange(), 60 * 60 * 1000);
 	}

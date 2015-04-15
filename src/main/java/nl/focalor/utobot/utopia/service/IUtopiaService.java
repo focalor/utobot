@@ -12,4 +12,12 @@ public interface IUtopiaService {
 	public int getHourOfAge();
 
 	public UtopiaDate getUtopiaDate();
+
+	public Date getRealDateFromUtopian(UtopiaDate utopianDate);
+
+	public UtopiaDate getUtopianDateFromReal(Date realDate);
+
+	public UtopiaDate getUtopiaDateFromString(String utopianDate);
+
+	public Date getRealDateFromUtopianDateString(String utopianDate);
 }

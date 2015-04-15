@@ -1,5 +1,6 @@
 package nl.focalor.utobot.hipchat.model;
 
+
 public class RoomMessage {
 	private String event;
 	private RoomMessageItem item;

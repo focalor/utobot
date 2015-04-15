@@ -2,9 +2,12 @@ package nl.focalor.utobot.utopia.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -13,6 +16,7 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.input.handler.AbstractRegexHandler;
 import nl.focalor.utobot.base.input.handler.HelpHandler;
 import nl.focalor.utobot.base.input.listener.IInputListener;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -106,7 +110,7 @@ public class HelpHandlerTest {
 		}
 
 		@Override
-		public IResult handleInput(IInput input) {
+		public IResult handleInput(Matcher matcher, IInput input) {
 			return null;
 		}
 

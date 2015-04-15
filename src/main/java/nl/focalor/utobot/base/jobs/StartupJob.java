@@ -3,7 +3,6 @@ package nl.focalor.utobot.base.jobs;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.base.service.ILongInitialization;
 import nl.focalor.utobot.utopia.service.IAttackService;
@@ -26,10 +25,9 @@ public class StartupJob implements IStartupJob, Runnable {
 	private List<ILongInitialization> longInitializationBeans;
 	private CountDownLatch latch;
 
-	@PostConstruct
+	@Override
 	public void init() {
 		latch = new CountDownLatch(longInitializationBeans.size());
-		new Thread(this).start();
 	}
 
 	@Override
