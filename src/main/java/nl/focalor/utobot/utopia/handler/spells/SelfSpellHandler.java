@@ -2,6 +2,7 @@ package nl.focalor.utobot.utopia.handler.spells;
 
 import java.util.regex.Matcher;
 
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.model.entity.Person;
@@ -35,24 +36,18 @@ public class SelfSpellHandler extends AbstractSpellHandler {
 		Integer duration = Integer.valueOf(matcher.group(1));
 		int lastHour = utopiaService.getHourOfAge() + duration;
 		Person person = personService.find(input.getSource(), true);
+		if (person == null) {
+			return new ErrorResult("Unrecognized player, register your province/nick");
+		}
 
 		// Create model
 		SpellCast cast = new SpellCast();
 		cast.setSpellId(spell.getId());
 		cast.setLastHour(lastHour);
-		if (person != null) {
-			cast.setCaster(person.getProvince());
-			cast.setTarget(person.getProvince());
-		}
+		cast.setCaster(person.getProvince());
+		cast.setTarget(person.getProvince());
 		spellService.create(cast, true);
 
-		String targetName;
-		if (person == null) {
-			targetName = input.getSource();
-		} else {
-			targetName = person.getName();
-		}
-
-		return buildResponse(spell.getName(), targetName, duration);
+		return buildResponse(spell.getName(), person.getName(), duration);
 	}
 }

@@ -1,22 +1,18 @@
 package nl.focalor.utobot.utopia.handler;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
-import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractRegexHandler;
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
-import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AttackType;
-import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddAttackHandlerFactory implements IInputHandlerFactory {
-	private static final String NAME = "attack";
+	private static final String NAME = "rawattack";
 	private final List<IRegexHandler> handlers = new ArrayList<>();
 
 	@Autowired
@@ -44,57 +40,37 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 		return handlers;
 	}
 
-	private class AttackHandler extends AbstractRegexHandler {
+	private class AttackHandler extends AbstractAttackHandler implements IRegexHandler {
+		private final Pattern pattern;
+		private final String name;
+
 		public AttackHandler(AttackType attackType) {
-			super(NAME, attackType.getSyntax());
+			super(attackService, personService);
+			pattern = Pattern.compile(attackType.getSyntax());
+			name = attackType.getName();
 		}
 
 		@Override
 		public IResult handleInput(Matcher matcher, IInput input) {
 			int hours = Integer.valueOf(matcher.group(1));
-			double minutes = 60 * Double.valueOf("0." + matcher.group(2));
+			double minutes = (60 * Double.valueOf("0." + matcher.group(2)));
 
-			// Gather data
-			Calendar returnDate = calculateReturnDate(hours, minutes);
-			Person person = personService.find(input.getSource(), true);
-
-			// Create attack model
-			Attack attack = new Attack();
-			attack.setReturnDate(returnDate.getTime());
-			attack.setPerson(person);
-			attackService.create(attack, true);
-
-			// Create response
-			StringBuilder builder = new StringBuilder();
-			builder.append("Attack added for ");
-			if (person == null) {
-				builder.append(input.getSource());
-			} else {
-				builder.append(person.getName());
-			}
-			builder.append(" for ");
-			builder.append(hours);
-			builder.append('.');
-			builder.append(matcher.group(2));
-			builder.append(" hours");
-			return new ReplyResult(builder.toString());
-		}
-
-		private Calendar calculateReturnDate(int hours, double minutes) {
-			int realMinutes = (int) minutes;
-			int seconds = (int) ((minutes - realMinutes) * 60);
-
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.HOUR, hours);
-			cal.add(Calendar.MINUTE, realMinutes);
-			cal.add(Calendar.SECOND, seconds);
-
-			return cal;
+			return handleCommand(input, hours, minutes);
 		}
 
 		@Override
 		public boolean hasHelp() {
 			return false;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public Pattern getRegexPattern() {
+			return pattern;
 		}
 	}
 

@@ -3,13 +3,16 @@ package nl.focalor.utobot.utopia.handler;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,12 +35,15 @@ public class ArmiesHandler extends AbstractCommandHandler {
 	@Override
 	public IResult handleCommand(CommandInput event) {
 		List<Attack> attacks = attackService.findAll();
+		if (attacks.isEmpty()) {
+			return new ReplyResult("No armies found");
+		}
 		//@formatter:off
 		List<String> msgs = attacks.stream()
 				.sorted((left, right) -> left.getReturnDate().compareTo(right.getReturnDate()))
 				.map(this::toMessage)
 				.collect(Collectors.toList());
-		//@formatter:on
+		//@formatter:on!
 
 		return new MultiReplyResult(msgs);
 	}

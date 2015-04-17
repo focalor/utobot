@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddSpellHandlerFactory implements IInputHandlerFactory {
-	private static final String NAME = "spell";
+	private static final String NAME = "rawspell";
 	private final List<IRegexHandler> handlers = new ArrayList<>();
 
 	@Autowired

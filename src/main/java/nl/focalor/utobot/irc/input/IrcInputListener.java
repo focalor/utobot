@@ -2,6 +2,7 @@ package nl.focalor.utobot.irc.input;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
@@ -9,6 +10,7 @@ import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
+
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
@@ -55,7 +57,6 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 						+ result.getClass().getName());
 			}
 		} catch (Exception ex) {
-			LOG.error("Unexpected exception", ex);
 			handleError(event, ex);
 		}
 	}
@@ -88,7 +89,12 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 	}
 
 	private void handleError(MessageEvent<PircBotX> event, Exception ex) {
-		handleReply(event, Colors.RED + ex.getMessage());
+		LOG.error("Unexpected exception", ex);
+		if (StringUtils.isEmpty(ex.getMessage())) {
+			handleReply(event, Colors.RED + "Error: Unexpected exception, contact bot admin");
+		} else {
+			handleReply(event, Colors.RED + "Error: " + ex.getMessage());
+		}
 	}
 
 	private void handleReply(MessageEvent<PircBotX> event, ErrorResult reply) {

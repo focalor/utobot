@@ -6,11 +6,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,9 +40,9 @@ public class HelpHandler extends AbstractCommandHandler {
 	}
 
 	private IResult buildSpecificHelp(CommandInput event) {
-		// Check commandhandlers
 		String argument = event.getArgument();
 
+		// Check commandhandlers
 		for (ICommandHandler handler : inputListener.getCommandHandlers()) {
 			if (handler.getCommandNames().contains(argument)) {
 				return new MultiReplyResult(handler.getHelp());
@@ -54,11 +56,19 @@ public class HelpHandler extends AbstractCommandHandler {
 			}
 		}
 
+		// Check factories
+		for (IInputHandlerFactory factory : inputListener.getFactories()) {
+			if (factory.getName().equals(argument)) {
+				return new MultiReplyResult(factory.getHelp());
+			}
+		}
+
 		return new ErrorResult("Specified help command '" + argument + "' is unknown");
 	}
 
 	private IResult buildGeneralHelp() {
 		List<String> messages = new ArrayList<>();
+		messages.add("Type !help COMMAND for extra information on a command/other input");
 		messages.add("Known commands:");
 		messages.addAll(getHelpCommandHandlers());
 		messages.add("Other supported input:");
