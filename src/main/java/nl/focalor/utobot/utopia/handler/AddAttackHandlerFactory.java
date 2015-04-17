@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddAttackHandlerFactory implements IInputHandlerFactory {
 	private static final String NAME = "rawattack";
+
 	private final List<IRegexHandler> handlers = new ArrayList<>();
 
 	@Autowired
@@ -60,7 +61,23 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 
 		@Override
 		public boolean hasHelp() {
-			return false;
+			return true;
+		}
+
+		@Override
+		public String getSimpleHelp() {
+			return "Adds an attack. Use '!help attack' for more info";
+		}
+
+		@Override
+		public List<String> getHelpBody() {
+			List<String> helpBody = new ArrayList<String>();
+			helpBody.add("Adds an attack.");
+			helpBody.add("USAGE:");
+			helpBody.add("!attack <duration>");
+			helpBody.add("e.g.:");
+			helpBody.add("!attack 10.7");
+			return helpBody;
 		}
 
 		@Override

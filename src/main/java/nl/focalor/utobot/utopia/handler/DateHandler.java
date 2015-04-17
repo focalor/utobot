@@ -8,6 +8,9 @@ import nl.focalor.utobot.utopia.service.IUtopiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class DateHandler extends AbstractCommandHandler {
 	public static final String COMMAND_NAME = "date";
@@ -26,6 +29,15 @@ public class DateHandler extends AbstractCommandHandler {
 
 	@Override
 	public String getSimpleHelp() {
-		return "Shows the current utopia date";
+		return "Shows the current utopia date. Use '!help date' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Shows the current utopia date.");
+		helpBody.add("USAGE:");
+		helpBody.add("!date");
+		return helpBody;
 	}
 }

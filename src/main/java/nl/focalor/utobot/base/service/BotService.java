@@ -2,9 +2,7 @@ package nl.focalor.utobot.base.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import javax.annotation.PostConstruct;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,15 @@ public class BotService implements IBotService {
 	private List<IMessagingService> messagingServices;
 
 	@Override
+	@PostConstruct
 	public void startBot() {
-		try {
-			bot.startBot();
-		} catch (IOException | IrcException ex) {
-			throw new RuntimeException("Failed starting server", ex);
-		}
+		new Thread(() -> {
+			try {
+				bot.startBot();
+			} catch (IOException | IrcException ex) {
+				throw new RuntimeException("Failed starting server", ex);
+			}
+		}).start();
 	}
 
 	@Override
@@ -31,15 +32,5 @@ public class BotService implements IBotService {
 		for (IMessagingService service : messagingServices) {
 			service.broadcastMessage(message);
 		}
-	}
-
-	public static void main(String[] args) {
-		String regex = "(?<test>.*)";
-		String input = "input";
-
-		Matcher matcher = Pattern.compile(regex).matcher(input);
-		matcher.find();
-		System.out.println(matcher.group("test"));
-
 	}
 }

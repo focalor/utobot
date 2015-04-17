@@ -7,6 +7,9 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.util.MathUtil;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class NwHandler extends AbstractCommandHandler {
 	public static final String COMMAND_NAME = "nw";
@@ -29,5 +32,26 @@ public class NwHandler extends AbstractCommandHandler {
 		reply.append(max);
 
 		return new ReplyResult(reply.toString());
+	}
+
+	@Override
+	public boolean hasHelp() {
+		return true;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Shows NW in range of the given NW. Use '!help nw' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Shows NW in range of the given NW.");
+		helpBody.add("USAGE:");
+		helpBody.add("!nw <your NW>");
+		helpBody.add("e.g.:");
+		helpBody.add("!nw 450000");
+		return helpBody;
 	}
 }

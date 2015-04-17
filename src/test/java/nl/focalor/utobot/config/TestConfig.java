@@ -1,7 +1,9 @@
 package nl.focalor.utobot.config;
 
+import java.io.IOException;
 import javax.sql.DataSource;
-
+import nl.focalor.utobot.spring.UtobotPropertiesContextInitializer;
+import nl.focalor.utobot.utopia.model.UtopiaSettings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +14,10 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableTransactionManagement
@@ -44,6 +50,21 @@ public class TestConfig {
 		jpaVendorAdapter.setGenerateDdl(true);
 		return jpaVendorAdapter;
 	}
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		return mapper;
+	}
+
+	@Bean
+	public UtopiaSettings utopiaSettings(ObjectMapper mapper) throws JsonParseException, JsonMappingException,
+			IOException {
+		String spellsFile = UtobotPropertiesContextInitializer.properties.getProperty("settings.utopia.file");
+		return mapper.readValue(this.getClass().getClassLoader().getResource(spellsFile), UtopiaSettings.class);
+	}
+
 	// TODO enable once test properties are loaded
 	// @Bean
 	// public LocalContainerEntityManagerFactoryBean entityManagerFactory(
