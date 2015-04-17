@@ -49,4 +49,20 @@ public class AddAttackHandler extends AbstractAttackHandler implements ICommandH
 		return handleCommand(event, realHours, minutes);
 	}
 
+	@Override
+	public String getSimpleHelp() {
+		return "Adds an attack. Use '!help addattack' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Adds an attack for the user.");
+		helpBody.add("USAGE:");
+		helpBody.add("!addattack <Hours>");
+		helpBody.add("e.g.:");
+		helpBody.add("!addattack 4.05");
+		return helpBody;
+	}
+
 }
