@@ -17,13 +17,8 @@ public abstract class AbstractRegexHandler implements IRegexHandler {
 		return pattern;
 	}
 
-	public Pattern getPattern() {
-		return pattern;
-	}
-
 	@Override
 	public String getName() {
 		return name;
 	}
-
 }

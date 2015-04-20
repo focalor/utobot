@@ -2,18 +2,16 @@ package nl.focalor.utobot.utopia.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.handler.spells.SelfSpellHandler;
 import nl.focalor.utobot.utopia.handler.spells.TargetedSpellHandler;
 import nl.focalor.utobot.utopia.model.Spell;
+import nl.focalor.utobot.utopia.service.IProvinceService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +23,8 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 
 	@Autowired
 	private IPersonService personService;
+	@Autowired
+	private IProvinceService provinceService;
 	@Autowired
 	private IUtopiaService utopiaService;
 	@Autowired
@@ -38,7 +38,8 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 			}
 
 			if (!StringUtils.isEmpty(spell.getTargetSyntax())) {
-				handlers.add(new TargetedSpellHandler(utopiaService, personService, spellService, spell));
+				handlers.add(new TargetedSpellHandler(utopiaService, personService, provinceService, spellService,
+						spell));
 			}
 		}
 	}

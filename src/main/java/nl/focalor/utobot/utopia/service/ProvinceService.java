@@ -17,8 +17,8 @@ public class ProvinceService implements IProvinceService {
 	}
 
 	@Override
-	public void create(Province province) {
-		provinceDao.save(province);
+	public Province create(Province province) {
+		return provinceDao.save(province);
 	}
 
 	@Override
@@ -26,4 +26,8 @@ public class ProvinceService implements IProvinceService {
 		provinceDao.deleteByNameIgnoreCase(name);
 	}
 
+	@Override
+	public Province findByNameAndIslandAndKingdom(String name, int island, int kingdom) {
+		return provinceDao.findByNameAndIslandAndKingdom(name, island, kingdom);
+	}
 }

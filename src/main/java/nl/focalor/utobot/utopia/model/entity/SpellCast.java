@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import nl.focalor.utobot.base.model.entity.Person;
 
 @Entity
 public class SpellCast {
@@ -13,7 +14,7 @@ public class SpellCast {
 	private Long id;
 	private String spellId;
 	@ManyToOne
-	private Province caster;
+	private Person caster;
 	@ManyToOne
 	private Province target;
 	private Integer lastHour;
@@ -42,11 +43,11 @@ public class SpellCast {
 		this.lastHour = lastHour;
 	}
 
-	public Province getCaster() {
+	public Person getCaster() {
 		return caster;
 	}
 
-	public void setCaster(Province caster) {
+	public void setCaster(Person caster) {
 		this.caster = caster;
 	}
 

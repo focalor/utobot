@@ -21,8 +21,8 @@ public class SpellCastCompletedJob implements IScheduledJob {
 	public void run() {
 		StringBuilder builder = new StringBuilder();
 		if (cast.getTarget() == null) {
-			builder.append(cast.getCaster().getOwner().getName());
-		} else {
+			builder.append(cast.getCaster().getName());
+		} else {// TODO show caster if it was selfspell?
 			builder.append(cast.getTarget().getName());
 		}
 		builder.append("'s ");

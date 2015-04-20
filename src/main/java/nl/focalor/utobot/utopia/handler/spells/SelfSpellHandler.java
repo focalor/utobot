@@ -1,7 +1,6 @@
 package nl.focalor.utobot.utopia.handler.spells;
 
 import java.util.regex.Matcher;
-
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -44,7 +43,7 @@ public class SelfSpellHandler extends AbstractSpellHandler {
 		SpellCast cast = new SpellCast();
 		cast.setSpellId(spell.getId());
 		cast.setLastHour(lastHour);
-		cast.setCaster(person.getProvince());
+		cast.setCaster(person);
 		cast.setTarget(person.getProvince());
 		spellService.create(cast, true);
 
