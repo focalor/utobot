@@ -1,10 +1,13 @@
 package nl.focalor.utobot.utopia.model.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Race;
-
-import javax.persistence.*;
 
 @Entity
 public class Province {
@@ -12,12 +15,13 @@ public class Province {
 	@Id
 	@GeneratedValue
 	private Long id;
+	@Column(nullable = false)
 	private String name;
 	private Integer island;
 	private Integer kingdom;
 	private Race race;
 	private Personality personality;
-	@OneToOne(mappedBy="province")
+	@OneToOne(mappedBy = "province")
 	private Person owner;
 
 	public Long getId() {

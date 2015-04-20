@@ -84,6 +84,7 @@ public class PersonService implements IPersonService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Person> findAll() {
 		return (List<Person>) personDao.findAll();
 	}
@@ -93,12 +94,24 @@ public class PersonService implements IPersonService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void addNick(long personId, String nick) {
 		Person person = personDao.findOne(personId);
 		Nick newNick = new Nick();
 		newNick.setNick(nick);
 		newNick.setPerson(person);
 		nickDao.save(newNick);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByNickIgnoreCase(String nick) {
+		nickDao.deleteByNickIgnoreCase(nick);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByNameIgnoreCase(String name) {
+		personDao.deleteByNameIgnoreCase(name);
 	}
 }

@@ -10,6 +10,10 @@ public interface IPersonService {
 
 	public void addNick(long personId, String nick);
 
+	public void deleteByNameIgnoreCase(String name);
+
+	public void deleteByNickIgnoreCase(String nick);
+
 	public Person find(String name, Boolean fuzzy);
 
 	public List<Person> load();

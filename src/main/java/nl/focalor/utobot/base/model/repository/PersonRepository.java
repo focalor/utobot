@@ -1,9 +1,7 @@
 package nl.focalor.utobot.base.model.repository;
 
 import java.util.List;
-
 import nl.focalor.utobot.base.model.entity.Person;
-
 import org.springframework.data.jpa.repository.Query;
 
 /**
@@ -26,11 +24,10 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 	 * @param searchString
 	 *            the (nick)name or province name to look for, must be in all lowercase
 	 */
-	@Query("SELECT DISTINCT(p) FROM Person p " +
-			"LEFT OUTER JOIN p.nicks n " +
-			"LEFT OUTER JOIN p.province pr " +
-			"WHERE LOWER(p.name) LIKE %?1% " +
-			"OR LOWER(n.nick) LIKE %?1% " +
-			"OR LOWER(pr.name) LIKE %?1%")
+	@Query("SELECT DISTINCT(p) FROM Person p " + "LEFT OUTER JOIN p.nicks n " + "LEFT OUTER JOIN p.province pr "
+			+ "WHERE LOWER(p.name) LIKE %?1% " + "OR LOWER(n.nick) LIKE %?1% " + "OR LOWER(pr.name) LIKE %?1%")
 	List<Person> findByNickNameOrProvince(String searchString);
+
+	void deleteByNameIgnoreCase(String name);
+
 }

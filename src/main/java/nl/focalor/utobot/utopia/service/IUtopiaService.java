@@ -15,7 +15,7 @@ public interface IUtopiaService {
 
 	public Date getRealDateFromUtopian(UtopiaDate utopianDate);
 
-	public UtopiaDate getUtopianDateFromReal(Date realDate);
+	public UtopiaDate getUtopianDateFromRealDate(Date realDate);
 
 	public UtopiaDate getUtopiaDateFromString(String utopianDate);
 

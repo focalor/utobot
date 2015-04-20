@@ -1,16 +1,15 @@
 package nl.focalor.utobot.utopia.service;
 
-import nl.focalor.utobot.utopia.handler.AddAttackHandlerFactory;
-import nl.focalor.utobot.utopia.model.UtopiaDate;
-import nl.focalor.utobot.utopia.model.UtopiaSettings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import nl.focalor.utobot.utopia.handler.AddAttackHandlerFactory;
+import nl.focalor.utobot.utopia.model.UtopiaDate;
+import nl.focalor.utobot.utopia.model.UtopiaSettings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UtopiaService implements IUtopiaService {
@@ -30,8 +29,7 @@ public class UtopiaService implements IUtopiaService {
 
 	@Override
 	public Date getNextHourChange() {
-		return new Date(new Date().getTime() + getSecondsTillHourChange()
-				* 1000);
+		return new Date(new Date().getTime() + getSecondsTillHourChange() * 1000);
 	}
 
 	@Override
@@ -48,7 +46,7 @@ public class UtopiaService implements IUtopiaService {
 
 	@Override
 	public UtopiaDate getUtopiaDate() {
-		return getUtopianDateFromReal(new Date());
+		return getUtopianDateFromRealDate(new Date());
 	}
 
 	private long getTimeOfAge() {
@@ -56,7 +54,8 @@ public class UtopiaService implements IUtopiaService {
 		return delta;
 	}
 
-	public Date getRealDateFromUtopian(UtopiaDate utopianDate){
+	@Override
+	public Date getRealDateFromUtopian(UtopiaDate utopianDate) {
 		long weeks = utopianDate.getYear();
 		long days = 7 * weeks + utopianDate.getMonth();
 		long hours = 24 * days + utopianDate.getDay();
@@ -68,7 +67,8 @@ public class UtopiaService implements IUtopiaService {
 		return new Date(date);
 	}
 
-	public UtopiaDate getUtopiaDateFromString(String utopianDate){
+	@Override
+	public UtopiaDate getUtopiaDateFromString(String utopianDate) {
 		Matcher matcher = pattern.matcher(utopianDate);
 		UtopiaDate utopiaDate = new UtopiaDate();
 
@@ -84,7 +84,7 @@ public class UtopiaService implements IUtopiaService {
 		return utopiaDate;
 	}
 
-	private int monthFromString(String month){
+	private int monthFromString(String month) {
 		switch (month) {
 			case "January":
 				return 0;
@@ -105,11 +105,13 @@ public class UtopiaService implements IUtopiaService {
 		}
 	}
 
-	public Date getRealDateFromUtopianDateString(String utopianDate){
+	@Override
+	public Date getRealDateFromUtopianDateString(String utopianDate) {
 		return getRealDateFromUtopian(getUtopiaDateFromString(utopianDate));
 	}
 
-	public UtopiaDate getUtopianDateFromReal(Date realDate){
+	@Override
+	public UtopiaDate getUtopianDateFromRealDate(Date realDate) {
 		long delta = realDate.getTime() - ageStart;
 		long seconds = delta / 1000;
 		long millisecondsSpare = delta % 1000;
@@ -117,7 +119,7 @@ public class UtopiaService implements IUtopiaService {
 		long minutes = seconds / 60;
 		long secondsSpare = seconds % 60;
 
-		long hours = minutes / 60;
+		long hours = minutes / 60 + 1; // uto hours start counting at 1
 		long minutesSpare = minutes % 60;
 
 		long days = hours / 24;

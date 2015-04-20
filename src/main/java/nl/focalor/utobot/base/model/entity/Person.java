@@ -1,9 +1,13 @@
 package nl.focalor.utobot.base.model.entity;
 
-import nl.focalor.utobot.utopia.model.entity.Province;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import nl.focalor.utobot.utopia.model.entity.Province;
 
 @Entity
 public class Person {
@@ -11,10 +15,11 @@ public class Person {
 	@Id
 	@GeneratedValue
 	private Long id;
+	@Column(nullable = false)
 	private String name;
-	@OneToOne
+	@OneToOne(orphanRemoval = true)
 	private Province province;
-	@OneToMany(mappedBy="person")
+	@OneToMany(mappedBy = "person", orphanRemoval = true)
 	private List<Nick> nicks;
 
 	public Long getId() {
@@ -39,6 +44,14 @@ public class Person {
 
 	public void setProvince(Province province) {
 		this.province = province;
+	}
+
+	public List<Nick> getNicks() {
+		return nicks;
+	}
+
+	public void setNicks(List<Nick> nicks) {
+		this.nicks = nicks;
 	}
 
 	@Override
@@ -77,13 +90,5 @@ public class Person {
 			return false;
 		}
 		return true;
-	}
-
-	public List<Nick> getNicks() {
-		return nicks;
-	}
-
-	public void setNicks(List<Nick> nicks) {
-		this.nicks = nicks;
 	}
 }

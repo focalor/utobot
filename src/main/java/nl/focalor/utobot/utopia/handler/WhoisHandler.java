@@ -18,6 +18,7 @@ public class WhoisHandler extends AbstractProvHandler {
 
 	public WhoisHandler() {
 		super(COMMAND_NAME, ALTERNATE_NAMES);
+		setIncludeNicks(true);
 	}
 
 	@Override

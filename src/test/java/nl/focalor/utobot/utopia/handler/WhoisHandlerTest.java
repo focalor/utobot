@@ -8,6 +8,7 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.model.entity.Nick;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
@@ -32,8 +33,15 @@ public class WhoisHandlerTest {
 		// Setup
 		Person person1 = new Person();
 		person1.setName("jan");
+		person1.setNicks(new ArrayList<>(0));
 		Person person2 = new Person();
 		person2.setName("jannie");
+		List<Nick> nicks = new ArrayList<>();
+		nicks.add(new Nick());
+		nicks.add(new Nick());
+		nicks.get(0).setNick("jannie1");
+		nicks.get(1).setNick("jannie2");
+		person2.setNicks(nicks);
 
 		Province prov = new Province();
 		prov.setName("Prov");
@@ -55,8 +63,12 @@ public class WhoisHandlerTest {
 		assertTrue(res instanceof MultiReplyResult);
 
 		List<String> messages = ((MultiReplyResult) res).getMessages();
-		assertEquals(2, messages.size());
-		assertTrue(messages.contains("jannie - Prov [Faery / Tactician]"));
-		assertTrue(messages.contains("jan"));
+		assertEquals(6, messages.size());
+		assertEquals("jan", messages.get(0));
+		assertEquals("Known nicknames:", messages.get(1));
+		assertEquals("", messages.get(2));
+		assertEquals("jannie - Prov [Faery / Tactician]", messages.get(3));
+		assertEquals("Known nicknames:", messages.get(4));
+		assertEquals("jannie1, jannie2", messages.get(5));
 	}
 }

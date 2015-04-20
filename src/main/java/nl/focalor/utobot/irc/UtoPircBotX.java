@@ -1,6 +1,5 @@
 package nl.focalor.utobot.irc;
 
-import java.io.IOException;
 import nl.focalor.utobot.base.jobs.IStartupJob;
 import nl.focalor.utobot.base.service.ILongInitialization;
 import nl.focalor.utobot.irc.input.IIrcInputListener;
@@ -8,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Configuration;
 import org.pircbotx.Configuration.Builder;
 import org.pircbotx.PircBotX;
-import org.pircbotx.exception.IrcException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -56,12 +54,12 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 
 	@Override
 	public void startBot() {
-		try {
-			super.startBot();
-			initializationFinished();
-		} catch (IOException | IrcException ex) {
-			throw new RuntimeException("Failed connecting to IRC", ex);
-		}
+		// try {
+		// super.startBot();
+		// initializationFinished();
+		// } catch (IOException | IrcException ex) {
+		// throw new RuntimeException("Failed connecting to IRC", ex);
+		// }
 	}
 
 	@Override

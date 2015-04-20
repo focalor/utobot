@@ -93,8 +93,6 @@ public class Config {
 		return new IrcInputListener(listener);
 	}
 
-	// Databsae
-
 	// Database
 
 	@Bean
