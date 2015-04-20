@@ -1,5 +1,7 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import nl.focalor.utobot.base.input.CommandInput;
@@ -85,5 +87,27 @@ public class AddProvHandler extends AbstractCommandHandler {
 			}
 		}
 		return null;
+	}
+
+
+	@Override
+	public boolean hasHelp() {
+		return true;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Registers a province with the bot. Use '!help addprov' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Registers a province with the bot.");
+		helpBody.add("USAGE:");
+		helpBody.add("!addprov <Nick> - <Province> [<Race>/<Profession>]");
+		helpBody.add("e.g.:");
+		helpBody.add("!addprov Sephi Naughty Nisall [Human/Cleric]");
+		return helpBody;
 	}
 }

@@ -77,4 +77,24 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 		}
 		return builder.toString();
 	}
+
+	@Override
+	public boolean hasHelp() {
+		return true;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Shows the status of the entire KD or a single province. Use '!help status' for more info.";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("USAGE:");
+		helpBody.add("!status [<province>]");
+		helpBody.add("e.g.:");
+		helpBody.add("!status Sephi");
+		return helpBody;
+	}
 }

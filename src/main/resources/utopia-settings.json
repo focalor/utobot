@@ -75,6 +75,11 @@
 			"selfSyntax":"Our people are excited about the military and will signup more quickly for (\\d{1,2}) days!"
 		},
 		{
+			"id":"PF",
+			"name":"Pitfalls",
+			"targetSyntax":"Pitfalls will haunt the lands of (?<province>.*\\)) for (?<duration>\\d{1,2}) days"
+		},
+		{
 			"id":"RM",
 			"name":"Reflect Magic",
 			"selfSyntax":"Spells cast upon our lands will have a chance of being reflected back upon the caster for (\\d{1,2}) days"
