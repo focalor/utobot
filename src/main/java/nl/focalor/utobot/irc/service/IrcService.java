@@ -1,24 +1,19 @@
 package nl.focalor.utobot.irc.service;
 
-import javax.annotation.PostConstruct;
-
-import org.pircbotx.PircBotX;
+import nl.focalor.utobot.irc.UtoPircBotX;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IrcService implements IIrcService {
 	@Autowired
-	private PircBotX bot;
-
-	@PostConstruct
-	public void run() {
-		// bot.startBot();
-	}
+	private UtoPircBotX bot;
 
 	@Override
 	public void broadcastMessage(String message) {
-		bot.sendIRC().message("#avians", message);
+		if (bot.isConnected()) {
+			bot.sendIRC().message("#avians", message);
+		}
 	}
 
 }

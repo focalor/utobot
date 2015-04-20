@@ -3,23 +3,24 @@ package nl.focalor.utobot.hipchat.service;
 import nl.focalor.utobot.hipchat.model.Message;
 import nl.focalor.utobot.hipchat.model.Notification;
 import nl.focalor.utobot.hipchat.model.Webhook;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class HipchatService implements IHipchatService {
+	private final boolean active;
 	private final RestTemplate template;
 	@Autowired
-	private ObjectMapper jsonMapper = new ObjectMapper();
+	private final ObjectMapper jsonMapper = new ObjectMapper();
 	@Value("${hipchat.token}")
 	private String authToken;
 
-	public HipchatService() {
+	@Autowired
+	public HipchatService(@Value("${hipchat.active}") boolean active) {
+		this.active = active;
 		template = new RestTemplate();
 	}
 
@@ -31,7 +32,7 @@ public class HipchatService implements IHipchatService {
 		url.append("/webhook?auth_token=");
 		url.append(authToken);
 
-		template.postForLocation(url.toString(), webhook);
+		postForLocation(url.toString(), webhook);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class HipchatService implements IHipchatService {
 		url.append("/notification?auth_token=");
 		url.append(authToken);
 
-		template.postForLocation(url.toString(), message);
+		postForLocation(url.toString(), message);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class HipchatService implements IHipchatService {
 		url.append("/message?auth_token=");
 		url.append("okNe4C0SI4VJxg7xnLXz235HCi4OSMdqctPycz0W");
 
-		template.postForLocation(url.toString(), message, String.class);
+		postForLocation(url.toString(), message);
 	}
 
 	@Override
@@ -62,4 +63,11 @@ public class HipchatService implements IHipchatService {
 		not.setMessage(message);
 		sendMessage("Warcry", not);
 	}
+
+	private void postForLocation(String url, Object request) {
+		if (active) {
+			template.postForLocation(url, request);
+		}
+	}
+
 }

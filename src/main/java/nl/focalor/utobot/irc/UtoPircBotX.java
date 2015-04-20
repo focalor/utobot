@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UtoPircBotX extends PircBotX implements ILongInitialization {
+	private final boolean active;
 	private IStartupJob startupJob;
 
 	@Autowired
@@ -28,9 +29,11 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 			@Value("${irc.channel.password}") String channelPassword,
 			@Value("${irc.server}") String server,
 			@Value("${irc.port}") int port,
+			@Value("${irc.active}") boolean active,
 			IIrcInputListener listener) {
-	//@formatter:on
+		//@formatter:on
 		super(buildConfig(name, server, channel, channelPassword, port, listener));
+		this.active = active;
 	}
 
 	// User setter to avoid circular dependencies
@@ -57,7 +60,9 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 	@Override
 	public void startBot() {
 		try {
-			super.startBot();
+			if (active) {
+				super.startBot();
+			}
 			initializationFinished();
 		} catch (IOException | IrcException ex) {
 			throw new RuntimeException("Failed connecting to IRC", ex);
