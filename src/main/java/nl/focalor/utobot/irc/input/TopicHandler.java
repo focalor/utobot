@@ -2,9 +2,11 @@ package nl.focalor.utobot.irc.input;
 
 import java.util.Arrays;
 import java.util.List;
+
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import org.pircbotx.PircBotX;
+import nl.focalor.utobot.irc.UtoPircBotX;
+
 import org.pircbotx.hooks.events.MessageEvent;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +23,7 @@ public class TopicHandler implements IIrcInputHandler {
 	}
 
 	@Override
-	public IResult handleCommand(MessageEvent<PircBotX> event) {
+	public IResult handleCommand(MessageEvent<UtoPircBotX> event) {
 		return new ReplyResult(event.getChannel().getTopic());
 	}
 

@@ -3,12 +3,15 @@ package nl.focalor.utobot.base.jobs;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
 import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.base.service.ILongInitialization;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

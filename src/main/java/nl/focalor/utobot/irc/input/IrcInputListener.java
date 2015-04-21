@@ -10,10 +10,10 @@ import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
+import nl.focalor.utobot.irc.UtoPircBotX;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Colors;
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcInputListener {
+public class IrcInputListener extends ListenerAdapter<UtoPircBotX> implements IIrcInputListener {
 	private static final Logger LOG = LoggerFactory.getLogger(IrcInputListener.class);
 
 	private final IInputListener listener;
@@ -40,7 +40,7 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 	}
 
 	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+	public void onMessage(MessageEvent<UtoPircBotX> event) throws Exception {
 		try {
 			IResult result = handle(event);
 
@@ -61,7 +61,7 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 		}
 	}
 
-	private IResult handle(MessageEvent<PircBotX> event) {
+	private IResult handle(MessageEvent<UtoPircBotX> event) {
 		String source = event.getUser().getNick();
 		String input = event.getMessage();
 
@@ -82,13 +82,13 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 		}
 	}
 
-	private void handleReply(MessageEvent<PircBotX> event, MultiReplyResult reply) {
+	private void handleReply(MessageEvent<UtoPircBotX> event, MultiReplyResult reply) {
 		for (String msg : reply.getMessages()) {
 			handleReply(event, msg);
 		}
 	}
 
-	private void handleError(MessageEvent<PircBotX> event, Exception ex) {
+	private void handleError(MessageEvent<UtoPircBotX> event, Exception ex) {
 		LOG.error("Unexpected exception", ex);
 		if (StringUtils.isEmpty(ex.getMessage())) {
 			handleReply(event, Colors.RED + "Error: Unexpected exception, contact bot admin");
@@ -97,15 +97,15 @@ public class IrcInputListener extends ListenerAdapter<PircBotX> implements IIrcI
 		}
 	}
 
-	private void handleReply(MessageEvent<PircBotX> event, ErrorResult reply) {
+	private void handleReply(MessageEvent<UtoPircBotX> event, ErrorResult reply) {
 		handleReply(event, Colors.RED + reply.getMessage());
 	}
 
-	private void handleReply(MessageEvent<PircBotX> event, ReplyResult reply) {
+	private void handleReply(MessageEvent<UtoPircBotX> event, ReplyResult reply) {
 		handleReply(event, reply.getMessage());
 	}
 
-	private void handleReply(MessageEvent<PircBotX> event, String reply) {
+	private void handleReply(MessageEvent<UtoPircBotX> event, String reply) {
 		event.getUser().send().notice(reply);
 	}
 
