@@ -15,7 +15,7 @@ public class Nick {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String nick;
 	@ManyToOne(optional = false)
 	private Person person;
