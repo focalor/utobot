@@ -1,5 +1,9 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -7,12 +11,9 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.utopia.model.entity.War;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
 import nl.focalor.utobot.utopia.service.IWarService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by luigibanzato on 12/04/2015.
@@ -20,7 +21,7 @@ import java.util.List;
 @Component
 public class WarStartHandler extends AbstractCommandHandler {
 	public static final String COMMAND_NAME = "startwar";
-	public static final String[] ALTERNATE_NAMES = {"warstart"};
+	public static final String[] ALTERNATE_NAMES = { "warstart" };
 
 	@Autowired
 	private IWarService warService;
@@ -37,10 +38,9 @@ public class WarStartHandler extends AbstractCommandHandler {
 		String startDate = event.getArgument() == null ? null : event.getArgument();
 		War newWar;
 
-		if(startDate == null) {
+		if (startDate == null) {
 			newWar = warService.startWar();
-		}
-		else{
+		} else {
 			War war = new War();
 
 			Date warStartDate = utopiaService.getRealDateFromUtopianDateString(startDate);
@@ -58,11 +58,6 @@ public class WarStartHandler extends AbstractCommandHandler {
 		reply.append(".");
 
 		return new ReplyResult(reply.toString());
-	}
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override

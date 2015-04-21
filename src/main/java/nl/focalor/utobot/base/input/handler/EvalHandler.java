@@ -1,14 +1,15 @@
 package nl.focalor.utobot.base.input.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class EvalHandler extends AbstractCommandHandler {
@@ -25,11 +26,6 @@ public class EvalHandler extends AbstractCommandHandler {
 		double result = exp.evaluate();
 
 		return new ReplyResult(Double.toString(result));
-	}
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override

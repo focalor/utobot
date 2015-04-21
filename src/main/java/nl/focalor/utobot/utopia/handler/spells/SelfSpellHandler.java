@@ -1,6 +1,8 @@
 package nl.focalor.utobot.utopia.handler.spells;
 
+import java.util.List;
 import java.util.regex.Matcher;
+
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
@@ -48,5 +50,20 @@ public class SelfSpellHandler extends AbstractSpellHandler {
 		spellService.create(cast, true);
 
 		return buildResponse(spell.getName(), person.getName(), duration);
+	}
+
+	@Override
+	public boolean hasHelp() {
+		return false;
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		return null;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return null;
 	}
 }

@@ -2,7 +2,9 @@ package nl.focalor.utobot.utopia.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
@@ -12,6 +14,7 @@ import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.service.IProvinceService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,5 +55,20 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 	@Override
 	public String getName() {
 		return NAME;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Adds an spell based on raw input. Use '!help rawspell' for more info";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Adds an spell based on raw input");
+		helpBody.add("e.g.:");
+		helpBody.add("Our realm is now under a sphere of minor protection for 16 days!");
+		helpBody.add("Our army has been inspired to train harder. We expect maintenance costs to be reduced for 10 days!");
+		return helpBody;
 	}
 }

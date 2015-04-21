@@ -72,12 +72,6 @@ public class ArmiesHandler extends AbstractCommandHandler {
 		return builder.toString();
 	}
 
-
-	@Override
-	public boolean hasHelp() {
-		return true;
-	}
-
 	@Override
 	public String getSimpleHelp() {
 		return "Displays all armies out in the KD. Use '!help armies' for more info.";

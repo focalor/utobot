@@ -3,13 +3,17 @@ package nl.focalor.utobot.irc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
+import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.input.listener.InputListener;
 import nl.focalor.utobot.irc.input.IrcInputListener;
 import nl.focalor.utobot.util.TestBase;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,6 +56,21 @@ public class CommandHandlerListenerTest extends TestBase {
 						@Override
 						public IResult handleCommand(CommandInput event) {
 							lastCall = event;
+							return null;
+						}
+
+						@Override
+						public boolean hasHelp() {
+							return false;
+						}
+
+						@Override
+						public List<String> getHelpBody() {
+							return null;
+						}
+
+						@Override
+						public String getSimpleHelp() {
 							return null;
 						}
 					}));

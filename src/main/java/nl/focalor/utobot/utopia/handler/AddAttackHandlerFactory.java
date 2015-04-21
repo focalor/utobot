@@ -61,23 +61,17 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 
 		@Override
 		public boolean hasHelp() {
-			return true;
-		}
-
-		@Override
-		public String getSimpleHelp() {
-			return "Adds an attack. Use '!help attack' for more info";
+			return false;
 		}
 
 		@Override
 		public List<String> getHelpBody() {
-			List<String> helpBody = new ArrayList<String>();
-			helpBody.add("Adds an attack.");
-			helpBody.add("USAGE:");
-			helpBody.add("!attack <duration>");
-			helpBody.add("e.g.:");
-			helpBody.add("!attack 10.7");
-			return helpBody;
+			return null;
+		}
+
+		@Override
+		public String getSimpleHelp() {
+			return null;
 		}
 
 		@Override
@@ -94,5 +88,21 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 	@Override
 	public String getName() {
 		return NAME;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return "Adds an attack based on raw input. Use '!help rawattack' for more info";
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		List<String> helpBody = new ArrayList<String>();
+		helpBody.add("Adds an attack based on raw input");
+		helpBody.add("USAGE:");
+		helpBody.add("Our forces will be available again in XX.YY days.... ");
+		helpBody.add("e.g.:");
+		helpBody.add("Our forces will be available again in 15.60 days (on February 5 of YR12).");
+		return helpBody;
 	}
 }

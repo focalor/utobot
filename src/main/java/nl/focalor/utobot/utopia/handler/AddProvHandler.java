@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
@@ -15,6 +16,7 @@ import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Race;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -87,12 +89,6 @@ public class AddProvHandler extends AbstractCommandHandler {
 			}
 		}
 		return null;
-	}
-
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override

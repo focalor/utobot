@@ -103,6 +103,21 @@ public class HelpHandlerTest {
 		public IResult handleCommand(CommandInput event) {
 			return null;
 		}
+
+		@Override
+		public boolean hasHelp() {
+			return false;
+		}
+
+		@Override
+		public List<String> getHelpBody() {
+			return null;
+		}
+
+		@Override
+		public String getSimpleHelp() {
+			return null;
+		}
 	}
 
 	private class RegexHandler extends AbstractRegexHandler {
@@ -112,6 +127,21 @@ public class HelpHandlerTest {
 
 		@Override
 		public IResult handleInput(Matcher matcher, IInput input) {
+			return null;
+		}
+
+		@Override
+		public boolean hasHelp() {
+			return false;
+		}
+
+		@Override
+		public List<String> getHelpBody() {
+			return null;
+		}
+
+		@Override
+		public String getSimpleHelp() {
 			return null;
 		}
 

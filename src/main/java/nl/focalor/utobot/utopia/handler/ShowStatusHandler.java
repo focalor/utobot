@@ -81,11 +81,6 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 	}
 
 	@Override
-	public boolean hasHelp() {
-		return true;
-	}
-
-	@Override
 	public String getSimpleHelp() {
 		return "Shows the status of the entire KD or a single province. Use '!help status' for more info.";
 	}

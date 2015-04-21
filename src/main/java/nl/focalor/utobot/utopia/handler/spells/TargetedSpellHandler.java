@@ -1,5 +1,6 @@
 package nl.focalor.utobot.utopia.handler.spells;
 
+import java.util.List;
 import java.util.regex.Matcher;
 
 import nl.focalor.utobot.base.input.IInput;
@@ -58,5 +59,20 @@ public class TargetedSpellHandler extends AbstractSpellHandler {
 		spellService.create(cast, true);
 
 		return buildResponse(spell.getName(), province, duration);
+	}
+
+	@Override
+	public boolean hasHelp() {
+		return false;
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		return null;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return null;
 	}
 }

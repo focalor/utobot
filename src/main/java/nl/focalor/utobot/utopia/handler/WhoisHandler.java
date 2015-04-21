@@ -8,13 +8,14 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AbstractProvHandler;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WhoisHandler extends AbstractProvHandler {
 	public static final String COMMAND_NAME = "whois";
-	public static final String[] ALTERNATE_NAMES = {"prov"};
+	public static final String[] ALTERNATE_NAMES = { "prov" };
 
 	@Autowired
 	private IPersonService personService;
@@ -28,11 +29,6 @@ public class WhoisHandler extends AbstractProvHandler {
 	protected Collection<Person> loadPeople(CommandInput event) {
 		String search = event.getArgument();
 		return personService.findByNickNameOrProvince(search);
-	}
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override

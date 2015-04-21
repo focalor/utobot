@@ -1,16 +1,17 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author focalor
@@ -48,11 +49,6 @@ public class AddNickHandler extends AbstractCommandHandler {
 		}
 
 		return new ReplyResult("Nickname(s) added");
-	}
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package nl.focalor.utobot.base.input.handler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public interface IInputHandler {
@@ -22,11 +21,7 @@ public interface IInputHandler {
 		return "Help for " + getName();
 	}
 
-	public default List<String> getHelpBody() {
-		return Arrays.asList(getSimpleHelp());
-	}
+	public List<String> getHelpBody();
 
-	public default String getSimpleHelp() {
-		return "No help available";
-	}
+	public String getSimpleHelp();
 }

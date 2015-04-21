@@ -1,14 +1,15 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.util.MathUtil;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class NwHandler extends AbstractCommandHandler {
@@ -32,11 +33,6 @@ public class NwHandler extends AbstractCommandHandler {
 		reply.append(max);
 
 		return new ReplyResult(reply.toString());
-	}
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override

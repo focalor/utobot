@@ -31,4 +31,19 @@ public class TopicHandler implements IIrcInputHandler {
 	public String getName() {
 		return COMMAND_NAME;
 	}
+
+	@Override
+	public boolean hasHelp() {
+		return false;
+	}
+
+	@Override
+	public List<String> getHelpBody() {
+		return null;
+	}
+
+	@Override
+	public String getSimpleHelp() {
+		return null;
+	}
 }

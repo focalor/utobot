@@ -1,5 +1,8 @@
 package nl.focalor.utobot.utopia.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -7,11 +10,9 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.utopia.model.entity.War;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
 import nl.focalor.utobot.utopia.service.IWarService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by luigibanzato on 12/04/2015.
@@ -19,7 +20,7 @@ import java.util.List;
 @Component
 public class WarEndHandler extends AbstractCommandHandler {
 	public static final String COMMAND_NAME = "endwar";
-	public static final String[] ALTERNATE_NAMES = {"warend"};
+	public static final String[] ALTERNATE_NAMES = { "warend" };
 
 	@Autowired
 	private IWarService warService;
@@ -37,10 +38,9 @@ public class WarEndHandler extends AbstractCommandHandler {
 
 		War currentWar = warService.getCurrentWar();
 		Long id = currentWar.getId();
-		if(endDate == null) {
+		if (endDate == null) {
 			warService.endWar();
-		}
-		else {
+		} else {
 			currentWar.setEndDate(utopiaService.getRealDateFromUtopianDateString(endDate));
 			warService.updateDate(currentWar);
 		}
@@ -51,11 +51,6 @@ public class WarEndHandler extends AbstractCommandHandler {
 		reply.append(".");
 
 		return new ReplyResult(reply.toString());
-	}
-
-	@Override
-	public boolean hasHelp() {
-		return true;
 	}
 
 	@Override
