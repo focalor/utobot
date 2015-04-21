@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddAttackHandler extends AbstractAttackHandler implements ICommandHandler {
 	public static final String COMMAND = "addattack";
-	public static final String[] ALTERNATE_NAMES = { "attack", "army" };
+	public static final String[] ALTERNATE_NAMES = { "attack", "army", "addarmy" };
 	private static final List<String> COMMAND_NAMES;
 
 	static {

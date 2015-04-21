@@ -1,6 +1,7 @@
 package nl.focalor.utobot.utopia.handler.spells;
 
 import java.util.regex.Matcher;
+
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.model.entity.Person;
@@ -51,9 +52,7 @@ public class TargetedSpellHandler extends AbstractSpellHandler {
 		cast.setSpellId(spell.getId());
 
 		Person person = personService.find(input.getSource(), true);
-		if (person != null) {
-			cast.setCaster(person);
-		}
+		cast.setCaster(person);
 
 		// TODO clean up province after cast expired?
 		spellService.create(cast, true);

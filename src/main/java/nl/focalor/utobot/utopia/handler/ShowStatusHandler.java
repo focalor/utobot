@@ -3,6 +3,7 @@ package nl.focalor.utobot.utopia.handler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
@@ -15,6 +16,7 @@ import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +50,7 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 			return new ErrorResult("Person " + name + " not found");
 		}
 		attacks = attackService.findByPerson(person);
-		spellCasts = spellService.findByCaster(person.getProvince());
+		spellCasts = spellService.findByCaster(person);
 
 		List<String> messages = new ArrayList<>();
 		messages.add("Status for " + person.getName());

@@ -3,18 +3,22 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.List;
+
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
+import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,9 +87,24 @@ public class AddSpellHandlerFactoryTest {
 	}
 
 	@Test
+	public void regexHandlerUnknownPerson() {
+		// Setup
+		IRegexHandler handler = factory.getRegexHandlers().get(0);
+
+		// Test
+		ReplyResult result = (ReplyResult) handler.handleInput(new Input("test", "cast 1 days"));
+
+		// Verify
+		assertEquals("Unrecognized player, register your province/nick", result.getMessage());
+	}
+
+	@Test
 	public void regexHandlerGoodInput() {
 		// Setup
 		IRegexHandler handler = factory.getRegexHandlers().get(0);
+		Person person = new Person();
+		person.setName("test");
+		when(personService.find("test", true)).thenReturn(person);
 
 		// Test
 		ReplyResult result = (ReplyResult) handler.handleInput(new Input("test", "cast 1 days"));

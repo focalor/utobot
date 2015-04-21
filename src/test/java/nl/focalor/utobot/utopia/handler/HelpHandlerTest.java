@@ -54,16 +54,17 @@ public class HelpHandlerTest {
 
 		// Verify
 		List<String> msgs = result.getMessages();
-		assertEquals(9, msgs.size());
-		assertEquals("Known commands:", msgs.get(0));
-		assertEquals("aTest - No help available", msgs.get(1));
-		assertEquals("command - No help available", msgs.get(2));
-		assertEquals("command2 - No help available", msgs.get(3));
-		assertEquals("test - No help available", msgs.get(4));
-		assertEquals("zTest - No help available", msgs.get(5));
-		assertEquals("Other supported input:", msgs.get(6));
-		assertEquals("regexA - No help available", msgs.get(7));
-		assertEquals("regexB - No help available", msgs.get(8));
+		assertEquals(10, msgs.size());
+		assertEquals("Type !help COMMAND for extra information on a command/other input", msgs.get(0));
+		assertEquals("Known commands:", msgs.get(1));
+		assertEquals("aTest - No help available", msgs.get(2));
+		assertEquals("command - No help available", msgs.get(3));
+		assertEquals("command2 - No help available", msgs.get(4));
+		assertEquals("test - No help available", msgs.get(5));
+		assertEquals("zTest - No help available", msgs.get(6));
+		assertEquals("Other supported input:", msgs.get(7));
+		assertEquals("regexA - No help available", msgs.get(8));
+		assertEquals("regexB - No help available", msgs.get(9));
 	}
 
 	@Test

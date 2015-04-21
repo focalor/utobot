@@ -1,9 +1,14 @@
 package nl.focalor.utobot.utopia.model.entity;
 
-import nl.focalor.utobot.base.model.entity.Person;
-
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import nl.focalor.utobot.base.model.entity.Person;
 
 @Entity
 public class Attack {
@@ -11,8 +16,9 @@ public class Attack {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Person person;
+	@Column(nullable = false)
 	private Date returnDate;
 
 	public Long getId() {
