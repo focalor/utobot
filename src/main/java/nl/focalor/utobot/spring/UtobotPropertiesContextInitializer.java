@@ -1,12 +1,9 @@
 package nl.focalor.utobot.spring;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
@@ -25,7 +22,7 @@ public class UtobotPropertiesContextInitializer implements
 	@Override
 	public void initialize(ConfigurableWebApplicationContext applicationContext) {
 		MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
-		MapPropertySource propertySource = new MapPropertySource("utobotPropeties", propertiesAsMap);
+		MapPropertySource propertySource = new MapPropertySource("utobotProperties", propertiesAsMap);
 		propertySources.addLast(propertySource);
 	}
 
@@ -40,13 +37,7 @@ public class UtobotPropertiesContextInitializer implements
 	private static Properties getUtobotProperties(String propertiesFile) {
 		try {
 			Properties properties = new Properties();
-			File file = new File(System.getProperty("user.home") + '/' + propertiesFile);
-			if (file.exists()) {
-				properties.load(new FileInputStream(file));
-			} else {
-				properties.load(UtobotPropertiesContextInitializer.class.getClassLoader().getResourceAsStream(
-						propertiesFile));
-			}
+			properties.load(ResourceLocator.open(propertiesFile));
 			return properties;
 		} catch (IOException ex) {
 			throw new RuntimeException("Failed loading properties", ex);

@@ -3,20 +3,18 @@ package nl.focalor.utobot.utopia.handler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.service.IAttackService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AddAttackHandler extends AbstractAttackHandler implements ICommandHandler {
-	public static final String COMMAND = "addattack";
-	public static final String[] ALTERNATE_NAMES = { "attack", "army", "addarmy" };
+	public static final String COMMAND = "attack";
+	public static final String[] ALTERNATE_NAMES = {"addattack", "army", "addarmy"};
 	private static final List<String> COMMAND_NAMES;
 
 	static {

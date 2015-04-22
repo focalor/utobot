@@ -2,7 +2,6 @@ package nl.focalor.utobot.irc.input;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
@@ -10,8 +9,7 @@ import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
-import nl.focalor.utobot.irc.UtoPircBotX;
-
+import nl.focalor.utobot.irc.bot.UtoPircBotX;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Colors;
 import org.pircbotx.hooks.ListenerAdapter;
