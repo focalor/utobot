@@ -1,7 +1,6 @@
 package nl.focalor.utobot.util;
 
-import nl.focalor.utobot.irc.UtoPircBotX;
-
+import nl.focalor.utobot.irc.bot.UtoPircBotX;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;

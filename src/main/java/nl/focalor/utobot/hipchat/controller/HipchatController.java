@@ -4,7 +4,6 @@ import nl.focalor.utobot.hipchat.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.model.RoomMessage;
 import nl.focalor.utobot.hipchat.model.RoomMessageItem;
 import nl.focalor.utobot.hipchat.model.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +23,17 @@ public class HipchatController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "command", method = RequestMethod.POST)
 	public void command(@RequestBody RoomMessage roomMessage) {
+		onMessage(roomMessage);
+	}
+
+	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "regex", method = RequestMethod.POST)
+	public void regex(@RequestBody RoomMessage roomMessage) {
+		onMessage(roomMessage);
+	}
+
+	private void onMessage(RoomMessage roomMessage) {
 		RoomMessageItem item = roomMessage.getItem();
 
 		String roomId = item.getRoom().getId();

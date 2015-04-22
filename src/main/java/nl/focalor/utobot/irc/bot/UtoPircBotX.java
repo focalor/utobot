@@ -1,4 +1,4 @@
-package nl.focalor.utobot.irc;
+package nl.focalor.utobot.irc.bot;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package nl.focalor.utobot.irc.service;
 
-import nl.focalor.utobot.irc.UtoPircBotX;
+import nl.focalor.utobot.irc.bot.UtoPircBotX;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

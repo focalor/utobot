@@ -1,0 +1,25 @@
+{
+	"active":false,
+	"token":"",
+	"room":"",
+	"webhooks":[
+		{
+			"name":"utobot_command",
+			"pattern":"^!",
+			"event":"room_message",
+			"url":"IP/hipchat/command"
+		},
+		{
+			"name":"utobot_attack",
+			"pattern":"^Our forces will be available again in",
+			"event":"room_message",
+			"url":"IP/hipchat/regex"
+		},
+		{
+			"name":"utobot_spell",
+			"pattern":"for \\d{1,2} day",
+			"event":"room_message",
+			"url":"IP/hipchat/regex"
+		}
+	]
+}
