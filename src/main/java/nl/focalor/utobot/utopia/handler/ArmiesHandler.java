@@ -1,9 +1,9 @@
 package nl.focalor.utobot.utopia.handler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
@@ -12,6 +12,7 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,34 +41,11 @@ public class ArmiesHandler extends AbstractCommandHandler {
 		//@formatter:off
 		List<String> msgs = attacks.stream()
 				.sorted((left, right) -> left.getReturnDate().compareTo(right.getReturnDate()))
-				.map(this::toMessage)
+				.map(attack -> attack.toString())
 				.collect(Collectors.toList());
 		//@formatter:on!
 
 		return new MultiReplyResult(msgs);
-	}
-
-	private String toMessage(Attack attack) {
-		String attacker;
-		attacker = attack.getPerson().getName();
-
-		long deltaSeconds = (attack.getReturnDate().getTime() - new Date().getTime()) / 1000;
-		int deltaMinutes = (int) (deltaSeconds / 60);
-		int deltahours = deltaMinutes / 60;
-
-		int seconds = (int) (deltaSeconds % 60);
-		int minutes = deltaMinutes % 60;
-
-		StringBuilder builder = new StringBuilder();
-		builder.append(attacker);
-		builder.append("'s army is out for ");
-		builder.append(deltahours);
-		builder.append("h ");
-		builder.append(minutes);
-		builder.append("m ");
-		builder.append(seconds);
-		builder.append("s");
-		return builder.toString();
 	}
 
 	@Override
