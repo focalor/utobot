@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import nl.focalor.utobot.utopia.handler.AddAttackHandlerFactory;
 import nl.focalor.utobot.utopia.model.UtopiaDate;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,22 +88,22 @@ public class UtopiaService implements IUtopiaService {
 
 	private int monthFromString(String month) {
 		switch (month) {
-			case "January":
-				return 0;
-			case "February":
-				return 1;
-			case "March":
-				return 2;
-			case "April":
-				return 3;
-			case "May":
-				return 4;
-			case "June":
-				return 5;
-			case "July":
-				return 6;
-			default:
-				throw new IllegalStateException("Month " + month + " is invalid");
+		case "January":
+			return 0;
+		case "February":
+			return 1;
+		case "March":
+			return 2;
+		case "April":
+			return 3;
+		case "May":
+			return 4;
+		case "June":
+			return 5;
+		case "July":
+			return 6;
+		default:
+			throw new IllegalStateException("Month " + month + " is invalid");
 		}
 	}
 
@@ -119,7 +121,7 @@ public class UtopiaService implements IUtopiaService {
 		long minutes = seconds / 60;
 		long secondsSpare = seconds % 60;
 
-		long hours = minutes / 60 + 1; // uto hours start counting at 1
+		long hours = minutes / 60;
 		long minutesSpare = minutes % 60;
 
 		long days = hours / 24;
@@ -131,7 +133,7 @@ public class UtopiaService implements IUtopiaService {
 		UtopiaDate result = new UtopiaDate();
 		result.setYear((int) weeks);
 		result.setMonth((int) daysSpare);
-		result.setDay((int) hoursSpare);
+		result.setDay((int) hoursSpare + 1); // uto hours start counting at 1
 		result.setMinute((int) minutesSpare);
 		result.setSecond((int) secondsSpare);
 		result.setMillisecond((int) millisecondsSpare);
