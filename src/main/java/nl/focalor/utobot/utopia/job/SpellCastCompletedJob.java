@@ -20,7 +20,7 @@ public class SpellCastCompletedJob implements IScheduledJob {
 	@Override
 	public void run() {
 		StringBuilder builder = new StringBuilder();
-		if (cast.getTarget() == null) {
+		if (cast.getTarget() == null || cast.getTarget() == cast.getCaster().getProvince()) {
 			builder.append(cast.getCaster().getName());
 		} else {// TODO show caster if it was selfspell?
 			builder.append(cast.getTarget().getName());

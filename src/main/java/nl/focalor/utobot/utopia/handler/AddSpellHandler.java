@@ -2,6 +2,7 @@ package nl.focalor.utobot.utopia.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
@@ -11,6 +12,8 @@ import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.ISpellService;
+import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,12 +24,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddSpellHandler extends AbstractCommandHandler {
 	public static final String COMMAND_NAME = "addspell";
-	public static final String[] ALTERNATE_NAMES = {"spell"};
+	public static final String[] ALTERNATE_NAMES = { "spell" };
 
 	@Autowired
 	private IPersonService personService;
 	@Autowired
 	private ISpellService spellService;
+	@Autowired
+	private IUtopiaService utopiaService;
 
 	public AddSpellHandler() {
 		super(COMMAND_NAME, ALTERNATE_NAMES);
@@ -43,7 +48,7 @@ public class AddSpellHandler extends AbstractCommandHandler {
 
 		SpellCast cast = new SpellCast();
 		cast.setCaster(person);
-		cast.setLastHour(Integer.valueOf(input[1]));
+		cast.setLastHour(utopiaService.getHourOfAge() + Integer.valueOf(input[1]));
 		cast.setSpellId(input[0]);
 		cast.setTarget(person.getProvince());
 

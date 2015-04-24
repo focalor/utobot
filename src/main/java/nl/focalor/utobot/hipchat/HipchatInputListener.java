@@ -34,24 +34,28 @@ public class HipchatInputListener implements IHipchatInputListener {
 			if (index >= 0) {
 				name = name.substring(0, index);
 			}
-			IResult result = listener.onMessage(name, message);
 
-			// handle result
-			if (result == null) {
-				// Ignore unknown commands
+			String[] lines = message.split("[\r\n]");
+			for (String line : lines) {
+				IResult result = listener.onMessage(name, line);
 
-			} else if (result instanceof ErrorResult) {
-				send(user.getId(), ((ErrorResult) result).getMessage());
-			} else if (result instanceof ReplyResult) {
-				send(user.getId(), ((ReplyResult) result).getMessage());
-			} else if (result instanceof MultiReplyResult) {
-				MultiReplyResult res = (MultiReplyResult) result;
-				for (String msg : res.getMessages()) {
-					send(user.getId(), msg);
+				// handle result
+				if (result == null) {
+					// Ignore unknown commands
+
+				} else if (result instanceof ErrorResult) {
+					send(user.getId(), ((ErrorResult) result).getMessage());
+				} else if (result instanceof ReplyResult) {
+					send(user.getId(), ((ReplyResult) result).getMessage());
+				} else if (result instanceof MultiReplyResult) {
+					MultiReplyResult res = (MultiReplyResult) result;
+					for (String msg : res.getMessages()) {
+						send(user.getId(), msg);
+					}
+				} else {
+					throw new UnsupportedOperationException("Don't know how to handle result of type "
+							+ result.getClass().getName());
 				}
-			} else {
-				throw new UnsupportedOperationException("Don't know how to handle result of type "
-						+ result.getClass().getName());
 			}
 		} catch (Exception ex) {
 			handleError(user.getId(), ex);
