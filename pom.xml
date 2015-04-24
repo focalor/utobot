@@ -5,6 +5,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	
 	<properties>
+		<!-- Expression parser -->
+		<exp4j.version>0.4.4</exp4j.version>
+		<!-- Date utils -->
+		<joda.version>2.7</joda.version>
 		<!-- Web server -->
 		<jetty.version>9.3.0.M2</jetty.version>
 		<jackson.version>2.5.1</jackson.version>
@@ -25,12 +29,20 @@
 	</properties>
 	
 	<dependencies>
+		<!-- Expression parser -->
 		<dependency>
 			<groupId>net.objecthunter</groupId>
 			<artifactId>exp4j</artifactId>
-			<version>0.4.4</version>
+		    <version>${exp4j.version}</version>
 		</dependency>
 	
+		<!-- Date utils -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		    <version>${joda.version}</version>
+		</dependency>
+
 		<!-- Web server -->
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>

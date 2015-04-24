@@ -5,20 +5,18 @@ import static org.mockito.Mockito.when;
 import java.util.Date;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
+import nl.focalor.utobot.base.input.handler.IInputHandler;
 import nl.focalor.utobot.util.ReflectionUtil;
 import nl.focalor.utobot.utopia.model.entity.War;
 import nl.focalor.utobot.utopia.service.IWarService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * Created by luigibanzato on 12/04/2015.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class WarStartHandlerTest {
+public class WarStartHandlerTest extends AbstractUtoHandlerTest {
 
 	@InjectMocks
 	private WarStartHandler warStartHandler;
@@ -40,5 +38,10 @@ public class WarStartHandlerTest {
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);
 		assertTrue(msg.startsWith("New War started. War Id: 1. Start Date: "));
+	}
+
+	@Override
+	public IInputHandler getHandler() {
+		return warStartHandler;
 	}
 }

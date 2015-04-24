@@ -3,10 +3,8 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-
 import java.util.Arrays;
 import java.util.List;
-
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
@@ -18,7 +16,6 @@ import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

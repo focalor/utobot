@@ -4,7 +4,7 @@
 		{
 			"id":"Attack",
 			"name":"Attack",
-			"syntax":"Our forces will be available again in (\\d{1,2})\\.(\\d{1,2}) days"
+			"syntax":"Our forces will be available again in (\\d{1,2}\\.\\d{1,2}) days"
 		}
 	],
 	"spells":[

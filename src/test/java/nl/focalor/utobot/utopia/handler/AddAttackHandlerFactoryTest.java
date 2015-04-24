@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AddAttackHandlerTest {
+public class AddAttackHandlerFactoryTest {
 	@InjectMocks
 	private AddAttackHandlerFactory handlerFactory;
 

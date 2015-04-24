@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
@@ -13,7 +12,6 @@ import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +60,7 @@ public class ArmiesHandler extends AbstractCommandHandler {
 
 		StringBuilder builder = new StringBuilder();
 		builder.append(attacker);
-		builder.append("'s army out for ");
+		builder.append("'s army is out for ");
 		builder.append(deltahours);
 		builder.append("h ");
 		builder.append(minutes);

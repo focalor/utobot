@@ -1,34 +1,25 @@
-package nl.focalor.utobot.utopia.handler;
+package nl.focalor.utobot.base.input.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
-import nl.focalor.utobot.base.input.handler.AbstractRegexHandler;
-import nl.focalor.utobot.base.input.handler.HelpHandler;
 import nl.focalor.utobot.base.input.listener.IInputListener;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author focalor
  */
-@RunWith(MockitoJUnitRunner.class)
-public class HelpHandlerTest {
+public class HelpHandlerTest extends AbstractHandlerTest {
 	@InjectMocks
 	private HelpHandler handler;
 
@@ -57,14 +48,14 @@ public class HelpHandlerTest {
 		assertEquals(10, msgs.size());
 		assertEquals("Type !help COMMAND for extra information on a command/other input", msgs.get(0));
 		assertEquals("Known commands:", msgs.get(1));
-		assertEquals("aTest - No help available", msgs.get(2));
-		assertEquals("command - No help available", msgs.get(3));
-		assertEquals("command2 - No help available", msgs.get(4));
-		assertEquals("test - No help available", msgs.get(5));
-		assertEquals("zTest - No help available", msgs.get(6));
+		assertEquals("aTest - simple", msgs.get(2));
+		assertEquals("command - simple", msgs.get(3));
+		assertEquals("command2 - simple", msgs.get(4));
+		assertEquals("test - simple", msgs.get(5));
+		assertEquals("zTest - simple", msgs.get(6));
 		assertEquals("Other supported input:", msgs.get(7));
-		assertEquals("regexA - No help available", msgs.get(8));
-		assertEquals("regexB - No help available", msgs.get(9));
+		assertEquals("regexA - simple", msgs.get(8));
+		assertEquals("regexB - simple", msgs.get(9));
 	}
 
 	@Test
@@ -77,7 +68,7 @@ public class HelpHandlerTest {
 		List<String> msgs = result.getMessages();
 		assertEquals(2, msgs.size());
 		assertEquals("Help for test", msgs.get(0));
-		assertEquals("No help available", msgs.get(1));
+		assertEquals("big", msgs.get(1));
 	}
 
 	@Test
@@ -88,10 +79,14 @@ public class HelpHandlerTest {
 
 		// Verify
 		List<String> msgs = result.getMessages();
-		assertEquals(3, msgs.size());
+		assertEquals(2, msgs.size());
 		assertEquals("Help for regexB", msgs.get(0));
-		assertEquals("Following syntax is supported:", msgs.get(1));
-		assertEquals("regex2", msgs.get(2));
+		assertEquals("big", msgs.get(1));
+	}
+
+	@Override
+	public IInputHandler getHandler() {
+		return handler;
 	}
 
 	private class CommandHandler extends AbstractCommandHandler {
@@ -106,17 +101,17 @@ public class HelpHandlerTest {
 
 		@Override
 		public boolean hasHelp() {
-			return false;
+			return true;
 		}
 
 		@Override
 		public List<String> getHelpBody() {
-			return null;
+			return Arrays.asList("big");
 		}
 
 		@Override
 		public String getSimpleHelp() {
-			return null;
+			return "simple";
 		}
 	}
 
@@ -132,18 +127,18 @@ public class HelpHandlerTest {
 
 		@Override
 		public boolean hasHelp() {
-			return false;
+			return true;
 		}
 
 		@Override
 		public List<String> getHelpBody() {
-			return null;
+			return Arrays.asList("big");
 		}
 
 		@Override
 		public String getSimpleHelp() {
-			return null;
+			return "simple";
 		}
-
 	}
+
 }

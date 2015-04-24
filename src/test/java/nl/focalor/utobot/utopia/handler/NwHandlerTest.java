@@ -3,10 +3,11 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
+import nl.focalor.utobot.base.input.handler.IInputHandler;
 import nl.focalor.utobot.util.ReflectionUtil;
 import org.junit.Test;
 
-public class NwHandlerTest {
+public class NwHandlerTest extends AbstractUtoHandlerTest {
 	private final NwHandler handler = new NwHandler();
 
 	@Test
@@ -17,5 +18,10 @@ public class NwHandlerTest {
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);
 		assertEquals("Networth interval: 12.58 - 18.88", msg);
+	}
+
+	@Override
+	public IInputHandler getHandler() {
+		return handler;
 	}
 }

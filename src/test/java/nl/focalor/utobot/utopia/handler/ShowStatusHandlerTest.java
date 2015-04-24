@@ -3,14 +3,13 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
+import nl.focalor.utobot.base.input.handler.IInputHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.util.ReflectionUtil;
@@ -20,19 +19,15 @@ import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author focalor
  */
-@RunWith(MockitoJUnitRunner.class)
-public class ShowStatusHandlerTest {
+public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 
 	@InjectMocks
 	private ShowStatusHandler handler;
@@ -151,5 +146,10 @@ public class ShowStatusHandlerTest {
 		assertEquals("Status for piet", messages.get(0));
 		assertEquals("Armies out:", messages.get(1));
 		assertEquals("Active spells:", messages.get(2));
+	}
+
+	@Override
+	public IInputHandler getHandler() {
+		return handler;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.input.handler.IInputHandler;
 import nl.focalor.utobot.base.model.entity.Nick;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
@@ -15,13 +16,10 @@ import nl.focalor.utobot.utopia.model.Personality;
 import nl.focalor.utobot.utopia.model.Race;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WhoisHandlerTest {
+public class WhoisHandlerTest extends AbstractUtoHandlerTest {
 	@InjectMocks
 	private WhoisHandler handler;
 
@@ -70,5 +68,10 @@ public class WhoisHandlerTest {
 		assertEquals("jannie - Prov [Faery / Tactician]", messages.get(3));
 		assertEquals("Known nicknames:", messages.get(4));
 		assertEquals("jannie1, jannie2", messages.get(5));
+	}
+
+	@Override
+	public IInputHandler getHandler() {
+		return handler;
 	}
 }

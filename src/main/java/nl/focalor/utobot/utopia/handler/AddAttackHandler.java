@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.service.IAttackService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,11 +42,47 @@ public class AddAttackHandler extends AbstractAttackHandler implements ICommandH
 
 	@Override
 	public IResult handleCommand(CommandInput event) {
-		double hours = Double.valueOf(event.getArgument());
-		int realHours = (int) hours;
-		double minutes = 60 * (hours % 1);
+		String[] parts = StringUtils.split(event.getArgument());
+		int index = getFirstDoubleIndex(parts);
 
-		return handleCommand(event, realHours, minutes);
+		final String nick;
+		final double time;
+		final String comment;
+
+		if (index == 0) {
+			nick = event.getSource();
+			time = Double.valueOf(parts[0]);
+			if (parts.length > 1) {
+				comment = StringUtils.join(parts, ' ', 1, parts.length);
+			} else {
+				comment = null;
+			}
+		} else if (index == 1) {
+			nick = parts[0];
+			time = Double.valueOf(parts[1]);
+
+			if (parts.length > 2) {
+				comment = StringUtils.join(parts, ' ', 2, parts.length);
+			} else {
+				comment = null;
+			}
+		} else {
+			return new ErrorResult("Input not recognized");
+		}
+
+		return handleCommand(nick, time, comment);
+	}
+
+	private int getFirstDoubleIndex(String[] parts) {
+		for (int i = 0; i < parts.length; i++) {
+			try {
+				Double.valueOf(parts[i]);
+				return i;
+			} catch (NumberFormatException ex) {
+			}
+		}
+
+		return -1;
 	}
 
 	@Override
@@ -57,9 +95,10 @@ public class AddAttackHandler extends AbstractAttackHandler implements ICommandH
 		List<String> helpBody = new ArrayList<String>();
 		helpBody.add("Adds an attack for the user.");
 		helpBody.add("USAGE:");
-		helpBody.add("!addattack <Hours>");
+		helpBody.add("!addattack [Nick] <Hours> [Comment]");
 		helpBody.add("e.g.:");
-		helpBody.add("!addattack 4.05");
+		helpBody.add("!addattack 4.05 this is a comment");
+		helpBody.add("!addattack Sephi 4.05 yay");
 		return helpBody;
 	}
 

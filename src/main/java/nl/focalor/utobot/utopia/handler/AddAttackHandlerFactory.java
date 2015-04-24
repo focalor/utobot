@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.annotation.PostConstruct;
-
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
@@ -14,7 +12,6 @@ import nl.focalor.utobot.base.input.handler.IRegexHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AttackType;
 import nl.focalor.utobot.utopia.service.IAttackService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,10 +50,9 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 
 		@Override
 		public IResult handleInput(Matcher matcher, IInput input) {
-			int hours = Integer.valueOf(matcher.group(1));
-			double minutes = (60 * Double.valueOf("0." + matcher.group(2)));
+			double time = Double.valueOf(matcher.group(1));
 
-			return handleCommand(input, hours, minutes);
+			return handleCommand(input.getSource(), time, null);
 		}
 
 		@Override

@@ -1,8 +1,12 @@
 package nl.focalor.utobot.utopia.handler;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
+import nl.focalor.utobot.base.input.handler.IInputHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
@@ -10,17 +14,11 @@ import nl.focalor.utobot.utopia.model.Race;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.service.IProvinceService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AddProvHandlerTest {
+public class AddProvHandlerTest extends AbstractUtoHandlerTest {
 	@InjectMocks
 	private AddProvHandler handler;
 	@Mock
@@ -50,5 +48,10 @@ public class AddProvHandlerTest {
 		assertEquals("Foc", prov.getName());
 		assertEquals(Race.ELF, prov.getRace());
 		assertEquals(Personality.MYSTIC, prov.getPersonality());
+	}
+
+	@Override
+	public IInputHandler getHandler() {
+		return handler;
 	}
 }

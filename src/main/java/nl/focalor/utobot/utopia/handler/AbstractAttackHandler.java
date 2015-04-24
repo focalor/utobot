@@ -1,9 +1,7 @@
 package nl.focalor.utobot.utopia.handler;
 
 import java.util.Calendar;
-
 import nl.focalor.utobot.base.input.ErrorResult;
-import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.model.entity.Person;
@@ -20,13 +18,15 @@ public abstract class AbstractAttackHandler {
 		this.personService = personService;
 	}
 
-	public IResult handleCommand(IInput event, int hours, double minutes) {
+	public IResult handleCommand(String personNick, double time, String comment) {
 		// Gather data
-		Calendar returnDate = calculateReturnDate(hours, minutes);
-		Person person = personService.find(event.getSource(), true);
+		Person person = personService.find(personNick, true);
 		if (person == null) {
 			return new ErrorResult("Unrecognized player, register your province/nick");
 		}
+		int hours = (int) time;
+		double minutes = 60 * (time % 1);
+		Calendar returnDate = calculateReturnDate(hours, minutes);
 
 		// Create attack model
 		Attack attack = new Attack();
