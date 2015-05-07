@@ -2,12 +2,16 @@ package nl.focalor.utobot.utopia.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.regex.Matcher;
+import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
+import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.IGenericRegexHandler;
+import nl.focalor.utobot.base.input.handler.IRegexHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AttackType;
@@ -54,27 +58,20 @@ public class AddAttackHandlerFactoryTest {
 		assertNotNull(result);
 	}
 
-	// FIXME enable
-	// @Test
-	// public void handle() {
-	// // Setup
-	// Input input = new Input("piet",
-	// "recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
-	// IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
-	//
-	// // Test
-	// IResult result = handler.handleInput(input);
-	//
-	// // Verify
-	// assertTrue(result instanceof ReplyResult);
-	// assertEquals("Attack added for piet for 9.11 hours", ((ReplyResult) result).getMessage());
-	//
-	// ArgumentCaptor<Attack> captor1 = ArgumentCaptor.forClass(Attack.class);
-	// ArgumentCaptor<Boolean> captor2 = ArgumentCaptor.forClass(Boolean.class);
-	// verify(attackService).create(captor1.capture(), captor2.capture());
-	// assertEquals("piet", captor1.getValue().getPerson().getName());
-	// assertEquals(true, captor2.getValue());
-	// }
+	@Test
+	public void unrecognizedPlayer() {
+		// Setup
+		Input input = new Input(null, null, "piet",
+				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
+		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
+
+		// Test
+		IResult result = handler.handleInput(input);
+
+		// Verify
+		assertTrue(result instanceof ReplyResult);
+		assertEquals("Unrecognized player, register your province/nick", ((ReplyResult) result).getMessage());
+	}
 
 	@Test
 	public void handleKnownUser() {
