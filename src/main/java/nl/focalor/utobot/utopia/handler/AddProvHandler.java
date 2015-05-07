@@ -53,6 +53,9 @@ public class AddProvHandler extends AbstractGenericCommandHandler {
 		Race race = parseRace(matches.group(3));
 		Personality personality = parsePersonality(matches.group(4));
 
+		if (personService.find(player, true) != null) {
+			return new ErrorResult("Failed adding player, " + player + " already known");
+		}
 		if (race == null || personality == null) {
 			return new ErrorResult("race (" + matches.group(3) + ") or personality (" + matches.group(4) + ") invalid");
 		}

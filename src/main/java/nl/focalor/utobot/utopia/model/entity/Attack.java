@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 
 import nl.focalor.utobot.base.model.entity.Person;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 public class Attack {
 
@@ -20,6 +22,7 @@ public class Attack {
 	private Person person;
 	@Column(nullable = false)
 	private Date returnDate;
+	private String comment;
 
 	public Long getId() {
 		return id;
@@ -45,8 +48,22 @@ public class Attack {
 		this.person = person;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 	@Override
 	public String toString() {
+		return toString(true);
+	}
+
+	public String toString(boolean includeAttacker) {
+		String attacker = getPerson().getName();
+
 		long deltaSeconds = (getReturnDate().getTime() - new Date().getTime()) / 1000;
 		int deltaMinutes = (int) (deltaSeconds / 60);
 		int deltahours = deltaMinutes / 60;
@@ -55,13 +72,20 @@ public class Attack {
 		int minutes = deltaMinutes % 60;
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("Army out for ");
+		builder.append(attacker);
+		builder.append("'s army is out for ");
 		builder.append(deltahours);
 		builder.append("h ");
 		builder.append(minutes);
 		builder.append("m ");
 		builder.append(seconds);
 		builder.append("s");
+
+		if (!StringUtils.isEmpty(comment)) {
+			builder.append(" (");
+			builder.append(comment);
+			builder.append(')');
+		}
 		return builder.toString();
 	}
 }

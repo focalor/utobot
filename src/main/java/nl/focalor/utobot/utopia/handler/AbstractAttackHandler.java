@@ -1,6 +1,7 @@
 package nl.focalor.utobot.utopia.handler;
 
 import java.util.Calendar;
+
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
@@ -32,6 +33,7 @@ public abstract class AbstractAttackHandler {
 		Attack attack = new Attack();
 		attack.setReturnDate(returnDate.getTime());
 		attack.setPerson(person);
+		attack.setComment(comment);
 		attackService.create(attack, true);
 
 		// Create response

@@ -58,7 +58,7 @@ public class ShowStatusHandler extends AbstractGenericCommandHandler {
 		//@formatter:off
 		messages.addAll(attacks.stream()
 					.sorted((left, right) -> left.getReturnDate().compareTo(right.getReturnDate()))
-					.map(attack -> attack.toString())
+					.map(attack -> attack.toString(false))
 					.collect(Collectors.toList()));
 		//@formatter:on
 		messages.add("Active spells:");

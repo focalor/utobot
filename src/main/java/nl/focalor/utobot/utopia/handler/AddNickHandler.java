@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.focalor.utobot.base.input.CommandInput;
+import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
@@ -42,6 +43,12 @@ public class AddNickHandler extends AbstractGenericCommandHandler {
 		Person person = personService.find(name, false);
 		if (person == null) {
 			return new ReplyResult("Cannot find " + name);
+		}
+
+		for (int i = startIndex; i < nicks.length; i++) {
+			if (personService.find(nicks[i], true) != null) {
+				return new ErrorResult("Failed adding nickname(s), " + nicks[i] + " already known");
+			}
 		}
 
 		for (int i = startIndex; i < nicks.length; i++) {

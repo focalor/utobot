@@ -4,6 +4,7 @@ import java.util.List;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.AbstractInputListener;
 import nl.focalor.utobot.hipchat.model.Message;
@@ -35,24 +36,25 @@ public class HipchatInputListener extends AbstractInputListener implements IHipc
 			if (index >= 0) {
 				name = name.substring(0, index);
 			}
-			IResult result = super.onMessage(event.getRoom(), name, event.getMessage());
 
-			// handle result
-			if (result == null) {
-				// Ignore unknown commands
+			String[] lines = event.getMessage().split("[\r\n]");
+			for (String line : lines) {
+				IResult result = super.onMessage(event.getRoom(), name, line);
 
-			} else if (result instanceof ErrorResult) {
-				send(event.getUser().getId(), ((ErrorResult) result).getMessage());
-			} else if (result instanceof ReplyResult) {
-				send(event.getUser().getId(), ((ReplyResult) result).getMessage());
-			} else if (result instanceof MultiReplyResult) {
-				MultiReplyResult res = (MultiReplyResult) result;
-				for (String msg : res.getMessages()) {
-					send(event.getUser().getId(), msg);
+				if (result == NoReplyResult.NO_REPLY) {
+				} else if (result instanceof ErrorResult) {
+					send(event.getUser().getId(), ((ErrorResult) result).getMessage());
+				} else if (result instanceof ReplyResult) {
+					send(event.getUser().getId(), ((ReplyResult) result).getMessage());
+				} else if (result instanceof MultiReplyResult) {
+					MultiReplyResult res = (MultiReplyResult) result;
+					for (String msg : res.getMessages()) {
+						send(event.getUser().getId(), msg);
+					}
+				} else {
+					throw new UnsupportedOperationException("Don't know how to handle result of type "
+							+ result.getClass().getName());
 				}
-			} else {
-				throw new UnsupportedOperationException("Don't know how to handle result of type "
-						+ result.getClass().getName());
 			}
 		} catch (Exception ex) {
 			handleError(event.getUser().getId(), ex);
