@@ -1,36 +1,54 @@
 package nl.focalor.utobot.base.input.listener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.PostConstruct;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
+import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.handler.ICommandHandler;
+import nl.focalor.utobot.base.input.handler.IGenericCommandHandler;
+import nl.focalor.utobot.base.input.handler.IGenericInputHandlerFactory;
+import nl.focalor.utobot.base.input.handler.IGenericRegexHandler;
 import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
 import nl.focalor.utobot.base.input.handler.IRegexHandler;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-@Component
-public class InputListener implements IInputListener {
+public abstract class AbstractInputListener implements IInputListener, ApplicationContextAware {
 	private final List<IInputHandlerFactory> factories = new ArrayList<>();
 	private final List<IRegexHandler> regexHandlers = new ArrayList<>();
 	private final List<ICommandHandler> commandHandlers = new ArrayList<>();
 	private final Map<String, ICommandHandler> commandToCommandHandler = new HashMap<>();
+	private ApplicationContext applicationContext;
 
-	@Autowired(required = false)
-	public void setRegexHandlers(List<IRegexHandler> regexHandlers) {
+	@PostConstruct
+	// Sorry for the ugly @PostConstruct combined with ApplicationContextAware
+	// Spring doesnt like circular bean references on non-singletons
+	public void init() {
+		addRegexHandlers(applicationContext.getBeansOfType(IGenericRegexHandler.class).values());
+		addCommandHandlers(applicationContext.getBeansOfType(IGenericCommandHandler.class).values());
+		addInputHandlerFactories(applicationContext.getBeansOfType(IGenericInputHandlerFactory.class).values());
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
+	public void addRegexHandlers(Collection<? extends IRegexHandler> regexHandlers) {
 		this.regexHandlers.addAll(regexHandlers);
 	}
 
-	@Autowired(required = false)
-	public void setCommandHandlers(List<ICommandHandler> commandHandlers) {
+	public void addCommandHandlers(Collection<? extends ICommandHandler> commandHandlers) {
 		this.commandHandlers.addAll(commandHandlers);
 		for (ICommandHandler handler : commandHandlers) {
 			for (String commandName : handler.getCommandNames()) {
@@ -39,23 +57,31 @@ public class InputListener implements IInputListener {
 		}
 	}
 
-	@Autowired(required = false)
-	public void setInputHandlerFactories(List<IInputHandlerFactory> inputHandlerFactories) {
+	public void addInputHandlerFactories(Collection<? extends IInputHandlerFactory> inputHandlerFactories) {
 		this.factories.addAll(inputHandlerFactories);
 		for (IInputHandlerFactory factory : factories) {
-			setRegexHandlers(factory.getRegexHandlers());
-			setCommandHandlers(factory.getCommandHandlers());
+			addRegexHandlers(factory.getRegexHandlers());
+			addCommandHandlers(factory.getCommandHandlers());
 		}
 	}
 
 	@Override
-	public IResult onMessage(String source, String message) {
+	public IResult onMessage(String room, String user, String message) {
+		return onMessage(room, user, message, new HashMap<>(0));
+	}
+
+	@Override
+	public IResult onMessage(String room, String user, String message, Map<String, Object> parameters) {
 		if (StringUtils.isEmpty(message)) {
-			return null;
+			return NoReplyResult.NO_REPLY;
 		} else if (message.charAt(0) == CommandInput.COMMAND_PREFIX) {
-			return onCommand(CommandInput.createFor(source, message));
+			CommandInput input = CommandInput.createFor(this, room, user, message);
+			input.putParameters(parameters);
+			return onCommand(input);
 		} else {
-			return onNonCommand(new Input(source, message));
+			Input input = new Input(this, room, user, message);
+			input.putParameters(parameters);
+			return onNonCommand(input);
 		}
 	}
 
@@ -66,7 +92,7 @@ public class InputListener implements IInputListener {
 				return handler.handleInput(input);
 			}
 		}
-		return null;
+		return NoReplyResult.NO_REPLY;
 	}
 
 	@Override
@@ -75,7 +101,7 @@ public class InputListener implements IInputListener {
 		if (handler != null) { // ignore unknown commands
 			return handler.handleCommand(command);
 		}
-		return null;
+		return NoReplyResult.NO_REPLY;
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package nl.focalor.utobot.base.input.listener;
 
-import nl.focalor.utobot.base.service.IMessagingService;
+import nl.focalor.utobot.base.service.ICommunicationService;
 
-public interface ICommandLineInputListener extends IMessagingService {
+public interface ICommandLineInputListener extends ICommunicationService, IInputListener {
 
 }

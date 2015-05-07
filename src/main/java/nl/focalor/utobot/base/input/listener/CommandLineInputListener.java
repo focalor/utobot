@@ -4,6 +4,7 @@ import java.util.Scanner;
 import javax.annotation.PostConstruct;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CommandLineInputListener extends Thread implements ICommandLineInputListener {
+public class CommandLineInputListener extends AbstractInputListener implements ICommandLineInputListener, Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(CommandLineInputListener.class);
 
 	private final Scanner scanner;
-	private IInputListener listener;
 	private final String identifier;
 
 	@Autowired
@@ -26,15 +26,9 @@ public class CommandLineInputListener extends Thread implements ICommandLineInpu
 		this.identifier = identifier;
 	}
 
-	@Autowired
-	public void setListener(IInputListener listener) {
-		this.listener = listener;
-	}
-
-	@Override
 	@PostConstruct
 	public void start() {
-		super.start();
+		new Thread(this).start();
 	}
 
 	@Override
@@ -42,7 +36,7 @@ public class CommandLineInputListener extends Thread implements ICommandLineInpu
 		while (true) {
 			try {
 				String line = scanner.nextLine();
-				IResult result = listener.onMessage(identifier, line);
+				IResult result = super.onMessage(identifier, null, line);
 				handleResult(result);
 			} catch (RuntimeException ex) {
 				// Stay in loop
@@ -52,8 +46,7 @@ public class CommandLineInputListener extends Thread implements ICommandLineInpu
 	}
 
 	private void handleResult(IResult result) {
-		if (result == null) {
-			// Ignore unknown commands
+		if (result == NoReplyResult.NO_REPLY) {
 		} else if (result instanceof ReplyResult) {
 			ReplyResult res = (ReplyResult) result;
 			System.out.println(res.getMessage());
@@ -71,5 +64,10 @@ public class CommandLineInputListener extends Thread implements ICommandLineInpu
 	@Override
 	public void broadcastMessage(String message) {
 		System.out.println(message);
+	}
+
+	@Override
+	public void setTopic(String topic) {
+		System.out.println("New topic: " + topic);
 	}
 }

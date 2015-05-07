@@ -12,7 +12,7 @@ import nl.focalor.utobot.base.input.ReplyResult;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EvalHandler extends AbstractCommandHandler {
+public class EvalHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "eval";
 
 	public EvalHandler() {

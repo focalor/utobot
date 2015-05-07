@@ -3,12 +3,9 @@ package nl.focalor.utobot.base.jobs;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.annotation.PostConstruct;
-
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +16,6 @@ public class JobsService implements IJobsService {
 	private IBotService botService;
 	@Autowired
 	private IUtopiaService utopiaService;
-	@Autowired
-	private IStartupJob startupJob;
 
 	private final Timer timer;
 	private HourlyJob hourlyJob;
@@ -29,11 +24,12 @@ public class JobsService implements IJobsService {
 		this.timer = new Timer("timedUtoJobs");
 	}
 
+	public void setBotService(IBotService botService) {
+		this.botService = botService;
+	}
+
 	@PostConstruct
 	public void init() {
-		startupJob.init();
-		new Thread(startupJob).start();
-
 		this.hourlyJob = new HourlyJob(utopiaService, botService);
 		this.scheduleAction(hourlyJob, utopiaService.getNextHourChange(), 60 * 60 * 1000);
 	}

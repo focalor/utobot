@@ -6,7 +6,7 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @author focalor
  */
 @Component
-public class AddNickHandler extends AbstractCommandHandler {
+public class AddNickHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "addnick";
 	@Autowired
 	private IPersonService personService;
@@ -32,7 +32,7 @@ public class AddNickHandler extends AbstractCommandHandler {
 		if (args.length == 0) {
 			return new ReplyResult("Invalid call, check syntax");
 		} else if (args.length == 1) {
-			return addNicks(event.getSource(), args, 0);
+			return addNicks(event.getUser(), args, 0);
 		} else {
 			return addNicks(args[0], args, 1);
 		}

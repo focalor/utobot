@@ -6,7 +6,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author focalor
  */
 @Component
-public class AddSpellHandler extends AbstractCommandHandler {
+public class AddSpellHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "addspell";
 	public static final String[] ALTERNATE_NAMES = {"spell"};
 
@@ -36,7 +36,7 @@ public class AddSpellHandler extends AbstractCommandHandler {
 	public IResult handleCommand(CommandInput event) {
 		String[] input = StringUtils.split(event.getArgument());
 
-		Person person = personService.find(event.getSource(), true);
+		Person person = personService.find(event.getUser(), true);
 		if (person == null) {
 			return new ErrorResult("Person not recognized");
 		}

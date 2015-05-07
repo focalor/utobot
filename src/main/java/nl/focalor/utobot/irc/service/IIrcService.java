@@ -1,7 +1,7 @@
 package nl.focalor.utobot.irc.service;
 
-import nl.focalor.utobot.base.service.IMessagingService;
+import nl.focalor.utobot.base.service.ICommunicationService;
 
-public interface IIrcService extends IMessagingService {
+public interface IIrcService extends ICommunicationService {
 
 }

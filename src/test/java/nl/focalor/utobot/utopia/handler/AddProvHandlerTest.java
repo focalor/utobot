@@ -29,7 +29,8 @@ public class AddProvHandlerTest extends AbstractUtoHandlerTest {
 	@Test
 	public void test() {
 		// Test
-		IResult result = handler.handleCommand(CommandInput.createFor("user", "!addprov focalor - Foc [Elf/Mystic]"));
+		IResult result = handler.handleCommand(CommandInput.createFor(null, null, "user",
+				"!addprov focalor - Foc [Elf/Mystic]"));
 
 		// Verify
 		ArgumentCaptor<Person> peopleCaptor = ArgumentCaptor.forClass(Person.class);

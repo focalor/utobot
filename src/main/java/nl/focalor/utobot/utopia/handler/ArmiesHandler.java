@@ -8,7 +8,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.Attack;
 import nl.focalor.utobot.utopia.service.IAttackService;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author focalor
  */
 @Component
-public class ArmiesHandler extends AbstractCommandHandler {
+public class ArmiesHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "armies";
 
 	@Autowired

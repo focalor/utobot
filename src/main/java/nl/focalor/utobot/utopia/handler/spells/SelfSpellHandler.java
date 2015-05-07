@@ -36,7 +36,7 @@ public class SelfSpellHandler extends AbstractSpellHandler {
 		// Gather data
 		Integer duration = Integer.valueOf(matcher.group(1));
 		int lastHour = utopiaService.getHourOfAge() + duration;
-		Person person = personService.find(input.getSource(), true);
+		Person person = personService.find(input.getUser(), true);
 		if (person == null) {
 			return new ErrorResult("Unrecognized player, register your province/nick");
 		}

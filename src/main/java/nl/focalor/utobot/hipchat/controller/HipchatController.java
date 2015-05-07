@@ -1,9 +1,9 @@
 package nl.focalor.utobot.hipchat.controller;
 
-import nl.focalor.utobot.hipchat.IHipchatInputListener;
+import nl.focalor.utobot.hipchat.input.HipchatMessageEvent;
+import nl.focalor.utobot.hipchat.input.IHipchatInputListener;
 import nl.focalor.utobot.hipchat.model.RoomMessage;
 import nl.focalor.utobot.hipchat.model.RoomMessageItem;
-import nl.focalor.utobot.hipchat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,11 +34,13 @@ public class HipchatController {
 	}
 
 	private void onMessage(RoomMessage roomMessage) {
-		RoomMessageItem item = roomMessage.getItem();
+		HipchatMessageEvent event = new HipchatMessageEvent();
 
-		String roomId = item.getRoom().getId();
-		User user = item.getMessage().getFrom();
-		String message = item.getMessage().getMessage();
-		listener.onRoomMessage(roomId, user, message);
+		RoomMessageItem item = roomMessage.getItem();
+		event.setRoom(item.getRoom().getId());
+		event.setUser(item.getMessage().getFrom());
+		event.setMessage(item.getMessage().getMessage());
+
+		listener.onRoomMessage(event);
 	}
 }

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import nl.focalor.utobot.base.input.Input;
-import nl.focalor.utobot.base.input.handler.IRegexHandler;
+import nl.focalor.utobot.base.input.handler.IGenericRegexHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AttackType;
@@ -43,9 +43,9 @@ public class AddAttackHandlerFactoryTest {
 	@Test
 	public void matches() {
 		// Setup
-		Input input = new Input("user",
+		Input input = new Input(null, null, "user",
 				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
-		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
+		IGenericRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
 
 		// Test
 		Matcher result = handler.getMatcher(input);
@@ -54,6 +54,7 @@ public class AddAttackHandlerFactoryTest {
 		assertNotNull(result);
 	}
 
+	// FIXME enable
 	// @Test
 	// public void handle() {
 	// // Setup
@@ -78,13 +79,13 @@ public class AddAttackHandlerFactoryTest {
 	@Test
 	public void handleKnownUser() {
 		// Setup
-		Input input = new Input("jan",
+		Input input = new Input(null, null, "jan",
 				"recaptured 35 acres from our enemy! Taking full control of your new land will take 9.11 days. The new land wi");
 		Person p = new Person();
 		p.setId(234l);
 		when(personService.find("jan", true)).thenReturn(p);
 
-		IRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
+		IGenericRegexHandler handler = handlerFactory.getRegexHandlers().get(0);
 
 		// Test
 		handler.handleInput(input);

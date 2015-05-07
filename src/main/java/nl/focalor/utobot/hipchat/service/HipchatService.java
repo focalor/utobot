@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import nl.focalor.utobot.hipchat.model.HipchatSettings;
 import nl.focalor.utobot.hipchat.model.Message;
 import nl.focalor.utobot.hipchat.model.Notification;
+import nl.focalor.utobot.hipchat.model.Room;
 import nl.focalor.utobot.hipchat.model.Webhook;
 import nl.focalor.utobot.hipchat.model.Webhooks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +161,26 @@ public class HipchatService implements IHipchatService {
 		return get(url, Webhooks.class);
 	}
 
+	@Override
+	public void setTopic(String topic) {
+		StringBuilder url = new StringBuilder();
+		url.append(API_ROOM_URL);
+		url.append(mainRoom);
+		url.append("/webhook");
+
+		put(url, topic);
+	}
+
+	@Override
+	public Room getRoom(String room) {
+
+		StringBuilder url = new StringBuilder();
+		url.append(API_ROOM_URL);
+		url.append(room);
+
+		return get(url, Room.class);
+	}
+
 	private String addAuthentication(CharSequence url) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(url);
@@ -181,6 +202,12 @@ public class HipchatService implements IHipchatService {
 		}
 	}
 
+	private void put(CharSequence url, Object request) {
+		if (active) {
+			template.put(addAuthentication(url), request);
+		}
+	}
+
 	private void post(CharSequence url, Object request) {
 		if (active) {
 			template.postForLocation(addAuthentication(url), request);
@@ -192,4 +219,5 @@ public class HipchatService implements IHipchatService {
 			template.delete(addAuthentication(url));
 		}
 	}
+
 }

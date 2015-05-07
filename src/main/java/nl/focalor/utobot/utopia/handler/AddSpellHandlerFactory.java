@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
-import nl.focalor.utobot.base.input.handler.IRegexHandler;
+import nl.focalor.utobot.base.input.handler.IGenericInputHandlerFactory;
+import nl.focalor.utobot.base.input.handler.IGenericRegexHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.handler.spells.SelfSpellHandler;
 import nl.focalor.utobot.utopia.handler.spells.TargetedSpellHandler;
@@ -20,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddSpellHandlerFactory implements IInputHandlerFactory {
+public class AddSpellHandlerFactory implements IGenericInputHandlerFactory {
 	private static final String NAME = "rawspell";
-	private final List<IRegexHandler> handlers = new ArrayList<>();
+	private final List<IGenericRegexHandler> handlers = new ArrayList<>();
 
 	@Autowired
 	private IPersonService personService;
@@ -48,7 +48,7 @@ public class AddSpellHandlerFactory implements IInputHandlerFactory {
 	}
 
 	@Override
-	public List<IRegexHandler> getRegexHandlers() {
+	public List<IGenericRegexHandler> getRegexHandlers() {
 		return handlers;
 	}
 

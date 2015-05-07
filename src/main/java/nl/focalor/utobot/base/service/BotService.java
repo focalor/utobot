@@ -13,7 +13,7 @@ public class BotService implements IBotService {
 	@Autowired
 	private PircBotX bot;
 	@Autowired
-	private List<IMessagingService> messagingServices;
+	private List<ICommunicationService> communicationServices;
 
 	@Override
 	@PostConstruct
@@ -29,8 +29,15 @@ public class BotService implements IBotService {
 
 	@Override
 	public void broadcast(String message) {
-		for (IMessagingService service : messagingServices) {
+		for (ICommunicationService service : communicationServices) {
 			service.broadcastMessage(message);
+		}
+	}
+
+	@Override
+	public void setTopic(String topic) {
+		for (ICommunicationService service : communicationServices) {
+			service.setTopic(topic);
 		}
 	}
 }

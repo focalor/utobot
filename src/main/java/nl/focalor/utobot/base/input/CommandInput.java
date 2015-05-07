@@ -1,5 +1,6 @@
 package nl.focalor.utobot.base.input;
 
+import nl.focalor.utobot.base.input.listener.IInputListener;
 import org.apache.commons.lang3.StringUtils;
 
 public class CommandInput extends Input {
@@ -8,15 +9,15 @@ public class CommandInput extends Input {
 	private String command;
 	private String argument;
 
-	private CommandInput(String source, String input) {
-		super(source, input);
+	private CommandInput(IInputListener dispatcher, String room, String user, String input) {
+		super(dispatcher, room, user, input);
 	}
 
-	public static CommandInput createFor(String source, String input) {
+	public static CommandInput createFor(IInputListener dispatcher, String room, String user, String input) {
 		if (input.charAt(0) != COMMAND_PREFIX) {
 			throw new IllegalStateException("Input must start with " + COMMAND_PREFIX);
 		}
-		CommandInput result = new CommandInput(source, input);
+		CommandInput result = new CommandInput(dispatcher, room, user, input);
 
 		for (int i = 1; i < input.length(); i++) {
 			if (Character.isWhitespace(input.charAt(i))) {

@@ -33,7 +33,7 @@ public class WarStartHandlerTest extends AbstractUtoHandlerTest {
 		when(warService.startWar()).thenReturn(war);
 
 		// Test
-		IResult reply = warStartHandler.handleCommand(CommandInput.createFor("oneguy", "!startwar"));
+		IResult reply = warStartHandler.handleCommand(CommandInput.createFor(null, null, "oneguy", "!startwar"));
 
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);

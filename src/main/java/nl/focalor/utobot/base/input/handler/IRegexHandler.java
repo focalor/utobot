@@ -4,15 +4,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 
+/**
+ * @author focalor
+ */
 public interface IRegexHandler extends IInputHandler {
 
 	public Pattern getRegexPattern();
 
+	/**
+	 * Never returns null
+	 */
 	public IResult handleInput(Matcher matcher, IInput input);
 
 	public default IResult handleInput(IInput input) {

@@ -6,7 +6,7 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
-import nl.focalor.utobot.base.input.handler.ICommandHandler;
+import nl.focalor.utobot.base.input.handler.IGenericCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddAttackHandler extends AbstractAttackHandler implements ICommandHandler {
+public class AddAttackHandler extends AbstractAttackHandler implements IGenericCommandHandler {
 	public static final String COMMAND = "attack";
 	public static final String[] ALTERNATE_NAMES = {"addattack", "army", "addarmy"};
 	private static final List<String> COMMAND_NAMES;
@@ -50,7 +50,7 @@ public class AddAttackHandler extends AbstractAttackHandler implements ICommandH
 		final String comment;
 
 		if (index == 0) {
-			nick = event.getSource();
+			nick = event.getUser();
 			time = Double.valueOf(parts[0]);
 			if (parts.length > 1) {
 				comment = StringUtils.join(parts, ' ', 1, parts.length);

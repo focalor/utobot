@@ -7,7 +7,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.utopia.service.IProvinceService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author focalor
  */
 @Component
-public class DeleteProvHandler extends AbstractCommandHandler {
+public class DeleteProvHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "delprov";
 
 	@Autowired

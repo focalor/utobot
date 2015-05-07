@@ -55,7 +55,7 @@ public class WhoisHandlerTest extends AbstractUtoHandlerTest {
 		when(personService.findByNickNameOrProvince("jan")).thenReturn(people);
 
 		// Test
-		IResult res = handler.handleCommand(CommandInput.createFor("user", "!whois jan"));
+		IResult res = handler.handleCommand(CommandInput.createFor(null, null, "user", "!whois jan"));
 
 		// Verify
 		assertTrue(res instanceof MultiReplyResult);
