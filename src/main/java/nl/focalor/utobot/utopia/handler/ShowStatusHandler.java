@@ -50,7 +50,7 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 			return new ErrorResult("Person " + name + " not found");
 		}
 		attacks = attackService.findByPerson(person);
-		spellCasts = spellService.findByCaster(person);
+		spellCasts = spellService.findByCasterAndTarget(person, person.getProvince());
 
 		List<String> messages = new ArrayList<>();
 		messages.add("Status for " + person.getName());

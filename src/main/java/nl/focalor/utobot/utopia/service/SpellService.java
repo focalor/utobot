@@ -12,6 +12,7 @@ import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.job.SpellCastCompletedJob;
 import nl.focalor.utobot.utopia.model.Spell;
 import nl.focalor.utobot.utopia.model.UtopiaSettings;
+import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.model.repository.SpellCastRepository;
 
@@ -67,7 +68,7 @@ public class SpellService implements ISpellService {
 	}
 
 	@Override
-	public List<SpellCast> findByCaster(Person caster) {
-		return spellCastDao.findByCaster(caster);
+	public List<SpellCast> findByCasterAndTarget(Person caster, Province target) {
+		return spellCastDao.findByCasterAndTarget(caster, target);
 	}
 }

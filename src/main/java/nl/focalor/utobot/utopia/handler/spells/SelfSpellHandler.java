@@ -2,6 +2,7 @@ package nl.focalor.utobot.utopia.handler.spells;
 
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
@@ -33,8 +34,21 @@ public class SelfSpellHandler extends AbstractSpellHandler {
 
 	@Override
 	public IResult handleInput(Matcher matcher, IInput input) {
-		// Gather data
-		Integer duration = Integer.valueOf(matcher.group(1));
+		// Get duration
+		String matchedGroup = matcher.group(1);
+
+		final Integer duration;
+		if ("until the end of this day".equals(matchedGroup)) {
+			duration = 0;
+		} else {
+			String reg = "for (\\d{1,2}) day";
+			Pattern pattern = Pattern.compile(reg);
+			Matcher matcher2 = pattern.matcher(matchedGroup);
+			boolean find = matcher2.find();// TODO check find
+			duration = Integer.valueOf(matcher2.group(1));
+		}
+
+		// save cast
 		int lastHour = utopiaService.getHourOfAge() + duration;
 		Person person = personService.find(input.getSource(), true);
 		if (person == null) {

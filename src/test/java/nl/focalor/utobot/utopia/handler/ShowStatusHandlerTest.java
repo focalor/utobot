@@ -3,9 +3,11 @@ package nl.focalor.utobot.utopia.handler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
@@ -19,6 +21,7 @@ import nl.focalor.utobot.utopia.model.entity.SpellCast;
 import nl.focalor.utobot.utopia.service.IAttackService;
 import nl.focalor.utobot.utopia.service.ISpellService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -48,8 +51,11 @@ public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 		Calendar cal = Calendar.getInstance();
 		cal.clear();
 
+		Province prov = new Province();
+
 		Person person = new Person();
 		person.setName("joop");
+		person.setProvince(prov);
 		when(personService.find("joop", false)).thenReturn(person);
 
 		Attack attack1 = new Attack();
@@ -64,7 +70,7 @@ public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 		when(attackService.findByPerson(person)).thenReturn(Arrays.asList(attack1, attack2));
 
 		cast = new SpellCast();
-		when(spellService.findByCaster(person)).thenReturn(Arrays.asList(cast));
+		when(spellService.findByCasterAndTarget(person, prov)).thenReturn(Arrays.asList(cast));
 
 		when(utopiaService.getHourOfAge()).thenReturn(100);
 	}

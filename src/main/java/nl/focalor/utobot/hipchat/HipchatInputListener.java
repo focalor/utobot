@@ -49,9 +49,7 @@ public class HipchatInputListener implements IHipchatInputListener {
 					send(user.getId(), ((ReplyResult) result).getMessage());
 				} else if (result instanceof MultiReplyResult) {
 					MultiReplyResult res = (MultiReplyResult) result;
-					for (String msg : res.getMessages()) {
-						send(user.getId(), msg);
-					}
+					send(user.getId(), StringUtils.join(res.getMessages(), "\n"));
 				} else {
 					throw new UnsupportedOperationException("Don't know how to handle result of type "
 							+ result.getClass().getName());

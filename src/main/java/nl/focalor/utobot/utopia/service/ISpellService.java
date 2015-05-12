@@ -5,6 +5,7 @@ import java.util.List;
 
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.utopia.model.Spell;
+import nl.focalor.utobot.utopia.model.entity.Province;
 import nl.focalor.utobot.utopia.model.entity.SpellCast;
 
 public interface ISpellService {
@@ -12,7 +13,7 @@ public interface ISpellService {
 
 	public void create(SpellCast cast, boolean persist);
 
-	public List<SpellCast> findByCaster(Person prov);
+	public List<SpellCast> findByCasterAndTarget(Person caster, Province target);
 
 	public void delete(SpellCast spellCast);
 
