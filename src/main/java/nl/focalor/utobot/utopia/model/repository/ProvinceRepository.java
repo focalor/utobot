@@ -9,5 +9,7 @@ import nl.focalor.utobot.utopia.model.entity.Province;
 public interface ProvinceRepository extends CrudRepository<Province, Long> {
 	Province findByNameAndIslandAndKingdom(String name, int island, int kingdom);
 
-	void deleteByNameIgnoreCase(String person);
+	Province findByNameIgnoreCase(String province);
+
+	void deleteByNameIgnoreCase(String province);
 }
