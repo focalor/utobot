@@ -50,7 +50,7 @@ public class SelfSpellHandler extends AbstractSpellHandler {
 
 		// save cast
 		int lastHour = utopiaService.getHourOfAge() + duration;
-		Person person = personService.find(input.getSource(), true);
+		Person person = personService.find(input.getUser(), true);
 		if (person == null) {
 			return new ErrorResult("Unrecognized player, register your province/nick");
 		}

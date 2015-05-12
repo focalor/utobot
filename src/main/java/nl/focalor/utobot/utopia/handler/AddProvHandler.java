@@ -9,7 +9,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Personality;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class AddProvHandler extends AbstractCommandHandler {
+public class AddProvHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "addprov";
 	private static final Pattern pattern = Pattern.compile("(.*) - (.*) \\[(.*)/(.*)\\]");
 

@@ -6,13 +6,13 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.util.MathUtil;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class NwHandler extends AbstractCommandHandler {
+public class NwHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "nw";
 	private static final double DELTA = 0.2;
 

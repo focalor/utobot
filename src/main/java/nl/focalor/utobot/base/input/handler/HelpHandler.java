@@ -6,25 +6,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
+import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
-
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author focalor
  */
 @Component
-public class HelpHandler extends AbstractCommandHandler {
+public class HelpHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "help";
-	@Autowired
-	private IInputListener inputListener;
 
 	public HelpHandler() {
 		super(COMMAND_NAME);
@@ -33,7 +29,7 @@ public class HelpHandler extends AbstractCommandHandler {
 	@Override
 	public IResult handleCommand(CommandInput event) {
 		if (StringUtils.isEmpty(event.getArgument())) {
-			return buildGeneralHelp();
+			return buildGeneralHelp(event);
 		} else {
 			return buildSpecificHelp(event);
 		}
@@ -41,23 +37,24 @@ public class HelpHandler extends AbstractCommandHandler {
 
 	private IResult buildSpecificHelp(CommandInput event) {
 		String argument = event.getArgument();
+		IInputListener dispatcher = event.getDispatcher();
 
 		// Check commandhandlers
-		for (ICommandHandler handler : inputListener.getCommandHandlers()) {
+		for (ICommandHandler handler : dispatcher.getCommandHandlers()) {
 			if (handler.getCommandNames().contains(argument)) {
 				return new MultiReplyResult(handler.getHelp());
 			}
 		}
 
 		// Check regexhandlers
-		for (IRegexHandler handler : inputListener.getRegexHandlers()) {
+		for (IRegexHandler handler : dispatcher.getRegexHandlers()) {
 			if (handler.getName().equals(argument)) {
 				return new MultiReplyResult(handler.getHelp());
 			}
 		}
 
 		// Check factories
-		for (IInputHandlerFactory factory : inputListener.getFactories()) {
+		for (IInputHandlerFactory factory : dispatcher.getFactories()) {
 			if (factory.getName().equals(argument)) {
 				return new MultiReplyResult(factory.getHelp());
 			}
@@ -66,20 +63,22 @@ public class HelpHandler extends AbstractCommandHandler {
 		return new ErrorResult("Specified help command '" + argument + "' is unknown");
 	}
 
-	private IResult buildGeneralHelp() {
+	private IResult buildGeneralHelp(IInput input) {
+		IInputListener dispatcher = input.getDispatcher();
+
 		List<String> messages = new ArrayList<>();
 		messages.add("Type !help COMMAND for extra information on a command/other input");
 		messages.add("Known commands:");
-		messages.addAll(getHelpCommandHandlers());
+		messages.addAll(getHelpCommandHandlers(dispatcher));
 		messages.add("Other supported input:");
-		messages.addAll(map(inputListener.getFactories()));
-		messages.addAll(map(inputListener.getRegexHandlers()));
+		messages.addAll(map(dispatcher.getFactories()));
+		messages.addAll(map(dispatcher.getRegexHandlers()));
 		return new MultiReplyResult(messages);
 	}
 
 	//@formatter:off
-	private List<String> getHelpCommandHandlers() {
-		return inputListener.getCommandHandlers().stream()
+	private List<String> getHelpCommandHandlers(IInputListener dispatcher) {
+		return dispatcher.getCommandHandlers().stream()
 				.filter(handler -> handler.hasHelp())
 				.flatMap(this::mapCommandHandler)
 				.sorted()

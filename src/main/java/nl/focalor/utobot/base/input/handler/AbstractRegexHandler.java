@@ -2,7 +2,7 @@ package nl.focalor.utobot.base.input.handler;
 
 import java.util.regex.Pattern;
 
-public abstract class AbstractRegexHandler implements IRegexHandler {
+public abstract class AbstractRegexHandler implements IGenericRegexHandler {
 	private final Pattern pattern;
 	private final String name;
 

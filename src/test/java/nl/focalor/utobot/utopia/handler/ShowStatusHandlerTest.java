@@ -83,7 +83,7 @@ public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 		cast.setSpellId("L&P");
 
 		// Test
-		IResult reply = handler.handleCommand(CommandInput.createFor("joop", "!status"));
+		IResult reply = handler.handleCommand(CommandInput.createFor(null, null, "joop", "!status"));
 
 		// Verify
 		List<String> messages = ReflectionUtil.getField(reply, "messages", List.class);
@@ -104,7 +104,7 @@ public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 		cast.setSpellId("L&P");
 
 		// Test
-		IResult reply = handler.handleCommand(CommandInput.createFor("joop", "!status"));
+		IResult reply = handler.handleCommand(CommandInput.createFor(null, null, "joop", "!status"));
 
 		// Verify
 		List<String> messages = ReflectionUtil.getField(reply, "messages", List.class);
@@ -124,7 +124,7 @@ public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 		cast.setSpellId("L&P");
 
 		// Test
-		IResult reply = handler.handleCommand(CommandInput.createFor("joop", "!status piet"));
+		IResult reply = handler.handleCommand(CommandInput.createFor(null, null, "joop", "!status piet"));
 
 		// Verify
 		assertTrue(reply instanceof ErrorResult);
@@ -144,7 +144,7 @@ public class ShowStatusHandlerTest extends AbstractUtoHandlerTest {
 		cast.setSpellId("L&P");
 
 		// Test
-		IResult reply = handler.handleCommand(CommandInput.createFor("joop", "!status piet"));
+		IResult reply = handler.handleCommand(CommandInput.createFor(null, null, "joop", "!status piet"));
 
 		// Verify
 		List<String> messages = ReflectionUtil.getField(reply, "messages", List.class);

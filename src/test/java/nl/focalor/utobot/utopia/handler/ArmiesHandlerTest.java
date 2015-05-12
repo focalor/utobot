@@ -31,7 +31,7 @@ public class ArmiesHandlerTest extends AbstractUtoHandlerTest {
 	@Test
 	public void noArmies() {
 		// Test
-		IResult result = handler.handleCommand(CommandInput.createFor("user", "!armies"));
+		IResult result = handler.handleCommand(CommandInput.createFor(null, null, "user", "!armies"));
 
 		// Verify
 		assertTrue(result instanceof ReplyResult);
@@ -49,7 +49,7 @@ public class ArmiesHandlerTest extends AbstractUtoHandlerTest {
 		when(attackService.findAll()).thenReturn(armies);
 
 		// Test
-		IResult result = handler.handleCommand(CommandInput.createFor("user", "!armies"));
+		IResult result = handler.handleCommand(CommandInput.createFor(null, null, "user", "!armies"));
 
 		// Verify
 		assertTrue(result instanceof MultiReplyResult);

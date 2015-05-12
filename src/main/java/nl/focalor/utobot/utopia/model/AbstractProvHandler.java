@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.utopia.model.entity.Province;
 import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-public abstract class AbstractProvHandler extends AbstractCommandHandler {
+public abstract class AbstractProvHandler extends AbstractGenericCommandHandler {
 	private boolean includeNicks = false;
 
 	public AbstractProvHandler(String commandName) {

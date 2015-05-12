@@ -7,7 +7,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author focalor
  */
 @Component
-public class DeleteNickHandler extends AbstractCommandHandler {
+public class DeleteNickHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "delnick";
 
 	@Autowired

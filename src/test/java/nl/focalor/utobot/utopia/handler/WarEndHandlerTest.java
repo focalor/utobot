@@ -35,7 +35,7 @@ public class WarEndHandlerTest extends AbstractUtoHandlerTest {
 		doNothing().when(warService).endWar();
 
 		// Test
-		IResult reply = warEndHandler.handleCommand(CommandInput.createFor("oneguy", "!endwar"));
+		IResult reply = warEndHandler.handleCommand(CommandInput.createFor(null, null, "oneguy", "!endwar"));
 
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);

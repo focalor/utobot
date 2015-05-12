@@ -22,25 +22,20 @@ public class StartupJob implements IStartupJob, Runnable {
 	private IAttackService attackService;
 	@Autowired
 	private ISpellService spellService;
-
+	@Autowired
 	private List<ILongInitialization> longInitializationBeans;
 	private CountDownLatch latch;
 
 	@Override
 	@PostConstruct
-	public void init() {
+	public void start() {
 		latch = new CountDownLatch(longInitializationBeans.size());
+		new Thread(this).start();
 	}
 
 	@Override
 	public void registerFinishedInitialization(ILongInitialization bean) {
 		latch.countDown();
-	}
-
-	@Autowired
-	// User setter to avoid circular dependencies
-	public void setLongInitializationBeans(List<ILongInitialization> longInitializationBeans) {
-		this.longInitializationBeans = longInitializationBeans;
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.entity.Attack;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
  * @author focalor
  */
 @Component
-public class ShowStatusHandler extends AbstractCommandHandler {
+public class ShowStatusHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND = "status";
 	@Autowired
 	private IPersonService personService;
@@ -41,7 +41,7 @@ public class ShowStatusHandler extends AbstractCommandHandler {
 
 	@Override
 	public IResult handleCommand(CommandInput event) {
-		String name = event.getArgument() == null ? event.getSource() : event.getArgument();
+		String name = event.getArgument() == null ? event.getUser() : event.getArgument();
 
 		List<Attack> attacks;
 		List<SpellCast> spellCasts;

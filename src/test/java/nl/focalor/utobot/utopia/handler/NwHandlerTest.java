@@ -13,7 +13,7 @@ public class NwHandlerTest extends AbstractUtoHandlerTest {
 	@Test
 	public void event() {
 		// Test
-		IResult reply = handler.handleCommand(CommandInput.createFor("user", "!nw 15.73"));
+		IResult reply = handler.handleCommand(CommandInput.createFor(null, null, "user", "!nw 15.73"));
 
 		// Verify
 		String msg = ReflectionUtil.getField(reply, "message", String.class);

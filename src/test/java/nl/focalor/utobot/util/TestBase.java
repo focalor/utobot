@@ -19,7 +19,7 @@ public abstract class TestBase {
 	public static MessageEvent<UtoPircBotX> buildMessageEvent(String message) {
 		Configuration<UtoPircBotX> config = new Configuration.Builder<UtoPircBotX>().setServerHostname("localhost")
 				.buildConfiguration();
-		UtoPircBotX bot = new UtoPircBotX(config);
+		UtoPircBotX bot = new UtoPircBotX(config, null);
 
 		return new MessageEvent<UtoPircBotX>(bot, channel, user, message);
 	}

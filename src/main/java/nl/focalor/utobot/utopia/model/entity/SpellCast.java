@@ -1,11 +1,11 @@
 package nl.focalor.utobot.utopia.model.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
 import nl.focalor.utobot.base.model.entity.Person;
 
 @Entity
@@ -16,9 +16,10 @@ public class SpellCast {
 	private Long id;
 	@Column(nullable = false)
 	private String spellId;
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.REMOVE)
+	// No CascadeType.SET_NULL available :(, remove should work reasonably well
 	private Person caster;
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.REMOVE)
 	private Province target;
 	@Column(nullable = false)
 	private Integer lastHour;

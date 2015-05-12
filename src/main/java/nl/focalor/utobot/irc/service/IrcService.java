@@ -16,4 +16,11 @@ public class IrcService implements IIrcService {
 		}
 	}
 
+	@Override
+	public void setTopic(String topic) {
+		if (bot.isConnected()) {
+			bot.sendIRC().message("chanserv", "topic #avians " + topic);
+		}
+	}
+
 }

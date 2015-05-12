@@ -9,8 +9,8 @@ import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.Input;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.ICommandHandler;
-import nl.focalor.utobot.base.input.handler.IRegexHandler;
+import nl.focalor.utobot.base.input.handler.IGenericCommandHandler;
+import nl.focalor.utobot.base.input.handler.IGenericRegexHandler;
 import nl.focalor.utobot.base.model.entity.Person;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.Spell;
@@ -53,7 +53,7 @@ public class AddSpellHandlerFactoryTest {
 	@Test
 	public void commandHandlers() {
 		// Test
-		List<ICommandHandler> handlers = factory.getCommandHandlers();
+		List<IGenericCommandHandler> handlers = factory.getCommandHandlers();
 
 		// verify
 		assertEquals(0, handlers.size());
@@ -62,22 +62,22 @@ public class AddSpellHandlerFactoryTest {
 	@Test
 	public void regexHandlers() {
 		// Test
-		List<IRegexHandler> handlers = factory.getRegexHandlers();
+		List<IGenericRegexHandler> handlers = factory.getRegexHandlers();
 
 		// verify
 		assertEquals(1, handlers.size());
 
-		IRegexHandler handler = handlers.get(0);
+		IGenericRegexHandler handler = handlers.get(0);
 		assertEquals(false, handler.hasHelp());
 	}
 
 	@Test
 	public void regexHandlerBadInput() {
 		// Setup
-		IRegexHandler handler = factory.getRegexHandlers().get(0);
+		IGenericRegexHandler handler = factory.getRegexHandlers().get(0);
 
 		// Test
-		IResult result = handler.handleInput(new Input("test", "cast A2 days"));
+		IResult result = handler.handleInput(new Input(null, null, "test", "cast A2 days"));
 
 		// Verify
 		assertTrue(result instanceof ErrorResult);
@@ -86,10 +86,10 @@ public class AddSpellHandlerFactoryTest {
 	@Test
 	public void regexHandlerUnknownPerson() {
 		// Setup
-		IRegexHandler handler = factory.getRegexHandlers().get(0);
+		IGenericRegexHandler handler = factory.getRegexHandlers().get(0);
 
 		// Test
-		ReplyResult result = (ReplyResult) handler.handleInput(new Input("test", "cast 1 days"));
+		ReplyResult result = (ReplyResult) handler.handleInput(new Input(null, null, "test", "cast 1 days"));
 
 		// Verify
 		assertEquals("Unrecognized player, register your province/nick", result.getMessage());
@@ -98,13 +98,13 @@ public class AddSpellHandlerFactoryTest {
 	@Test
 	public void regexHandlerGoodInput() {
 		// Setup
-		IRegexHandler handler = factory.getRegexHandlers().get(0);
+		IGenericRegexHandler handler = factory.getRegexHandlers().get(0);
 		Person person = new Person();
 		person.setName("test");
 		when(personService.find("test", true)).thenReturn(person);
 
 		// Test
-		ReplyResult result = (ReplyResult) handler.handleInput(new Input("test", "cast 1 days"));
+		ReplyResult result = (ReplyResult) handler.handleInput(new Input(null, null, "test", "cast 1 days"));
 
 		// Verify
 		assertEquals("Love and Peace added for test for 1 hours", result.getMessage());

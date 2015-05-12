@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
-import nl.focalor.utobot.base.input.handler.IInputHandlerFactory;
-import nl.focalor.utobot.base.input.handler.IRegexHandler;
+import nl.focalor.utobot.base.input.handler.IGenericInputHandlerFactory;
+import nl.focalor.utobot.base.input.handler.IGenericRegexHandler;
 import nl.focalor.utobot.base.model.service.IPersonService;
 import nl.focalor.utobot.utopia.model.AttackType;
 import nl.focalor.utobot.utopia.service.IAttackService;
@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddAttackHandlerFactory implements IInputHandlerFactory {
+public class AddAttackHandlerFactory implements IGenericInputHandlerFactory {
 	private static final String NAME = "rawattack";
 
-	private final List<IRegexHandler> handlers = new ArrayList<>();
+	private final List<IGenericRegexHandler> handlers = new ArrayList<>();
 
 	@Autowired
 	private IAttackService attackService;
@@ -34,11 +34,11 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 	}
 
 	@Override
-	public List<IRegexHandler> getRegexHandlers() {
+	public List<IGenericRegexHandler> getRegexHandlers() {
 		return handlers;
 	}
 
-	private class AttackHandler extends AbstractAttackHandler implements IRegexHandler {
+	private class AttackHandler extends AbstractAttackHandler implements IGenericRegexHandler {
 		private final Pattern pattern;
 		private final String name;
 
@@ -52,7 +52,7 @@ public class AddAttackHandlerFactory implements IInputHandlerFactory {
 		public IResult handleInput(Matcher matcher, IInput input) {
 			double time = Double.valueOf(matcher.group(1));
 
-			return handleCommand(input.getSource(), time, null);
+			return handleCommand(input.getUser(), time, null);
 		}
 
 		@Override

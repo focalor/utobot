@@ -10,6 +10,7 @@ import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.listener.IInputListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,8 @@ public class HelpHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void generalHelp() {
 		// Test
-		MultiReplyResult result = (MultiReplyResult) handler.handleCommand(CommandInput.createFor("test", "!help"));
+		MultiReplyResult result = (MultiReplyResult) handler.handleCommand(CommandInput.createFor(listener, null,
+				"test", "!help"));
 
 		// Verify
 		List<String> msgs = result.getMessages();
@@ -61,8 +63,8 @@ public class HelpHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void specificHelpCommand() {
 		// Test
-		MultiReplyResult result = (MultiReplyResult) handler.handleCommand(CommandInput
-				.createFor("test", "!help zTest"));
+		MultiReplyResult result = (MultiReplyResult) handler.handleCommand(CommandInput.createFor(listener, null,
+				"test", "!help zTest"));
 
 		// Verify
 		List<String> msgs = result.getMessages();
@@ -74,8 +76,8 @@ public class HelpHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void specificHelpRegex() {
 		// Test
-		MultiReplyResult result = (MultiReplyResult) handler.handleCommand(CommandInput.createFor("test",
-				"!help regexB"));
+		MultiReplyResult result = (MultiReplyResult) handler.handleCommand(CommandInput.createFor(listener, null,
+				"test", "!help regexB"));
 
 		// Verify
 		List<String> msgs = result.getMessages();
@@ -89,14 +91,14 @@ public class HelpHandlerTest extends AbstractHandlerTest {
 		return handler;
 	}
 
-	private class CommandHandler extends AbstractCommandHandler {
+	private class CommandHandler extends AbstractGenericCommandHandler {
 		public CommandHandler(String commandName, String... alternateCommandNames) {
 			super(commandName, alternateCommandNames);
 		}
 
 		@Override
 		public IResult handleCommand(CommandInput event) {
-			return null;
+			return NoReplyResult.NO_REPLY;
 		}
 
 		@Override

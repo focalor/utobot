@@ -1,11 +1,9 @@
 package nl.focalor.utobot.irc.bot;
 
 import java.io.IOException;
-
 import nl.focalor.utobot.base.jobs.IStartupJob;
 import nl.focalor.utobot.base.service.ILongInitialization;
 import nl.focalor.utobot.irc.input.IIrcInputListener;
-
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Configuration;
 import org.pircbotx.Configuration.Builder;
@@ -13,6 +11,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
+import org.pircbotx.hooks.events.MessageEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,11 +21,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UtoPircBotX extends PircBotX implements ILongInitialization {
+	private final IIrcInputListener dispatcher;
 	private final boolean active;
 	private IStartupJob startupJob;
 
-	public UtoPircBotX(Configuration<UtoPircBotX> config) {
+	public UtoPircBotX(Configuration<UtoPircBotX> config, IIrcInputListener dispatcher) {
 		super(config);
+		this.dispatcher = dispatcher;
 		this.active = true;
 	}
 
@@ -39,20 +40,26 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 			@Value("${irc.server}") String server,
 			@Value("${irc.port}") int port,
 			@Value("${irc.active}") boolean active,
-			IIrcInputListener listener) {
+			IIrcInputListener dispatcher) {
 		//@formatter:on
-		super(buildConfig(name, server, channel, channelPassword, port, listener));
+		super(buildConfig(name, server, channel, channelPassword, port, dispatcher));
+		this.dispatcher = dispatcher;
 		this.active = active;
 	}
 
 	// Use setter to avoid circular dependencies
+
 	@Autowired
 	public void setStartupJob(IStartupJob startupJob) {
 		this.startupJob = startupJob;
 	}
 
+	public IIrcInputListener getDispatcher() {
+		return dispatcher;
+	}
+
 	private static Configuration<UtoPircBotX> buildConfig(String name, String server, String channel,
-			String channelPassword, int port, IIrcInputListener listener) {
+			String channelPassword, int port, final IIrcInputListener listener) {
 		Builder<UtoPircBotX> configBuilder = new org.pircbotx.Configuration.Builder<UtoPircBotX>().setName(name)
 				.setServer(server, port);
 		if (StringUtils.isEmpty(channelPassword)) {
@@ -60,7 +67,7 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 		} else {
 			configBuilder.addAutoJoinChannel(channel, channelPassword);
 		}
-		configBuilder.addListener(listener);
+		configBuilder.addListener(new MessageSnooperListener(listener));
 		configBuilder.addListener(new ChannelJoinListener());
 		configBuilder.setAutoReconnect(true);
 
@@ -91,6 +98,20 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 			if (event.getUser() == event.getBot().getUserBot()) {
 				event.getBot().initializationFinished();
 			}
+		}
+	}
+
+	private static class MessageSnooperListener extends ListenerAdapter<UtoPircBotX> {
+		private final IIrcInputListener inputListener;
+
+		public MessageSnooperListener(IIrcInputListener inputListener) {
+			super();
+			this.inputListener = inputListener;
+		}
+
+		@Override
+		public void onMessage(MessageEvent<UtoPircBotX> event) throws Exception {
+			inputListener.onMessage(event);
 		}
 	}
 }

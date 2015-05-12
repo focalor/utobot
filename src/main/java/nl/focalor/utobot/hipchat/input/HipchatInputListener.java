@@ -1,62 +1,63 @@
-package nl.focalor.utobot.hipchat;
+package nl.focalor.utobot.hipchat.input;
 
+import java.util.List;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
+import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.listener.IInputListener;
+import nl.focalor.utobot.base.input.listener.AbstractInputListener;
 import nl.focalor.utobot.hipchat.model.Message;
-import nl.focalor.utobot.hipchat.model.User;
 import nl.focalor.utobot.hipchat.service.IHipchatService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class HipchatInputListener implements IHipchatInputListener {
+@Component
+public class HipchatInputListener extends AbstractInputListener implements IHipchatInputListener {
 	private static final Logger LOG = LoggerFactory.getLogger(HipchatInputListener.class);
 
-	private final IInputListener listener;
 	private final IHipchatService hipchatService;
 
-	public HipchatInputListener(IInputListener listener, IHipchatService hipchatService) {
+	@Autowired
+	public HipchatInputListener(IHipchatService hipchatService) {
 		super();
-		this.listener = listener;
 		this.hipchatService = hipchatService;
 	}
 
 	@Override
-	public void onRoomMessage(String room, User user, String message) {
+	public void onRoomMessage(HipchatMessageEvent event) {
 		try {
-			String name = user.getName();
+			String name = event.getUser().getName();
 			// Check for full name, in which case only use first part
 			int index = name.indexOf(' ');
 			if (index >= 0) {
 				name = name.substring(0, index);
 			}
 
-			String[] lines = message.split("[\r\n]");
+			String[] lines = event.getMessage().split("[\r\n]");
 			for (String line : lines) {
-				IResult result = listener.onMessage(name, line);
+				IResult result = super.onMessage(event.getRoom(), name, line);
 
-				// handle result
-				if (result == null) {
-					// Ignore unknown commands
-
+				if (result == NoReplyResult.NO_REPLY) {
 				} else if (result instanceof ErrorResult) {
-					send(user.getId(), ((ErrorResult) result).getMessage());
+					send(event.getUser().getId(), ((ErrorResult) result).getMessage());
 				} else if (result instanceof ReplyResult) {
-					send(user.getId(), ((ReplyResult) result).getMessage());
+					send(event.getUser().getId(), ((ReplyResult) result).getMessage());
 				} else if (result instanceof MultiReplyResult) {
 					MultiReplyResult res = (MultiReplyResult) result;
-					send(user.getId(), StringUtils.join(res.getMessages(), "\n"));
+					for (String msg : res.getMessages()) {
+						send(event.getUser().getId(), msg);
+					}
 				} else {
 					throw new UnsupportedOperationException("Don't know how to handle result of type "
 							+ result.getClass().getName());
 				}
 			}
 		} catch (Exception ex) {
-			handleError(user.getId(), ex);
+			handleError(event.getUser().getId(), ex);
 		}
 	}
 
@@ -76,5 +77,12 @@ public class HipchatInputListener implements IHipchatInputListener {
 		} else {
 			send(userId, "Error: " + ex.getMessage());
 		}
+	}
+
+	// Set Hipchat specific handlers
+
+	@Autowired
+	public void setHipchatCommandHandlers(List<IHipchatCommandHandler> hipchatCommandHandlers) {
+		addCommandHandlers(hipchatCommandHandlers);
 	}
 }

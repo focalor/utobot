@@ -52,7 +52,7 @@ public class TargetedSpellHandler extends AbstractSpellHandler {
 		cast.setTarget(dbProv);
 		cast.setSpellId(spell.getId());
 
-		Person person = personService.find(input.getSource(), true);
+		Person person = personService.find(input.getUser(), true);
 		cast.setCaster(person);
 
 		// TODO clean up province after cast expired?

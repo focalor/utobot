@@ -6,7 +6,7 @@ import java.util.List;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-import nl.focalor.utobot.base.input.handler.AbstractCommandHandler;
+import nl.focalor.utobot.base.input.handler.AbstractGenericCommandHandler;
 import nl.focalor.utobot.utopia.model.entity.War;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
 import nl.focalor.utobot.utopia.service.IWarService;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * Created by luigibanzato on 12/04/2015.
  */
 @Component
-public class WarEndHandler extends AbstractCommandHandler {
+public class WarEndHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "endwar";
 	public static final String[] ALTERNATE_NAMES = { "warend" };
 

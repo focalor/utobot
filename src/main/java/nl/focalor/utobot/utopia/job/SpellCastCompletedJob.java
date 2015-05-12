@@ -22,7 +22,7 @@ public class SpellCastCompletedJob implements IScheduledJob {
 		StringBuilder builder = new StringBuilder();
 		if (cast.getTarget() == null || cast.getTarget() == cast.getCaster().getProvince()) {
 			builder.append(cast.getCaster().getName());
-		} else {// TODO show caster if it was selfspell?
+		} else {
 			builder.append(cast.getTarget().getName());
 		}
 		builder.append("'s ");
