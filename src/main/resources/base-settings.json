@@ -1,0 +1,36 @@
+{
+	"links":[
+		{
+			"ids":["throne"],
+			"link":"http://utopia-game.com/wol/game/throne"
+		},
+		{
+			"ids":["upo", "upoopu"],
+			"link":"http://www.upoopu.com/intel/store/"
+		},
+		{
+			"ids":["kd"],
+			"link":"http://utopia-game.com/wol/game/kingdom_details"
+		},
+		{
+			"ids":["throne"],
+			"link":"http://utopia-game.com/wol/game/throne"
+		},
+		{
+			"ids":["guide"],
+			"link":"http://wiki.utopia-game.com"
+		},
+		{
+			"ids":["guide dragon", "guide dragons"],
+			"link":"http://wiki.utopia-game.com/index.php?title=Dragons"
+		},
+		{
+			"ids":["guide race", "guide races"],
+			"link":"http://wiki.utopia-game.com/index.php?title=Race#Comparison_Table"
+		},
+		{
+			"ids":["guide pers", "guide personality", "guide personalities"],
+			"link":"http://wiki.utopia-game.com/index.php?title=Personality#Comparison_Table"
+		}
+	]
+}

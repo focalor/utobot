@@ -1,8 +1,11 @@
 package nl.focalor.utobot.base.config;
 
+import java.io.IOException;
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import nl.focalor.utobot.base.model.BaseSettings;
+import nl.focalor.utobot.spring.ResourceLocator;
 import org.h2.Driver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +24,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
@@ -40,6 +45,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableWebMvc
 @EnableTransactionManagement
 public class Config {
+
+	@Bean
+	public BaseSettings baseSettings(ObjectMapper mapper, @Value("${settings.base.file}") String settingsFile)
+			throws JsonParseException, JsonMappingException, IOException {
+		return mapper.readValue(ResourceLocator.open(settingsFile), BaseSettings.class);
+	}
+
 	// Property resolving
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

@@ -2,15 +2,16 @@ package nl.focalor.utobot.base.input.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.ReplyResult;
-
 import org.springframework.stereotype.Component;
 
+/**
+ * @author focalor
+ */
 @Component
 public class EvalHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "eval";
