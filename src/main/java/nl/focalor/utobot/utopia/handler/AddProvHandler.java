@@ -87,7 +87,7 @@ public class AddProvHandler extends AbstractGenericCommandHandler {
 
 	private Personality parsePersonality(String name) {
 		for (Personality personality : Personality.values()) {
-			if (personality.name().equalsIgnoreCase(name)) {
+			if (personality.name().equalsIgnoreCase(name) || personality.name().replace('_', ' ').equalsIgnoreCase(name)) {
 				return personality;
 			}
 		}
