@@ -8,7 +8,7 @@ import java.util.List;
 public class HipchatSettings {
 	private boolean active;
 	private String token;
-	private String room;
+	private List<String> rooms;
 	private List<Webhook> webhooks;
 
 	public boolean isActive() {
@@ -27,12 +27,12 @@ public class HipchatSettings {
 		this.token = token;
 	}
 
-	public String getRoom() {
-		return room;
+	public List<String> getRooms() {
+		return rooms;
 	}
 
-	public void setRoom(String room) {
-		this.room = room;
+	public void setRooms(List<String> rooms) {
+		this.rooms = rooms;
 	}
 
 	public List<Webhook> getWebhooks() {
