@@ -82,7 +82,7 @@
 		{
 			"id":"RM",
 			"name":"Reflect Magic",
-			"selfSyntax":"Spells cast upon our lands will have a chance of being reflected back upon the caster (for \\d{1,2} day|until the end of this day)"
+			"selfSyntax":"Some of the spells cast upon our lands will be reflected back upon their creators for (\\d{1,2} day|until the end of this day)"
 		},
 		{
 			"id":"Storms",
