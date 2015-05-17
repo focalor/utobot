@@ -12,6 +12,7 @@ import nl.focalor.utobot.hipchat.model.HipchatSettings;
 import nl.focalor.utobot.hipchat.model.Message;
 import nl.focalor.utobot.hipchat.model.Notification;
 import nl.focalor.utobot.hipchat.model.Room;
+import nl.focalor.utobot.hipchat.model.Topic;
 import nl.focalor.utobot.hipchat.model.Webhook;
 import nl.focalor.utobot.hipchat.model.Webhooks;
 
@@ -171,13 +172,16 @@ public class HipchatService implements IHipchatService {
 
 	@Override
 	public void setTopic(String topic) {
+		Topic t = new Topic();
+		t.setTopic(topic);
+
 		for (String room : rooms) {
 			StringBuilder url = new StringBuilder();
 			url.append(API_ROOM_URL);
 			url.append(room);
-			url.append("/webhook");
+			url.append("/topic");
 
-			put(url, topic);
+			put(url, t);
 		}
 	}
 
