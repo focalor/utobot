@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class AddProvHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "addprov";
+	private static final String[] NICKS = { "provadd" };
 	private static final Pattern pattern = Pattern.compile("(.*) - (.*) \\[(.*)/(.*)\\]");
 
 	@Autowired
@@ -33,7 +34,7 @@ public class AddProvHandler extends AbstractGenericCommandHandler {
 	private IProvinceService provinceService;
 
 	public AddProvHandler() {
-		super(COMMAND_NAME);
+		super(COMMAND_NAME, NICKS);
 	}
 
 	@Override
@@ -50,13 +51,13 @@ public class AddProvHandler extends AbstractGenericCommandHandler {
 	private IResult createProvince(Matcher matches) {
 		String player = matches.group(1);
 		String prov = matches.group(2);
-		Race race = parseRace(matches.group(3));
-		Personality personality = parsePersonality(matches.group(4));
+		Race race = Race.parse(matches.group(3));
+		Personality personality = Personality.parse(matches.group(4));
 
 		if (personService.find(player, true) != null) {
 			return new ErrorResult("Failed adding player, " + player + " already known");
 		}
-		if (race == null || personality == null) {
+		if (race == Race.UNKNOWN || personality == Personality.UNKNOWN) {
 			return new ErrorResult("race (" + matches.group(3) + ") or personality (" + matches.group(4) + ") invalid");
 		}
 
@@ -74,24 +75,6 @@ public class AddProvHandler extends AbstractGenericCommandHandler {
 		personService.save(person);
 
 		return new ReplyResult("Province added");
-	}
-
-	private Race parseRace(String name) {
-		for (Race race : Race.values()) {
-			if (race.name().equalsIgnoreCase(name)) {
-				return race;
-			}
-		}
-		return null;
-	}
-
-	private Personality parsePersonality(String name) {
-		for (Personality personality : Personality.values()) {
-			if (personality.name().equalsIgnoreCase(name) || personality.name().replace('_', ' ').equalsIgnoreCase(name)) {
-				return personality;
-			}
-		}
-		return null;
 	}
 
 	@Override
