@@ -67,20 +67,13 @@ public abstract class AbstractInputListener implements IInputListener, Applicati
 
 	@Override
 	public IResult onMessage(String room, String user, String message) {
-		return onMessage(room, user, message, new HashMap<>(0));
-	}
-
-	@Override
-	public IResult onMessage(String room, String user, String message, Map<String, Object> parameters) {
 		if (StringUtils.isEmpty(message)) {
 			return NoReplyResult.NO_REPLY;
 		} else if (message.charAt(0) == CommandInput.COMMAND_PREFIX) {
 			CommandInput input = CommandInput.createFor(this, room, user, message);
-			input.putParameters(parameters);
 			return onCommand(input);
 		} else {
 			Input input = new Input(this, room, user, message);
-			input.putParameters(parameters);
 			return onNonCommand(input);
 		}
 	}

@@ -1,6 +1,9 @@
 {
 	"active":false,
 	"token":"",
+	"xmppActive":false,
+	"xmppUser":"",
+	"xmppPassword":"",
 	"room":"",
 	"webhooks":[
 		{

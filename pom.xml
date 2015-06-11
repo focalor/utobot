@@ -23,12 +23,21 @@
 		<!-- Logging -->
 		<logback.version>1.1.2</logback.version>
 		<slf4j.version>1.7.10</slf4j.version>
+		<!-- Xmpp -->
+		<rocks.xmpp.version>0.5.0</rocks.xmpp.version>
 		<!-- Test -->
 		<junit.version>4.12</junit.version>
 		<mockito.version>1.10.19</mockito.version>
 	</properties>
 	
 	<dependencies>
+		<dependency>
+			<groupId>rocks.xmpp</groupId>
+			<artifactId>xmpp-core-client</artifactId>
+			<version>${rocks.xmpp.version}</version>
+		</dependency>
+		
+	
 		<!-- Expression parser -->
 		<dependency>
 			<groupId>net.objecthunter</groupId>

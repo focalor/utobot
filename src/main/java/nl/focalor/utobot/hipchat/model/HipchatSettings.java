@@ -8,6 +8,9 @@ import java.util.List;
 public class HipchatSettings {
 	private boolean active;
 	private String token;
+	private boolean xmppActive;
+	private String xmppUser;
+	private String xmppPassword;
 	private String room;
 	private List<Webhook> webhooks;
 
@@ -25,6 +28,30 @@ public class HipchatSettings {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean isXmppActive() {
+		return xmppActive;
+	}
+
+	public void setXmppActive(boolean xmppActive) {
+		this.xmppActive = xmppActive;
+	}
+
+	public String getXmppUser() {
+		return xmppUser;
+	}
+
+	public void setXmppUser(String xmppUser) {
+		this.xmppUser = xmppUser;
+	}
+
+	public String getXmppPassword() {
+		return xmppPassword;
+	}
+
+	public void setXmppPassword(String xmppPassword) {
+		this.xmppPassword = xmppPassword;
 	}
 
 	public String getRoom() {
