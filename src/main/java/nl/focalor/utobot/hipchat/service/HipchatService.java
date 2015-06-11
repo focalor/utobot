@@ -5,17 +5,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.hipchat.model.HipchatSettings;
 import nl.focalor.utobot.hipchat.model.Message;
 import nl.focalor.utobot.hipchat.model.Notification;
 import nl.focalor.utobot.hipchat.model.Room;
+import nl.focalor.utobot.hipchat.model.Topic;
 import nl.focalor.utobot.hipchat.model.Webhook;
 import nl.focalor.utobot.hipchat.model.Webhooks;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -26,7 +31,7 @@ public class HipchatService implements IHipchatService {
 
 	private final boolean active;
 	private final String authToken;
-	private final String mainRoom;
+	private final List<String> rooms;
 	private final Map<String, Webhook> utobotWebhooks;
 	private final RestTemplate template;
 
@@ -37,7 +42,7 @@ public class HipchatService implements IHipchatService {
 	public HipchatService(HipchatSettings settings) {
 		this.active = settings.isActive();
 		this.authToken = settings.getToken();
-		this.mainRoom = settings.getRoom();
+		this.rooms = settings.getRooms();
 
 		this.template = new RestTemplate();
 		this.utobotWebhooks = new HashMap<>();
@@ -48,7 +53,9 @@ public class HipchatService implements IHipchatService {
 
 	@PostConstruct
 	public void init() {
-		updateWebhooks(mainRoom);
+		for (String room : rooms) {
+			updateWebhooks(room);
+		}
 	}
 
 	@Override
@@ -85,7 +92,9 @@ public class HipchatService implements IHipchatService {
 	public void broadcastMessage(String message) {
 		Notification not = new Notification();
 		not.setMessage(message);
-		sendMessage(mainRoom, not);
+		for (String room : rooms) {
+			sendMessage(room, not);
+		}
 	}
 
 	@Override
@@ -163,12 +172,17 @@ public class HipchatService implements IHipchatService {
 
 	@Override
 	public void setTopic(String topic) {
-		StringBuilder url = new StringBuilder();
-		url.append(API_ROOM_URL);
-		url.append(mainRoom);
-		url.append("/webhook");
+		Topic t = new Topic();
+		t.setTopic(topic);
 
-		put(url, topic);
+		for (String room : rooms) {
+			StringBuilder url = new StringBuilder();
+			url.append(API_ROOM_URL);
+			url.append(room);
+			url.append("/topic");
+
+			put(url, t);
+		}
 	}
 
 	@Override

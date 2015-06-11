@@ -1,6 +1,7 @@
 package nl.focalor.utobot.hipchat.input;
 
 import java.util.List;
+
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
@@ -9,6 +10,7 @@ import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.AbstractInputListener;
 import nl.focalor.utobot.hipchat.model.Message;
 import nl.focalor.utobot.hipchat.service.IHipchatService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ public class HipchatInputListener extends AbstractInputListener implements IHipc
 
 	@Override
 	public void onRoomMessage(HipchatMessageEvent event) {
+		Integer userId = event.getUser().getId();
 		try {
 			String name = event.getUser().getName();
 			// Check for full name, in which case only use first part
@@ -43,21 +46,19 @@ public class HipchatInputListener extends AbstractInputListener implements IHipc
 
 				if (result == NoReplyResult.NO_REPLY) {
 				} else if (result instanceof ErrorResult) {
-					send(event.getUser().getId(), ((ErrorResult) result).getMessage());
+					send(userId, ((ErrorResult) result).getMessage());
 				} else if (result instanceof ReplyResult) {
-					send(event.getUser().getId(), ((ReplyResult) result).getMessage());
+					send(userId, ((ReplyResult) result).getMessage());
 				} else if (result instanceof MultiReplyResult) {
 					MultiReplyResult res = (MultiReplyResult) result;
-					for (String msg : res.getMessages()) {
-						send(event.getUser().getId(), msg);
-					}
+					send(userId, StringUtils.join(res.getMessages(), "\n"));
 				} else {
 					throw new UnsupportedOperationException("Don't know how to handle result of type "
 							+ result.getClass().getName());
 				}
 			}
 		} catch (Exception ex) {
-			handleError(event.getUser().getId(), ex);
+			handleError(userId, ex);
 		}
 	}
 

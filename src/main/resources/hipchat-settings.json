@@ -1,28 +1,15 @@
 {
 	"active":false,
 	"token":"",
+	"rooms":[""],
 	"xmppActive":false,
 	"xmppUser":"",
 	"xmppPassword":"",
 	"room":"",
 	"webhooks":[
-		{
-			"name":"utobot_command",
-			"pattern":"^!",
+			"name":"utobot",
+			"pattern":"",
 			"event":"room_message",
-			"url":"IP/hipchat/command"
-		},
-		{
-			"name":"utobot_attack",
-			"pattern":"^Our forces will be available again in",
-			"event":"room_message",
-			"url":"IP/hipchat/regex"
-		},
-		{
-			"name":"utobot_spell",
-			"pattern":"for \\d{1,2} day",
-			"event":"room_message",
-			"url":"IP/hipchat/regex"
-		}
+			"url":"http://82.170.208.181:8090/hipchat/command"
 	]
 }

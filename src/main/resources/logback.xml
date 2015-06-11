@@ -1,14 +1,15 @@
 <configuration>
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
-
-	<logger name="nl.focalor" level="DEBUG"/>
-	<logger name="com.gargoylesoftware" level="INFO"/>
-
-	<root level="INFO">
+	
+	<logger name="org.eclipse.jetty" level="INFO"/>
+	<logger name="org.springframework" level="INFO"/>
+	<logger name="org.hibernate" level="INFO"/>
+	
+	<root level="debug">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>
