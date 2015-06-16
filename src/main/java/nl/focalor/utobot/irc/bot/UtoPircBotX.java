@@ -1,9 +1,11 @@
 package nl.focalor.utobot.irc.bot;
 
 import java.io.IOException;
+
 import nl.focalor.utobot.base.jobs.IStartupJob;
 import nl.focalor.utobot.base.service.ILongInitialization;
 import nl.focalor.utobot.irc.input.IIrcInputListener;
+
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Configuration;
 import org.pircbotx.Configuration.Builder;
@@ -67,8 +69,8 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 		} else {
 			configBuilder.addAutoJoinChannel(channel, channelPassword);
 		}
-		configBuilder.addListener(new MessageSnooperListener(listener));
-		configBuilder.addListener(new ChannelJoinListener());
+		configBuilder.addListener(new EventsListener(listener));
+		configBuilder.addListener(new InitialisationCompleteListener());
 		configBuilder.setAutoReconnect(true);
 
 		return configBuilder.buildConfiguration();
@@ -92,7 +94,7 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 		startupJob.registerFinishedInitialization(this);
 	}
 
-	private static class ChannelJoinListener extends ListenerAdapter<UtoPircBotX> {
+	private static class InitialisationCompleteListener extends ListenerAdapter<UtoPircBotX> {
 		@Override
 		public void onJoin(JoinEvent<UtoPircBotX> event) {
 			if (event.getUser() == event.getBot().getUserBot()) {
@@ -101,10 +103,10 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 		}
 	}
 
-	private static class MessageSnooperListener extends ListenerAdapter<UtoPircBotX> {
+	private static class EventsListener extends ListenerAdapter<UtoPircBotX> {
 		private final IIrcInputListener inputListener;
 
-		public MessageSnooperListener(IIrcInputListener inputListener) {
+		public EventsListener(IIrcInputListener inputListener) {
 			super();
 			this.inputListener = inputListener;
 		}
@@ -112,6 +114,11 @@ public class UtoPircBotX extends PircBotX implements ILongInitialization {
 		@Override
 		public void onMessage(MessageEvent<UtoPircBotX> event) throws Exception {
 			inputListener.onMessage(event);
+		}
+
+		@Override
+		public void onJoin(JoinEvent<UtoPircBotX> event) {
+			inputListener.onJoin(event);
 		}
 	}
 }

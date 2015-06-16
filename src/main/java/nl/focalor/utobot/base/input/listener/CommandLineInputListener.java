@@ -1,11 +1,14 @@
 package nl.focalor.utobot.base.input.listener;
 
 import java.util.Scanner;
+
 import javax.annotation.PostConstruct;
+
 import nl.focalor.utobot.base.input.IResult;
 import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,7 @@ public class CommandLineInputListener extends AbstractInputListener implements I
 				handleResult(result);
 			} catch (RuntimeException ex) {
 				// Stay in loop
-				LOG.error("", ex);
+				LOG.error("Unexpected error", ex);
 			}
 		}
 	}
@@ -62,7 +65,7 @@ public class CommandLineInputListener extends AbstractInputListener implements I
 	}
 
 	@Override
-	public void broadcastMessage(String message) {
+	public void broadcast(String message) {
 		System.out.println(message);
 	}
 

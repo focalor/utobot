@@ -9,6 +9,8 @@ import nl.focalor.utobot.base.input.listener.AbstractInputListener;
 import nl.focalor.utobot.hipchat.model.HipchatSettings;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,8 @@ import rocks.xmpp.core.stanza.model.client.Message;
 
 @Component
 public class HipchatXmppListener extends AbstractInputListener implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(HipchatXmppListener.class);
+
 	private final String username;
 	private final String password;
 
@@ -85,7 +89,7 @@ public class HipchatXmppListener extends AbstractInputListener implements Runnab
 		try {
 			session.close();
 		} catch (Exception ex) {
-			// TODO log
+			LOG.error("Unexpected error", ex);
 		}
 		super.finalize();
 	}

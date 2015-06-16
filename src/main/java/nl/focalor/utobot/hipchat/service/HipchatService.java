@@ -16,6 +16,7 @@ import nl.focalor.utobot.hipchat.model.Topic;
 import nl.focalor.utobot.hipchat.model.Webhook;
 import nl.focalor.utobot.hipchat.model.Webhooks;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -89,12 +90,17 @@ public class HipchatService implements IHipchatService {
 	}
 
 	@Override
-	public void broadcastMessage(String message) {
+	public void broadcast(String message) {
 		Notification not = new Notification();
 		not.setMessage(message);
 		for (String room : rooms) {
 			sendMessage(room, not);
 		}
+	}
+
+	@Override
+	public void broadcast(List<String> messages) {
+		broadcast(StringUtils.join(messages, "\n"));
 	}
 
 	@Override

@@ -43,6 +43,10 @@ public class ShowStatusHandler extends AbstractGenericCommandHandler {
 	public IResult handleCommand(CommandInput event) {
 		String name = event.getArgument() == null ? event.getUser() : event.getArgument();
 
+		return getStatus(name);
+	}
+
+	public IResult getStatus(String name) {
 		List<Attack> attacks;
 		List<SpellCast> spellCasts;
 		Person person = personService.find(name, false);

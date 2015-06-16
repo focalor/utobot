@@ -2,7 +2,9 @@ package nl.focalor.utobot.base.service;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,14 @@ public class BotService implements IBotService {
 	@Override
 	public void broadcast(String message) {
 		for (ICommunicationService service : communicationServices) {
-			service.broadcastMessage(message);
+			service.broadcast(message);
+		}
+	}
+
+	@Override
+	public void broadcast(List<String> messages) {
+		for (ICommunicationService service : communicationServices) {
+			service.broadcast(messages);
 		}
 	}
 

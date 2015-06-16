@@ -7,9 +7,17 @@
 	"xmppPassword":"",
 	"room":"",
 	"webhooks":[
-			"name":"utobot",
+		{
+			"name":"utobot_room_message",
 			"pattern":"",
 			"event":"room_message",
-			"url":"http://82.170.208.181:8090/hipchat/command"
+			"url":"http://82.170.208.181:8090/hipchat/roomMessage"
+		},
+		{
+			"name":"utobot_room_enter",
+			"pattern":"",
+			"event":"room_enter",
+			"url":"http://82.170.208.181:8090/hipchat/roomEnter"
+		}
 	]
 }
