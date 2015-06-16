@@ -5,16 +5,11 @@
 	"xmppActive":false,
 	"xmppUser":"",
 	"xmppPassword":"",
+	"room":"",
 	"webhooks":[
-		{
-			"name":"utobot_room_message",
+			"name":"utobot",
+			"pattern":"",
 			"event":"room_message",
-			"url":"http://82.170.208.181:8090/hipchat/roomMessage"
-		},
-		{
-			"name":"utobot_room_enter",
-			"event":"room_enter",
-			"url":"http://82.170.208.181:8090/hipchat/roomEnter"
-		}
+			"url":"http://82.170.208.181:8090/hipchat/command"
 	]
 }

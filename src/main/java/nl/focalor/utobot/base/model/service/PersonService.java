@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PersonService implements IPersonService {
 	@Autowired
-	private PersonRepository personRepo;
+	private PersonRepository personDao;
 
 	@Autowired
-	private NickRepository nickRepo;
+	private NickRepository nickDao;
 
 	@Autowired
 	private IProvinceService provinceService;
@@ -27,13 +27,13 @@ public class PersonService implements IPersonService {
 	@Override
 	@Transactional
 	public void save(Person person) {
-		personRepo.save(person);
+		personDao.save(person);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Person get(long id) {
-		return personRepo.findOne(id);
+		return personDao.findOne(id);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class PersonService implements IPersonService {
 			strippedName = name;
 		}
 
-		return personRepo.findByNameOrNick(strippedName.toLowerCase());
+		return personDao.findByNameOrNick(strippedName.toLowerCase());
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class PersonService implements IPersonService {
 		List<Person> people = new ArrayList<Person>();
 
 		if (!StringUtils.isEmpty(searchString)) {
-			people = personRepo.findByNickNameOrProvince(searchString.toLowerCase());
+			people = personDao.findByNickNameOrProvince(searchString.toLowerCase());
 		}
 
 		return people;
@@ -86,7 +86,7 @@ public class PersonService implements IPersonService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Person> findAll() {
-		return (List<Person>) personRepo.findAll();
+		return (List<Person>) personDao.findAll();
 	}
 
 	private void loadPersonInfo(Person person) {
@@ -96,22 +96,22 @@ public class PersonService implements IPersonService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void addNick(long personId, String nick) {
-		Person person = personRepo.findOne(personId);
+		Person person = personDao.findOne(personId);
 		Nick newNick = new Nick();
 		newNick.setNick(nick);
 		newNick.setPerson(person);
-		nickRepo.save(newNick);
+		nickDao.save(newNick);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByNickIgnoreCase(String nick) {
-		nickRepo.deleteByNickIgnoreCase(nick);
+		nickDao.deleteByNickIgnoreCase(nick);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByNameIgnoreCase(String name) {
-		personRepo.deleteByNameIgnoreCase(name);
+		personDao.deleteByNameIgnoreCase(name);
 	}
 }

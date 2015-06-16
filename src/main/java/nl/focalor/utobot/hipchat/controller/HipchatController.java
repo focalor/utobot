@@ -2,7 +2,6 @@ package nl.focalor.utobot.hipchat.controller;
 
 import nl.focalor.utobot.hipchat.input.HipchatMessageEvent;
 import nl.focalor.utobot.hipchat.input.IHipchatInputListener;
-import nl.focalor.utobot.hipchat.model.RoomEnter;
 import nl.focalor.utobot.hipchat.model.RoomMessage;
 import nl.focalor.utobot.hipchat.model.RoomMessageItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,19 @@ public class HipchatController {
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(method = RequestMethod.POST)
-	public void roomMessage(@RequestBody RoomMessage roomMessage) {
+	@RequestMapping(value = "command", method = RequestMethod.POST)
+	public void command(@RequestBody RoomMessage roomMessage) {
+		onMessage(roomMessage);
+	}
+
+	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(value = "regex", method = RequestMethod.POST)
+	public void regex(@RequestBody RoomMessage roomMessage) {
+		onMessage(roomMessage);
+	}
+
+	private void onMessage(RoomMessage roomMessage) {
 		HipchatMessageEvent event = new HipchatMessageEvent();
 
 		RoomMessageItem item = roomMessage.getItem();
@@ -32,12 +42,5 @@ public class HipchatController {
 		event.setMessage(item.getMessage().getMessage());
 
 		listener.onRoomMessage(event);
-	}
-
-	@ResponseBody
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(method = RequestMethod.POST)
-	public void roomEnter(@RequestBody RoomEnter roomEnter) {
-		// TODO
 	}
 }

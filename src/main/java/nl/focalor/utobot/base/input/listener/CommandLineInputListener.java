@@ -62,7 +62,7 @@ public class CommandLineInputListener extends AbstractInputListener implements I
 	}
 
 	@Override
-	public void broadcast(String message) {
+	public void broadcastMessage(String message) {
 		System.out.println(message);
 	}
 

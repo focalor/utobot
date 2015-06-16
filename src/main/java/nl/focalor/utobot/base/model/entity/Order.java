@@ -5,13 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity(name = "Orders")
+@Entity
 public class Order {
 	@Id
 	@GeneratedValue
 	private Long id;
 	@Column(nullable = false)
-	private String text;
+	private String order;
 
 	public Long getId() {
 		return id;
@@ -21,12 +21,12 @@ public class Order {
 		this.id = id;
 	}
 
-	public String getText() {
-		return text;
+	public String getOrder() {
+		return order;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setOrder(String order) {
+		this.order = order;
 	}
 
 }
