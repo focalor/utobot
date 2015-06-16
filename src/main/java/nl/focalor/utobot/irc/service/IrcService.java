@@ -10,7 +10,7 @@ public class IrcService implements IIrcService {
 	private UtoPircBotX bot;
 
 	@Override
-	public void broadcastMessage(String message) {
+	public void broadcast(String message) {
 		if (bot.isConnected()) {
 			bot.sendIRC().message("#avians", message);
 		}

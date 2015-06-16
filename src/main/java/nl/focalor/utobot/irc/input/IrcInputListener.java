@@ -7,6 +7,7 @@ import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 import nl.focalor.utobot.base.input.listener.AbstractInputListener;
+import nl.focalor.utobot.hipchat.input.HipchatRoomEnterEvent;
 import nl.focalor.utobot.irc.bot.UtoPircBotX;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Colors;
@@ -41,6 +42,11 @@ public class IrcInputListener extends AbstractInputListener implements IIrcInput
 		} catch (Exception ex) {
 			handleError(event, ex);
 		}
+	}
+
+	@Override
+	public void onEnter(HipchatRoomEnterEvent event) {
+		// TODO Auto-generated method stub
 	}
 
 	private void handleReply(MessageEvent<UtoPircBotX> event, MultiReplyResult reply) {

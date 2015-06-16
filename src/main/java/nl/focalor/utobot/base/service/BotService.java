@@ -30,7 +30,14 @@ public class BotService implements IBotService {
 	@Override
 	public void broadcast(String message) {
 		for (ICommunicationService service : communicationServices) {
-			service.broadcastMessage(message);
+			service.broadcast(message);
+		}
+	}
+
+	@Override
+	public void broadcast(List<String> messages) {
+		for (ICommunicationService service : communicationServices) {
+			service.broadcast(messages);
 		}
 	}
 

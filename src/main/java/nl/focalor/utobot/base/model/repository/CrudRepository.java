@@ -1,26 +1,26 @@
 package nl.focalor.utobot.base.model.repository;
 
+import java.io.Serializable;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
-
-import java.io.Serializable;
 
 /**
  * Created by luigibanzato on 11/04/2015.
  */
 @NoRepositoryBean
-public interface CrudRepository<T, ID extends Serializable>
-        extends Repository<T, ID> {
+public interface CrudRepository<T, ID extends Serializable> extends Repository<T, ID> {
 
-    <S extends T> S save(S entity);
+	<S extends T> S save(S entity);
 
-    T findOne(ID primaryKey);
+	T findOne(ID primaryKey);
 
-    Iterable<T> findAll();
+	Iterable<T> findAll();
 
-    Long count();
+	Long count();
 
-    void delete(T entity);
+	void delete(T entity);
 
-    boolean exists(ID primaryKey);
+	void delete(ID primaryKey);
+
+	boolean exists(ID primaryKey);
 }
