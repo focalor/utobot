@@ -49,5 +49,4 @@ public class AddOrderHandler extends AbstractGenericCommandHandler {
 	public String getSimpleHelp() {
 		return "Adds the specificied order";
 	}
-
 }
