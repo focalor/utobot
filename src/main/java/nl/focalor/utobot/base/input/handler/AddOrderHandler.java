@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AddOrderHandler extends AbstractGenericCommandHandler {
-	public static final String COMMAND_NAME = "order";
+	public static final String COMMAND_NAME = "addorder";
 
-	public static final String[] COMMAND_NICKS = { "addorder", "orderadd" };
+	public static final String[] COMMAND_NICKS = { "order", "orderadd" };
 
 	@Autowired
 	private IOrderService orderService;
