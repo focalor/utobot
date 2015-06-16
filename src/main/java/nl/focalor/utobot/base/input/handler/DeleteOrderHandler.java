@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class DeleteOrderHandler extends AbstractGenericCommandHandler {
 	public static final String COMMAND_NAME = "delorder";
 
-	public static final String[] COMMAND_NICKS = {"deleteorder"};
+	public static final String[] COMMAND_NICKS = {"deleteorder", "orderdel", "orderdel"};
 
 	@Autowired
 	private IOrderService orderService;

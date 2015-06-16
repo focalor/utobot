@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import nl.focalor.utobot.base.input.CommandInput;
 import nl.focalor.utobot.base.input.ErrorResult;
 import nl.focalor.utobot.base.input.IInput;
@@ -80,15 +79,9 @@ public class HelpHandler extends AbstractGenericCommandHandler {
 	private List<String> getHelpCommandHandlers(IInputListener dispatcher) {
 		return dispatcher.getCommandHandlers().stream()
 				.filter(handler -> handler.hasHelp())
-				.flatMap(this::mapCommandHandler)
+				.map(handler -> handler.getName())
 				.sorted()
 				.collect(Collectors.toList());
-	}
-
-	private Stream<String> mapCommandHandler(ICommandHandler handler) {
-		Stream<String> test = handler.getCommandNames().stream()
-				.map(name -> name + " - " + handler.getSimpleHelp());
-		return test;
 	}
 
 	private List<String> map(Collection<? extends IInputHandler> handlers) {
