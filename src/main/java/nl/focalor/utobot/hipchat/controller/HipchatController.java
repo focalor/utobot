@@ -22,7 +22,7 @@ public class HipchatController {
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "roomMessage", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public void roomMessage(@RequestBody RoomMessage roomMessage) {
 		HipchatMessageEvent event = new HipchatMessageEvent();
 
@@ -36,7 +36,7 @@ public class HipchatController {
 
 	@ResponseBody
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "roomEnter", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public void roomEnter(@RequestBody RoomEnter roomEnter) {
 		// TODO
 	}
