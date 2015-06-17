@@ -36,7 +36,7 @@ public class DeleteOrderHandler extends AbstractGenericCommandHandler {
 	@Override
 	public List<String> getHelpBody() {
 		List<String> helpBody = new ArrayList<String>();
-		helpBody.add("Deletes the specificied order");
+		helpBody.add("Deletes the specified order");
 		helpBody.add("USAGE:");
 		helpBody.add("!delorder <ORDER NUMBER>");
 		helpBody.add("e.g.:");
@@ -46,7 +46,7 @@ public class DeleteOrderHandler extends AbstractGenericCommandHandler {
 
 	@Override
 	public String getSimpleHelp() {
-		return "Deletes the specificied order";
+		return "Deletes the specified order";
 	}
 
 }

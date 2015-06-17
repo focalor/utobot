@@ -37,7 +37,7 @@ public class AddOrderHandler extends AbstractGenericCommandHandler {
 	@Override
 	public List<String> getHelpBody() {
 		List<String> helpBody = new ArrayList<String>();
-		helpBody.add("Adds the specificied order");
+		helpBody.add("Adds the specified order");
 		helpBody.add("USAGE:");
 		helpBody.add("!order <ORDER>");
 		helpBody.add("e.g.:");
@@ -47,6 +47,6 @@ public class AddOrderHandler extends AbstractGenericCommandHandler {
 
 	@Override
 	public String getSimpleHelp() {
-		return "Adds the specificied order";
+		return "Adds the specified order";
 	}
 }

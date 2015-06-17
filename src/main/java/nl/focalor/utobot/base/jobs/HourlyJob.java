@@ -11,7 +11,12 @@ import nl.focalor.utobot.base.model.service.IOrderService;
 import nl.focalor.utobot.base.service.IBotService;
 import nl.focalor.utobot.utopia.service.IUtopiaService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HourlyJob implements IScheduledJob {
+	private static final Logger LOG = LoggerFactory.getLogger(HourlyJob.class);
+
 	private final IUtopiaService utopiaService;
 	private final IOrderService orderService;
 	private final IBotService botService;
@@ -39,17 +44,20 @@ public class HourlyJob implements IScheduledJob {
 
 	@Override
 	public void run() {
-		botService.broadcast(utopiaService.getUtopiaDate().toString(false));
-		botService.broadcast(orderService.getAll().map(order -> order.getText()).collect(Collectors.joining("\n")));
+		try {
+			botService.broadcast(utopiaService.getUtopiaDate().toString(false));
+			botService.broadcast(orderService.getAll().map(order -> order.getText()).collect(Collectors.joining("\n")));
 
-		SortedMap<Integer, List<IScheduledJob>> completedJobs = hourlyJobs.headMap(utopiaService.getHourOfAge());
-		for (Entry<Integer, List<IScheduledJob>> entry : completedJobs.entrySet()) {
-			hourlyJobs.remove(entry.getKey());
-			for (IScheduledJob job : entry.getValue()) {
-				job.run();
+			SortedMap<Integer, List<IScheduledJob>> completedJobs = hourlyJobs.headMap(utopiaService.getHourOfAge());
+			for (Entry<Integer, List<IScheduledJob>> entry : completedJobs.entrySet()) {
+				hourlyJobs.remove(entry.getKey());
+				for (IScheduledJob job : entry.getValue()) {
+					job.run();
+				}
 			}
+		} catch (RuntimeException ex) {
+			LOG.error("Unexpected exception", ex);
 		}
-		return;
 	}
 
 }
