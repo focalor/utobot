@@ -91,6 +91,9 @@ public class HipchatService implements IHipchatService {
 
 	@Override
 	public void broadcast(String message) {
+		if (StringUtils.isEmpty(message)) {
+			return;
+		}
 		Notification not = new Notification();
 		not.setMessage(message);
 		for (String room : rooms) {

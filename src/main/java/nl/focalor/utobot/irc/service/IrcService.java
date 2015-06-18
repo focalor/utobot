@@ -2,6 +2,7 @@ package nl.focalor.utobot.irc.service;
 
 import nl.focalor.utobot.irc.bot.UtoPircBotX;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class IrcService implements IIrcService {
 
 	@Override
 	public void broadcast(String message) {
+		if (StringUtils.isEmpty(message)) {
+			return;
+		}
 		if (bot.isConnected()) {
 			bot.sendIRC().message(mainChannel, message);
 		}

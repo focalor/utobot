@@ -9,6 +9,7 @@ import nl.focalor.utobot.base.input.MultiReplyResult;
 import nl.focalor.utobot.base.input.NoReplyResult;
 import nl.focalor.utobot.base.input.ReplyResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,9 @@ public class CommandLineInputListener extends AbstractInputListener implements I
 
 	@Override
 	public void broadcast(String message) {
+		if (StringUtils.isEmpty(message)) {
+			return;
+		}
 		System.out.println(message);
 	}
 
